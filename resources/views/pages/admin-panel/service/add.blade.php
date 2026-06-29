@@ -1,0 +1,48 @@
+@extends('admin-panel')
+@section('content')
+
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="card mt-4">
+				<div class="card-header">Add New Service</div>
+				<div class="card-body">
+					<form action="/admin-panel/add-service" method="post">
+						@csrf
+
+						<div class="mb-3">
+							<label for="image_url" class="form-label">Image URL</label>
+							<input type="text" name="image_url" id="image_url" class="form-control @error('image_url') is-invalid @enderror" value="{{ old('image_url') }}">
+							@error('image_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
+						</div>
+
+						<div class="mb-3">
+							<label for="icon_url" class="form-label">Image Icon URL</label>
+							<input type="text" name="icon_url" id="icon_url" class="form-control @error('icon_url') is-invalid @enderror" value="{{ old('icon_url') }}">
+							@error('icon_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
+						</div>
+
+						<div class="mb-3">
+							<label for="title" class="form-label">Title</label>
+							<input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}">
+							@error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
+						</div>
+
+						<div class="mb-3">
+							<label for="short_description" class="form-label">Short Description</label>
+							<textarea name="short_description" id="short_description" rows="4" class="form-control @error('short_description') is-invalid @enderror">{{ old('short_description') }}</textarea>
+							@error('short_description')<div class="invalid-feedback">{{ $message }}</div>@enderror
+						</div>
+
+						<div class="d-flex justify-content-end">
+							<a href="{{ url()->previous() }}" class="btn btn-secondary me-2">Cancel</a>
+							<button type="submit" class="btn btn-primary">Save Service</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@endsection
