@@ -70,7 +70,6 @@
     <!-- Navbar Start -->
     <div class="container-fluid position-relative p-0">
         @include('common.site.navbar')
-
     </div>
     <!-- Navbar End -->
 
@@ -99,6 +98,7 @@
                     <div class="bg-white rounded p-4 p-sm-5 wow fadeIn" data-wow-delay="0.5s">
                         <h1 class="display-5 text-center mb-3">Request A Quote</h1>
                         <p class="fs-5 fw-bold text-primary text-center mb-5">Please complete and submit the form below to get started.</p>
+
                         @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -108,17 +108,18 @@
                             </ul>
                         </div>
                         @endif
+
                         <form action="/admin-panel/create-booking" method="post">
                             @csrf
                             <div class="row g-3">
                                 <div class="col-xl-12">
-                                    <input name="name" value="{{old("name")}}" type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;">
+                                    <input name="name" value="{{old("name")}}" type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12">
-                                    <input name="email" type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;">
+                                    <input name="email" type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12">
-                                    <select name="service" class="form-select bg-light border-0" style="height: 55px;">
+                                    <select name="service" class="form-select bg-light border-0" style="height: 55px;" required>
                                         <option value="" selected disabled>Select A Service</option>
                                         @foreach($services as $service)
                                         <option value="{{$service->id}}" {{ $selectedServiceId == $service->id ? 'selected' : '' }}>
@@ -127,9 +128,18 @@
                                         @endforeach
                                     </select>
                                 </div>
+
                                 <div class="col-12">
-                                    <input name="preferred_date" type="date" class="form-control bg-light border-0" style="height: 55px;">
+                                    <input name="preferred_date" id="booking_date" type="date" class="form-control bg-light border-0" style="height: 55px;" required>
                                 </div>
+
+                                {{-- 💡 থিম লেআউটের সাথে মিল রেখে বক্সটির গ্রিড স্ট্রাকচার ও ইনপুট ক্লাস পারফেক্ট করা হলো --}}
+                                <div class="col-12">
+                                    <select id="time_slot" name="time_slot" class="form-control bg-light border-0" style="height: 55px; color: #6c757d; background-color: #f8f9fa !important;" required disabled>
+                                        <option value="">First select a date</option>
+                                    </select>
+                                </div>
+
                                 <div class="col-12">
                                     <textarea name="message" class="form-control bg-light border-0" rows="3" placeholder="Message"></textarea>
                                 </div>
@@ -159,7 +169,7 @@
 
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="site/lib/wow/wow.min.js"></script>
     <script src="site/lib/easing/easing.min.js"></script>
@@ -172,6 +182,41 @@
 
     <!-- Template Javascript -->
     <script src="site/js/main.js"></script>
-</body>
 
+    <script>
+        $('#booking_date').on('change', function() {
+            var date = $(this).val();
+            if(date) {
+                // স্লট লোড হওয়ার সময় টেক্সটের কালার পরিবর্তন
+                $('#time_slot').html('<option value="">Loading slots...</option>').prop('disabled', true).css('color', '#6c757d');
+
+                $.ajax({
+                    url: '/check-available-slots?date=' + date,
+                    type: 'GET',
+                    success: function(bookedSlots) {
+                        var allSlots = [
+                            "09:00 AM - 11:00 AM",
+                            "11:00 AM - 01:00 PM",
+                            "02:00 PM - 04:00 PM",
+                            "04:00 PM - 06:00 PM"
+                        ];
+
+                        var html = '<option value="">Select a Time Slot</option>';
+                        allSlots.forEach(function(slot) {
+                            if (!bookedSlots.includes(slot)) {
+                                html += '<option value="' + slot + '">' + slot + '</option>';
+                            }
+                        });
+
+                        // স্লট একটিভ হলে টেক্সটের কালার ডার্ক হবে
+                        $('#time_slot').html(html).prop('disabled', false).css('color', '#212529');
+                    },
+                    error: function() {
+                        $('#time_slot').html('<option value="">Error loading slots</option>');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
 </html>

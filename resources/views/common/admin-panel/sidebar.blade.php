@@ -21,10 +21,10 @@
                     <a class="nav-link" aria-current="page" href="/admin-panel/booking-list"><i class="bi bi-journal-plus me-2"></i></i>Booking List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/admin-panel/add-team"><i class="bi bi-person-plus-fill me-2"></i></i>Add Team</a>
+                    <a class="nav-link" aria-current="page" href="/admin-panel/add-team"><i class="bi bi-person-plus-fill me-2"></i></i>Add Team Member</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/admin-panel/team-list"><i class="bi bi-person-lines-fill me-2"></i></i>Team List</a>
+                    <a class="nav-link" aria-current="page" href="/admin-panel/team-list"><i class="bi bi-person-lines-fill me-2"></i></i>Team Members</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ Route::is('admin.users.list') ? 'active' : '' }}" href="{{ route('admin.users.list') }}">
@@ -41,6 +41,12 @@
                     <a class="nav-link" href="/logout"><i class="bi bi-gear me-2"></i>Logout</a>
                 </li>
             </ul>
+            {{-- 💡 প্রোফাইল কার্ডের ঠিক ওপরে এই আলাদা প্রফেশনাল লাইভ সাইট বাটনটি বসবে --}}
+            <div class="px-3 mb-2">
+                <a href="{{ route('home') }}" target="_blank" class="btn btn-outline-success btn-sm w-100 rounded-pill py-2 d-flex align-items-center justify-content-center gap-2 fw-bold" style="font-size: 0.85rem; border-style: dashed; color: #198754;">
+                    <i class="bi bi-box-arrow-up-right"></i> View Live Site
+                </a>
+            </div>
             <div class="mt-auto pt-3 border-top border-secondary">
                 <div class="d-flex align-items-center">
                     <div class="me-3 bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width:44px;height:44px;">

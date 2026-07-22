@@ -37,6 +37,10 @@ Route::get('/admin-panel', [AdminController::class, 'viewAdminPanel'])->name('vi
 // ইউজার লিস্ট দেখা এবং রোল পরিবর্তন করার রাউট
 Route::get('/admin-panel/users', [AdminController::class, 'viewUsersList'])->name('admin.users.list')->middleware('auth');
 Route::get('/admin-panel/users/toggle-role/{id}', [AdminController::class, 'toggleUserRole'])->name('admin.users.toggleRole')->middleware('auth');
+// 💡 ইউজার এবং এডমিন ডিলিট করার নতুন রাউট
+Route::get('/admin-panel/users/delete/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.delete')->middleware('auth');
+// ইউজার ব্লক/আনব্লক করার রাউট
+Route::get('/admin-panel/users/toggle-block/{id}', [AdminController::class, 'toggleBlock'])->name('admin.users.toggleBlock')->middleware('auth');
 
 Route::get('/admin-panel/add-service', [ServiceController::class, 'viewServiceAddForm'])->name('viewServiceAddForm');
 Route::post('/admin-panel/add-service', [ServiceController::class, 'storeService'])->name('admin.service.store');
@@ -52,6 +56,12 @@ Route::get('/admin-panel/edit-team/{id}', [TeamController::class, 'viewTeamEditF
 Route::get('/admin-panel/delete-team/{id}', [TeamController::class, 'deleteTeam'])->name('deleteTeam');
 Route::post('/admin-panel/edit-team', [TeamController::class, 'editTeam'])->name('editTeam');
 
+// ১. ইউজার ডেট সিলেক্ট করলে খালি স্লট চেক করার রাউট
+Route::get('/check-available-slots', [BookingController::class, 'checkSlots']);
+
+// ২. এডমিন প্যানেল থেকে টিম মেম্বার এসাইন করার রাউট
+Route::post('/admin-panel/bookings/assign-team/{id}', [AdminController::class, 'assignTeam'])->name('admin.bookings.assignTeam')->middleware('auth');
+Route::get('/admin-panel/bookings/assign-view/{id}', [AdminController::class, 'showAssignPage'])->name('admin.bookings.assignView')->middleware('auth');
 
 Route::post('/admin-panel/create-booking', [BookingController::class, 'createBooking'])->name('createBooking');
 Route::get('/admin-panel/booking-list', [BookingController::class, 'viewAllBookings'])->name('viewAllBookings');

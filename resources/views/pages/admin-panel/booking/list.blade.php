@@ -18,6 +18,8 @@
                         <th>Service</th>
                         <th>User Info</th>
                         <th>Preferred Date</th>
+                        <th>Time Slot</th>
+                        <th>Assign Member</th>
                         <th>Message</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -30,30 +32,68 @@
                         <td>{{$booking->email}}</td>
                         <td>{{$booking->service?->title ?? 'N/A'}}</td>
                         <td>
-                            <ul>
+                            <ul class="mb-0 ps-3" style="font-size: 0.85rem;">
                                 <li>Name: {{$booking->user?->name ?? 'Guest'}}</li>
                                 <li>Email: {{$booking->user?->email ?? 'N/A'}}</li>
                                 <li>Phone: {{$booking->user?->phone ?? 'N/A'}}</li>
                             </ul>
                         </td>
+                        {{-- ১. আপনার আগের Preferred Date কলাম --}}
                         <td>{{ $booking->preferred_date ? \Illuminate\Support\Carbon::parse($booking->preferred_date)->format('d M Y') : 'N/A' }}</td>
+
+                        {{-- 💡 ২. নতুন যোগ করা Time Slot এর ডাটা --}}
+                        <td>
+                            <span class="badge bg-light text-dark border">{{ $booking->time_slot ?? 'N/A' }}</span>
+                        </td>
+
+                        {{-- 💡 ৩. নতুন যোগ করা Assign Team Member এর ড্রপডাউন ফর্ম --}}
+                        <td>
+                            {{-- 💡 কন্ডিশন চেক: যদি টিম মেম্বার অলরেডি অ্যাসাইন করা থাকে --}}
+                            @if($booking->team_member_id)
+                                <div class="d-flex flex-column align-items-center">
+                                    {{-- সবুজ ব্যাজ --}}
+                                    <span class="badge bg-success rounded-pill px-3 py-2 fw-bold text-white d-inline-flex align-items-center gap-1">
+                                        <i class="bi bi-person-check-fill"></i> Member Assigned
+                                    </span>
+
+                                    {{-- মেম্বারের নাম/আইডি এবং পাশে চেঞ্জ করার এডিট লিঙ্ক 💡 --}}
+                                    <div class="small mt-1 d-flex align-items-center gap-1">
+                                        <span class="text-muted">({{ $booking->teamMember?->name ?? 'ID: '.$booking->team_member_id }})</span>
+                                        <a href="{{ route('admin.bookings.assignView', $booking->id) }}" class="text-primary text-decoration-none fw-bold ms-1" title="Change Team Member">
+                                            <i class="bi bi-pencil-square"></i> Change
+                                        </a>
+                                    </div>
+                                </div>
+                            @else
+                                {{-- 💡 যদি অ্যাসাইন করা না থাকে, তবে আগের বাটনটি দেখাবে --}}
+                                <div class="text-center">
+                                    <a href="{{ route('admin.bookings.assignView', $booking->id) }}" class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-bold">
+                                        <i class="bi bi-person-plus-fill me-1"></i> Assign Team
+                                    </a>
+                                </div>
+                            @endif
+                        </td>
+                        {{-- ৪. আপনার আগের মেসেজ কলামটি এখন ঠিকঠাক জায়গামতো আছে --}}
                         <td>{{$booking->message}}</td>
+
                         <td>
                             @if($booking->status == "pending")
-                            <span class="badge bg-warning">{{$booking->status}}</span>
+                            <span class="badge bg-warning text-capitalize">{{$booking->status}}</span>
                             @elseif($booking->status == "rejected")
-                            <span class="badge bg-danger">{{$booking->status}}</span>
+                            <span class="badge bg-danger text-capitalize">{{$booking->status}}</span>
                             @elseif($booking->status == "done")
-                            <span class="badge bg-success">{{$booking->status}}</span>
+                            <span class="badge bg-success text-capitalize">{{$booking->status}}</span>
                             @else
-                            <span class="badge bg-info">{{$booking->status}}</span>
+                            <span class="badge bg-info text-capitalize">{{$booking->status}}</span>
                             @endif
                         </td>
                         <td>
-                            <a href="{{route("pendingBooking", $booking->id)}}" class="btn btn-warning text-white btn-sm">Pending</a>
-                            <a href="{{route("doneBooking", $booking->id)}}" class="btn btn-success text-white btn-sm">Done</a>
-                            <a href="{{route("approveBooking", $booking->id)}}" class="btn btn-info text-white btn-sm">Approve</a>
-                            <a href="{{route("rejectBooking", $booking->id)}}" class="btn btn-danger text-white btn-sm">Reject</a>
+                            <div class="d-flex gap-1">
+                                <a href="{{route("pendingBooking", $booking->id)}}" class="btn btn-warning text-white btn-sm">Pending</a>
+                                <a href="{{route("doneBooking", $booking->id)}}" class="btn btn-success text-white btn-sm">Done</a>
+                                <a href="{{route("approveBooking", $booking->id)}}" class="btn btn-info text-white btn-sm">Approve</a>
+                                <a href="{{route("rejectBooking", $booking->id)}}" class="btn btn-danger text-white btn-sm">Reject</a>
+                            </div>
                         </td>
                     </tr>
                     @endforeach

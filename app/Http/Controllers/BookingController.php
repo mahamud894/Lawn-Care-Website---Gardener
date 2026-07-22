@@ -16,6 +16,7 @@ class BookingController extends Controller
             'name' => ['required', 'min:6'],
             'email' => ['required', 'email'],
             'preferred_date' => ['nullable', 'date'],
+            'time_slot' => ['required'],
         ];
 
         if (Schema::hasTable('services')) {
@@ -28,6 +29,7 @@ class BookingController extends Controller
         $data["email"] = $req->email;
         $data["message"] = $req->message;
         $data["preferred_date"] = $req->preferred_date;
+        $data["time_slot"] = $req->time_slot;
         $data["service_id"] = $req->filled('service') ? $req->service : null;
         $data["user_id"] = Auth::check() ? Auth::id() : null;
 
@@ -45,9 +47,19 @@ class BookingController extends Controller
     // ব্লেড ফাইলে ডাটা পাঠানো হলো
     return view("pages.quote", compact("services", "selectedServiceId"));
    }
+
     public function viewAllBookings(){
-        $bookings = Booking::with(["user","service"])->get();
-        return view("pages.admin-panel.booking.list", ["bookings"=>$bookings]);
+    // সব বুকিং তুলে আনা হচ্ছে
+    $bookings = Booking::with(["user", "service", "teamMember"])->get();
+
+    // ডাটাবেজ থেকে সব টিম মেম্বারদের তুলে আনা হচ্ছে 💡
+    $teamMembers = \App\Models\Team::all();
+
+    // বুকিং এবং টিম মেম্বার উভয় ডাটাই ব্লেড ফাইলে পাঠানো হলো
+    return view("pages.admin-panel.booking.list", [
+        "bookings" => $bookings,
+        "teamMembers" => $teamMembers
+      ]);
     }
 
     public function pendingBooking($id){
@@ -81,7 +93,18 @@ class BookingController extends Controller
     }
 
    public function viewMyBookings(){
-        $bookings = Booking::where(["user_id" => Auth::id()])->with(["user","service"])->get();
+        // 💡 এখানে 'teamMember' রিলেশনটি লোড করে দেওয়া হলো, যেন ইউজার ড্যাশবোর্ডে ওয়ার্কারের নাম শো করে
+        $bookings = Booking::where(["user_id" => Auth::id()])->with(["user", "service", "teamMember"])->get();
         return view("pages.user-dashboard", compact('bookings'));
+   }
+
+    public function checkSlots(Request $request) {
+    // ওই নির্দিষ্ট ডেটে অলরেডি বুকড হওয়া স্লটগুলোর লিস্ট নেওয়া হচ্ছে
+    $bookedSlots = Booking::where('preferred_date', $request->date)
+                        ->whereIn('status', ['approved', 'done', 'pending'])
+                        ->pluck('time_slot')
+                        ->toArray();
+
+    return response()->json($bookedSlots);
 }
 }

@@ -51,6 +51,20 @@
                     placeholder="Enter your phone"
                 >
             </div>
+            {{-- 💡 রেড মার্ক করা অংশ: এখানে Tailwind CSS এর সাথে নিখুঁত ডিজাইন ও গ্যাপ নিশ্চিত করা হয়েছে --}}
+            <div>
+                <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Register As</label>
+                <select
+                    name="role"
+                    id="role"
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 bg-white text-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                    style="height: 50px;"
+                >
+                    <option value="0" selected>Regular User (Customer)</option>
+                    <option value="1">Admin Assistant (Requires Approval)</option>
+                </select>
+            </div>
 
             <div>
                 <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>

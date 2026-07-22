@@ -336,6 +336,7 @@
     <!-- Service End -->
 
 
+
     <!-- Quote Start -->
     <div class="container-fluid quote my-5 py-5" data-parallax="scroll" data-image-src="site/img/carousel-2.jpg">
         <div class="container py-5">
@@ -370,7 +371,14 @@
                                     </select>
                                 </div>
                                 <div class="col-12">
-                                    <input name="preferred_date" type="date" class="form-control bg-light border-0" style="height: 55px;" aria-label="Preferred date">
+                                    <input name="preferred_date" id="booking_date" type="date" class="form-control bg-light border-0" style="height: 55px;" required>
+                                </div>
+
+                                {{-- 💡 থিম লেআউটের সাথে মিল রেখে বক্সটির গ্রিড স্ট্রাকচার ও ইনপুট ক্লাস পারফেক্ট করা হলো --}}
+                                <div class="col-12">
+                                    <select id="time_slot" name="time_slot" class="form-control bg-light border-0" style="height: 55px; color: #6c757d; background-color: #f8f9fa !important;" required disabled>
+                                        <option value="">First select a date</option>
+                                    </select>
                                 </div>
                                 <div class="col-12">
                                     <textarea name="message" class="form-control bg-light border-0" rows="3" placeholder="Message"></textarea>
@@ -586,6 +594,40 @@
                 selectBox.value = serviceId;
             }
         }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#booking_date').on('change', function() {
+            var date = $(this).val();
+            if(date) {
+                $('#time_slot').html('<option value="">Loading slots...</option>').prop('disabled', true).css('color', '#6c757d');
+
+                $.ajax({
+                    url: '/check-available-slots?date=' + date,
+                    type: 'GET',
+                    success: function(bookedSlots) {
+                        var allSlots = [
+                            "09:00 AM - 11:00 AM",
+                            "11:00 AM - 01:00 PM",
+                            "02:00 PM - 04:00 PM",
+                            "04:00 PM - 06:00 PM"
+                        ];
+
+                        var html = '<option value="">Select a Time Slot</option>';
+                        allSlots.forEach(function(slot) {
+                            if (!bookedSlots.includes(slot)) {
+                                html += '<option value="' + slot + '">' + slot + '</option>';
+                            }
+                        });
+
+                        $('#time_slot').html(html).prop('disabled', false).css('color', '#212529');
+                    },
+                    error: function() {
+                        $('#time_slot').html('<option value="">Error loading slots</option>');
+                    }
+                });
+            }
+        });
     </script>
 
     <!-- Template Javascript -->

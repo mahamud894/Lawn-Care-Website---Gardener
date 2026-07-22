@@ -20,4 +20,8 @@ class Booking extends Model
     {
         return $this->belongsTo(Service::class);
     }
+
+    public function teamMember(): BelongsTo {
+        return $this->belongsTo(Team::class, 'team_member_id');
+    }
 }
