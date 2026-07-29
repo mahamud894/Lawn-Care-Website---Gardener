@@ -23,7 +23,16 @@
                 <tbody>
                     @foreach($data as $teamMember)
                     <tr>
-                        <td><img src="{{$teamMember->image_url}}" alt="" height="64px"></td>
+                        <td>
+                            @if(!empty($teamMember->image_url))
+                                {{-- ছবি অনলাইন লিংক হলে সরাসরি দেখাবে, আর লোকাল হলে asset() দিয়ে লোড করবে --}}
+                                <img src="{{ \Illuminate\Support\Str::startsWith($teamMember->image_url, ['http://', 'https://']) ? $teamMember->image_url : asset($teamMember->image_url) }}"
+                                     alt="{{ $teamMember->title }}"
+                                     style="height: 64px; width: 64px; object-fit: cover; border-radius: 4px;">
+                            @else
+                                <span class="badge bg-secondary">No Image</span>
+                            @endif
+                        </td>
                         <td>{{$teamMember->title}}</td>
                         <td>{{$teamMember->position}}</td>
                         <td>

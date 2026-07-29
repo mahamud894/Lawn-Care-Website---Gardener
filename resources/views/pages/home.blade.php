@@ -9,7 +9,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="site/img/favicon.ico" rel="icon">
+    <link href="{{ asset('site/img/favicon.ico') }}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,15 +21,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="site/lib/animate/animate.min.css" rel="stylesheet">
-    <link href="site/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="site/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="{{ asset('site/lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('site/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('site/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="site/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('site/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="site/css/style.css" rel="stylesheet">
+    <link href="{{ asset('site/css/style.css') }}" rel="stylesheet">
     <style>
         .team-member-img {
             width: 100%;
@@ -49,6 +49,21 @@
             align-items: center;
             justify-content: center;
         }
+
+        /* Price Badge Style */
+        .service-price-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #348E38;
+            color: #ffffff;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 2;
+        }
     </style>
 </head>
 
@@ -59,7 +74,7 @@
     </div>
     <!-- Spinner End -->
 
-  <!-- Topbar Start -->
+    <!-- Topbar Start -->
      <div class="container-fluid bg-dark text-light px-0 py-2">
         <div class="row gx-0 d-none d-lg-flex">
             <div class="col-lg-7 px-5 text-start">
@@ -87,12 +102,9 @@
 
 
     <!-- Navbar Start -->
-
     <div class="container-fluid position-relative p-0">
         @include('common.site.navbar')
-
     </div>
-
     <!-- Navbar End -->
 
     <!-- Carousel Start -->
@@ -100,7 +112,7 @@
         <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="site/img/carousel-1.jpg" alt="Image">
+                    <img class="w-100" src="{{ asset('site/img/carousel-1.jpg') }}" alt="Image">
                     <div class="carousel-caption">
                         <div class="container">
                             <div class="row justify-content-center">
@@ -113,7 +125,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img class="w-100" src="site/img/carousel-2.jpg" alt="Image">
+                    <img class="w-100" src="{{ asset('site/img/carousel-2.jpg') }}" alt="Image">
                     <div class="carousel-caption">
                         <div class="container">
                             <div class="row justify-content-center">
@@ -126,13 +138,11 @@
                     </div>
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel"
-                data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel"
-                data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
@@ -191,11 +201,11 @@
 
 
     <!-- About Start -->
- <div class="container-xxl py-5">
+    <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-5 align-items-end">
                 <div class="col-lg-3 col-md-5 wow fadeInUp" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded" data-wow-delay="0.1s" src="site/img/about.jpg">
+                    <img class="img-fluid rounded" data-wow-delay="0.1s" src="{{ asset('site/img/about.jpg') }}">
                 </div>
                 <div class="col-lg-6 col-md-7 wow fadeInUp" data-wow-delay="0.3s">
                     <h1 class="display-1 text-primary mb-0">10</h1>
@@ -229,7 +239,7 @@
 
 
     <!-- Facts Start -->
-    <div class="container-fluid facts my-5 py-5" data-parallax="scroll" data-image-src="site/img/carousel-1.jpg">
+    <div class="container-fluid facts my-5 py-5" data-parallax="scroll" data-image-src="{{ asset('site/img/carousel-1.jpg') }}">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
@@ -312,22 +322,35 @@
             <div class="row g-4">
               @foreach($services as $service)
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item rounded d-flex h-100">
+                    <div class="service-item rounded d-flex h-100 position-relative">
+
+                        <!-- 💡 Pricing Badge Added -->
+                        @if(!empty($service->price))
+                            <div class="service-price-badge">
+                                ${{ number_format($service->price, 2) }}
+                            </div>
+                        @endif
+
                         <div class="service-img rounded">
-                            <img class="img-fluid" src="{{$service->image_url}}" alt="">
+                            <img class="img-fluid" src="{{ asset($service->image_url) }}" alt="{{ $service->title }}">
                         </div>
                         <div class="service-text rounded p-5">
                             <div class="btn-square rounded-circle mx-auto mb-3">
-                                <img class="img-fluid" src="{{$service->icon_url}}" alt="Icon">
+                                <img class="img-fluid" src="{{ asset($service->icon_url) }}" alt="Icon">
                             </div>
-                            <h4 class="mb-3">{{$service->title}}</h4>
-                            <p class="mb-4">{{$service->description}}</p>
+                            <h4 class="mb-2">{{ $service->title }}</h4>
+
+                            <!-- 💡 Optional Price Sub-display -->
+                            @if(!empty($service->price))
+                                <p class="text-primary fw-bold mb-3">${{ number_format($service->price, 2) }}</p>
+                            @endif
+
+                            <p class="mb-4">{{ $service->description }}</p>
                             <a class="btn btn-sm" href="{{ route('quote', ['service_id' => $service->id]) }}">
                                 <i class="fa fa-plus text-primary me-2"></i>Read More
                             </a>
                         </div>
                     </div>
-
                 </div>
              @endforeach
             </div>
@@ -338,12 +361,14 @@
 
 
     <!-- Quote Start -->
-    <div class="container-fluid quote my-5 py-5" data-parallax="scroll" data-image-src="site/img/carousel-2.jpg">
+    <div class="container-fluid quote my-5 py-5" data-parallax="scroll" data-image-src="{{ asset('site/img/carousel-2.jpg') }}">
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-lg-7">
                     <div class="bg-white rounded p-4 p-sm-5 wow fadeIn" data-wow-delay="0.5s">
-                        <h1 class="display-5 text-center mb-5">Request A Quote</h1>
+                        <h1 class="display-5 text-center mb-3">Request A Quote</h1>
+                        <p class="fs-5 fw-bold text-primary text-center mb-4">Please complete and submit the form below to get started.</p>
+
                         @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -353,36 +378,70 @@
                             </ul>
                         </div>
                         @endif
+
                         <form action="/admin-panel/create-booking" method="post">
                             @csrf
                             <div class="row g-3">
+
+                                {{-- Booking For Options --}}
+                                <div class="col-12 mb-2 text-start">
+                                    <label class="form-label fw-bold text-dark">Booking For:</label>
+                                    <div class="d-flex gap-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="booking_for" id="homeForMyself" value="myself" checked>
+                                            <label class="form-check-label text-dark" for="homeForMyself">
+                                                For Myself
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="booking_for" id="homeForOthers" value="others">
+                                            <label class="form-check-label text-dark" for="homeForOthers">
+                                                For Someone Else
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Name Input --}}
                                 <div class="col-xl-12">
-                                    <input name="name" value="{{old("name")}}" type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;">
+                                    <input name="name" id="home_user_name" value="{{ old('name', Auth::check() ? Auth::user()->name : '') }}" type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;" required>
                                 </div>
+
+                                {{-- Email Input --}}
                                 <div class="col-12">
-                                    <input name="email" type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;">
+                                    <input name="email" id="home_user_email" value="{{ old('email', Auth::check() ? Auth::user()->email : '') }}" type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;" required>
                                 </div>
+
+                                {{-- Service Selection Dropdown with Price --}}
                                 <div class="col-12">
-                                    <select name="service" id="homeServiceSelect" class="form-select bg-light border-0" style="height: 55px;">
+                                    <select name="service" id="homeServiceSelect" class="form-select bg-light border-0" style="height: 55px;" required>
                                         <option value="" selected disabled>Select A Service</option>
                                         @foreach($services as $service)
-                                            <option value="{{$service->id}}">{{$service->title}}</option>
+                                            <option value="{{ $service->id }}">
+                                                {{ $service->title }} {{ !empty($service->price) ? '($' . number_format($service->price, 2) . ')' : '' }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
+
+                                {{-- Date Input --}}
                                 <div class="col-12">
                                     <input name="preferred_date" id="booking_date" type="date" class="form-control bg-light border-0" style="height: 55px;" required>
                                 </div>
 
-                                {{-- 💡 থিম লেআউটের সাথে মিল রেখে বক্সটির গ্রিড স্ট্রাকচার ও ইনপুট ক্লাস পারফেক্ট করা হলো --}}
+                                {{-- Time Slot Selection Dropdown --}}
                                 <div class="col-12">
                                     <select id="time_slot" name="time_slot" class="form-control bg-light border-0" style="height: 55px; color: #6c757d; background-color: #f8f9fa !important;" required disabled>
                                         <option value="">First select a date</option>
                                     </select>
                                 </div>
+
+                                {{-- Message Field --}}
                                 <div class="col-12">
                                     <textarea name="message" class="form-control bg-light border-0" rows="3" placeholder="Message"></textarea>
                                 </div>
+
+                                {{-- Submit Button --}}
                                 <div class="col-12">
                                     @if(Auth::user())
                                     <button class="btn btn-dark w-100 py-3" type="submit">Submit</button>
@@ -419,11 +478,11 @@
             <div class="row g-4 portfolio-container">
                 <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
                     <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="site/img/service-1.jpg" alt="">
+                        <img class="img-fluid" src="{{ asset('site/img/service-1.jpg') }}" alt="">
                         <div class="portfolio-text">
                             <h4 class="text-white mb-4">Landscaping</h4>
                             <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="img/service-1.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-lg-square rounded-circle mx-2" href="{{ asset('site/img/service-1.jpg') }}" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
                                 <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
                             </div>
                         </div>
@@ -431,11 +490,11 @@
                 </div>
                 <div class="col-lg-4 col-md-6 portfolio-item second wow fadeInUp" data-wow-delay="0.3s">
                     <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="site/img/service-2.jpg" alt="">
+                        <img class="img-fluid" src="{{ asset('site/img/service-2.jpg') }}" alt="">
                         <div class="portfolio-text">
                             <h4 class="text-white mb-4">Pruning plants</h4>
                             <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="img/service-2.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-lg-square rounded-circle mx-2" href="{{ asset('site/img/service-2.jpg') }}" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
                                 <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
                             </div>
                         </div>
@@ -443,47 +502,11 @@
                 </div>
                 <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.5s">
                     <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="site/img/service-3.jpg" alt="">
+                        <img class="img-fluid" src="{{ asset('site/img/service-3.jpg') }}" alt="">
                         <div class="portfolio-text">
                             <h4 class="text-white mb-4">Irrigation & Drainage</h4>
                             <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="img/service-3.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item second wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="site/img/service-4.jpg" alt="">
-                        <div class="portfolio-text">
-                            <h4 class="text-white mb-4">Garden Maintenance</h4>
-                            <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="img/service-4.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="site/img/service-5.jpg" alt="">
-                        <div class="portfolio-text">
-                            <h4 class="text-white mb-4">Green Technology</h4>
-                            <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="img/service-5.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item second wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="site/img/service-6.jpg" alt="">
-                        <div class="portfolio-text">
-                            <h4 class="text-white mb-4">Urban Gardening</h4>
-                            <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="img/service-6.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-lg-square rounded-circle mx-2" href="{{ asset('site/img/service-3.jpg') }}" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
                                 <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
                             </div>
                         </div>
@@ -506,10 +529,10 @@
                 @forelse($team as $member)
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="team-item rounded overflow-hidden shadow-sm h-100 bg-white">
-                        <img class="team-member-img" src="{{$member->image_url}}" alt="{{$member->title}}">
+                        <img class="team-member-img" src="{{ asset($member->image_url) }}" alt="{{ $member->title }}">
                         <div class="team-text">
-                            <h4 class="mb-2">{{$member->title}}</h4>
-                            <p class="text-primary mb-3">{{$member->position}}</p>
+                            <h4 class="mb-2">{{ $member->title }}</h4>
+                            <p class="text-primary mb-3">{{ $member->position }}</p>
                             <div class="team-social d-flex">
                                 <a class="btn btn-square rounded-circle me-2" href="#"><i class="fab fa-facebook-f"></i></a>
                                 <a class="btn btn-square rounded-circle me-2" href="#"><i class="fab fa-twitter"></i></a>
@@ -544,13 +567,13 @@
                 <div class="col-lg-7 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="owl-carousel testimonial-carousel">
                         <div class="testimonial-item">
-                            <img class="img-fluid rounded mb-3" src="site/img/testimonial-1.jpg" alt="">
+                            <img class="img-fluid rounded mb-3" src="{{ asset('site/img/testimonial-1.jpg') }}" alt="">
                             <p class="fs-5">"Excellent service from start to finish. They fixed our broken lawn drainage system and designed a stunning modern garden layout. Highly recommended!"</p>
                             <h4>Sarah Jenkins</h4>
                             <span>Villa Owner</span>
                         </div>
                         <div class="testimonial-item">
-                            <img class="img-fluid rounded mb-3" src="site/img/testimonial-2.jpg" alt="">
+                            <img class="img-fluid rounded mb-3" src="{{ asset('site/img/testimonial-2.jpg') }}" alt="">
                             <p class="fs-5">"Gardener completely transformed our boring backyard into a lush green paradise! Their team was fast, incredibly professional, and very transparent about prices. Our family absolutely loves our new space!"</p>
                             <h4>John Doe</h4>
                             <span>Homeowner</span>
@@ -564,9 +587,7 @@
 
 
     <!-- Footer Start -->
-
     @include('common.site.footer')
-
     <!-- Footer End -->
 
 
@@ -575,63 +596,77 @@
 
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="site/lib/wow/wow.min.js"></script>
-    <script src="site/lib/easing/easing.min.js"></script>
-    <script src="site/lib/waypoints/waypoints.min.js"></script>
-    <script src="site/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="site/lib/counterup/counterup.min.js"></script>
-    <script src="site/lib/parallax/parallax.min.js"></script>
-    <script src="site/lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="site/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="{{ asset('site/lib/wow/wow.min.js') }}"></script>
+    <script src="{{ asset('site/lib/easing/easing.min.js') }}"></script>
+    <script src="{{ asset('site/lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ asset('site/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('site/lib/counterup/counterup.min.js') }}"></script>
+    <script src="{{ asset('site/lib/parallax/parallax.min.js') }}"></script>
+    <script src="{{ asset('site/lib/isotope/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ asset('site/lib/lightbox/js/lightbox.min.js') }}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{{ asset('site/js/main.js') }}"></script>
+
     <script>
         function selectServiceOnHome(serviceId) {
-            // হোম পেজের সিলেক্ট বক্সটি ধরা হচ্ছে
             var selectBox = document.getElementById('homeServiceSelect');
             if(selectBox) {
-                // নির্দিষ্ট সার্ভিসের আইডিটি ড্রপডাউনে সিলেক্ট করে দেওয়া হচ্ছে
                 selectBox.value = serviceId;
             }
         }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $('#booking_date').on('change', function() {
-            var date = $(this).val();
-            if(date) {
-                $('#time_slot').html('<option value="">Loading slots...</option>').prop('disabled', true).css('color', '#6c757d');
 
-                $.ajax({
-                    url: '/check-available-slots?date=' + date,
-                    type: 'GET',
-                    success: function(bookedSlots) {
-                        var allSlots = [
-                            "09:00 AM - 11:00 AM",
-                            "11:00 AM - 01:00 PM",
-                            "02:00 PM - 04:00 PM",
-                            "04:00 PM - 06:00 PM"
-                        ];
+        $(document).ready(function() {
+            var loggedInName = "{{ Auth::check() ? Auth::user()->name : '' }}";
+            var loggedInEmail = "{{ Auth::check() ? Auth::user()->email : '' }}";
 
-                        var html = '<option value="">Select a Time Slot</option>';
-                        allSlots.forEach(function(slot) {
-                            if (!bookedSlots.includes(slot)) {
-                                html += '<option value="' + slot + '">' + slot + '</option>';
-                            }
-                        });
+            $('input[name="booking_for"]').on('change', function() {
+                if ($(this).val() === 'myself') {
+                    $('#home_user_name').val(loggedInName);
+                    $('#home_user_email').val(loggedInEmail);
+                } else if ($(this).val() === 'others') {
+                    $('#home_user_name').val('').focus();
+                    $('#home_user_email').val('');
+                }
+            });
 
-                        $('#time_slot').html(html).prop('disabled', false).css('color', '#212529');
-                    },
-                    error: function() {
-                        $('#time_slot').html('<option value="">Error loading slots</option>');
-                    }
-                });
-            }
+            $('#booking_date').on('change', function() {
+                var date = $(this).val();
+                if(date) {
+                    $('#time_slot').html('<option value="">Loading slots...</option>').prop('disabled', true).css('color', '#6c757d');
+
+                    $.ajax({
+                        url: '/check-available-slots?date=' + date,
+                        type: 'GET',
+                        success: function(bookedSlots) {
+                            var allSlots = [
+                                "09:00 AM - 11:00 AM",
+                                "11:00 AM - 01:00 PM",
+                                "02:00 PM - 04:00 PM",
+                                "04:00 PM - 06:00 PM"
+                            ];
+
+                            var html = '<option value="">Select a Time Slot</option>';
+                            allSlots.forEach(function(slot) {
+                                if (!bookedSlots.includes(slot)) {
+                                    html += '<option value="' + slot + '">' + slot + '</option>';
+                                }
+                            });
+
+                            $('#time_slot').html(html).prop('disabled', false).css('color', '#212529');
+                        },
+                        error: function() {
+                            $('#time_slot').html('<option value="">Error loading slots</option>');
+                        }
+                    });
+                }
+            });
         });
     </script>
 
-    <!-- Template Javascript -->
-    <script src="site/js/main.js"></script>
+    @include('sweetalert::alert')
 </body>
 
 </html>

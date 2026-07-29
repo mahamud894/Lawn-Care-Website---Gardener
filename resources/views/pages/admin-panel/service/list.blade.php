@@ -16,6 +16,7 @@
                         <th>Image</th>
                         <th>Icon</th>
                         <th>Title</th>
+                        <th>Price</th> <!-- Price Column Added -->
                         <th>Description</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -24,10 +25,33 @@
                 <tbody>
                     @foreach($data as $service)
                     <tr>
-                        <td><img src="{{$service->image_url}}" alt="" height="64px"></td>
-                        <td><img src="{{$service->icon_url}}" alt="" height="32px"></td>
-                        <td>{{$service->title}}</td>
-                        <td>{{$service->description}}</td>
+                        <!-- Image with asset() helper -->
+                        <td>
+                            @if($service->image_url)
+                                <img src="{{ asset($service->image_url) }}" alt="{{ $service->title }}" height="64px" class="rounded object-fit-cover">
+                            @else
+                                <span class="text-muted small">No Image</span>
+                            @endif
+                        </td>
+
+                        <!-- Icon with asset() helper -->
+                        <td>
+                            @if($service->icon_url)
+                                <img src="{{ asset($service->icon_url) }}" alt="Icon" height="32px" class="rounded">
+                            @else
+                                <span class="text-muted small">No Icon</span>
+                            @endif
+                        </td>
+
+                        <td>{{ $service->title }}</td>
+
+                        <!-- Price display -->
+                        <td>
+                            <strong>${{ number_format($service->price, 2) }}</strong>
+                        </td>
+
+                        <td>{{ Str::limit($service->description, 50) }}</td>
+
                         <td>
                             @if($service->isActive == 1)
                                 <span class="badge bg-success">Active</span>
@@ -36,9 +60,8 @@
                             @endif
                         </td>
                         <td>
-                            <!-- <a href="/admin-panel/edit-service/{{$service->id}}" class="btn btn-info btn-sm text-white">Edit</a> -->
-                            <a href="{{route("viewServiceEditForm", $service->id)}}" class="btn btn-info btn-sm text-white">Edit</a>
-                            <a href="{{route("deleteService", $service->id)}}" class="btn btn-danger btn-sm">Delete</a>
+                            <a href="{{ route('viewServiceEditForm', $service->id) }}" class="btn btn-info btn-sm text-white">Edit</a>
+                            <a href="{{ route('deleteService', $service->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this service?')">Delete</a>
                         </td>
                     </tr>
                     @endforeach

@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Gardener </title>
+    <title>Gardener - Services</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="site/img/favicon.ico" rel="icon">
+    <link href="{{ asset('site/img/favicon.ico') }}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,15 +21,31 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="site/lib/animate/animate.min.css" rel="stylesheet">
-    <link href="site/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="site/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="{{ asset('site/lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('site/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('site/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="site/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('site/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="site/css/style.css" rel="stylesheet">
+    <link href="{{ asset('site/css/style.css') }}" rel="stylesheet">
+
+    <style>
+        .service-price-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #348E38;
+            color: #ffffff;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 2;
+        }
+    </style>
 </head>
 
 <body>
@@ -40,7 +56,7 @@
     <!-- Spinner End -->
 
 
- <!-- Topbar Start -->
+    <!-- Topbar Start -->
     <div class="container-fluid bg-dark text-light px-0 py-2">
         <div class="row gx-0 d-none d-lg-flex">
             <div class="col-lg-7 px-5 text-start">
@@ -64,14 +80,12 @@
             </div>
         </div>
     </div>
- <!-- Topbar End -->
-
+    <!-- Topbar End -->
 
 
     <!-- Navbar Start -->
-  <div class="container-fluid position-relative p-0">
+    <div class="container-fluid position-relative p-0">
         @include('common.site.navbar')
-
     </div>
     <!-- Navbar End -->
 
@@ -82,8 +96,7 @@
             <h1 class="display-3 text-white mb-4 animated slideInDown">Services</h1>
             <nav aria-label="breadcrumb animated slideInDown">
                 <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Services</li>
                 </ol>
             </nav>
@@ -92,17 +105,12 @@
     <!-- Page Header End -->
 
     <!-- Service Start -->
-
-@include('common.site.services-list')
-
+    @include('common.site.services-list')
     <!-- Service End -->
 
 
     <!-- Footer Start -->
-
-     @include('common.site.footer')
-
-
+    @include('common.site.footer')
     <!-- Footer End -->
 
 
@@ -113,17 +121,17 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="site/lib/wow/wow.min.js"></script>
-    <script src="site/lib/easing/easing.min.js"></script>
-    <script src="site/lib/waypoints/waypoints.min.js"></script>
-    <script src="site/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="site/lib/counterup/counterup.min.js"></script>
-    <script src="site/lib/parallax/parallax.min.js"></script>
-    <script src="site/lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="site/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="{{ asset('site/lib/wow/wow.min.js') }}"></script>
+    <script src="{{ asset('site/lib/easing/easing.min.js') }}"></script>
+    <script src="{{ asset('site/lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ asset('site/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('site/lib/counterup/counterup.min.js') }}"></script>
+    <script src="{{ asset('site/lib/parallax/parallax.min.js') }}"></script>
+    <script src="{{ asset('site/lib/isotope/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ asset('site/lib/lightbox/js/lightbox.min.js') }}"></script>
 
     <!-- Template Javascript -->
-    <script src="site/js/main.js"></script>
+    <script src="{{ asset('site/js/main.js') }}"></script>
 </body>
 
 </html>

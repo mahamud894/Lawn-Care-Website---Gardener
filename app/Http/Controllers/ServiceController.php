@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -12,8 +13,8 @@ class ServiceController extends Controller
     public function viewServicePage()
     {
         if (Schema::hasTable('services')) {
-           try {
-               $services = Service::where(['isActive' => 1])->get();
+            try {
+                $services = Service::where(['isActive' => 1])->get();
             } catch (\Exception $e) {
                 $services = collect();
             }
@@ -27,11 +28,36 @@ class ServiceController extends Controller
     public function viewServiceAddForm(){
         return view('pages.admin-panel.service.add');
     }
+
     public function storeService(Request $req){
+        // ১. ফর্ম ভ্যালিডেশন
+        $req->validate([
+            'title' => 'required|string|max:255',
+            'price' => 'nullable|numeric',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'icon_url' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024',
+            'short_description' => 'required|string',
+        ]);
+
         $data['title'] = $req->title;
-        $data['image_url'] = $req->image_url;
-        $data['icon_url'] = $req->icon_url;
+        $data['price'] = $req->price;
         $data['description'] = $req->short_description;
+
+        // ২. Service Main Image Upload
+        if ($req->hasFile('image_url')) {
+            $image = $req->file('image_url');
+            $imageName = time() . '_image.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/services'), $imageName);
+            $data['image_url'] = 'uploads/services/' . $imageName;
+        }
+
+        // ৩. Service Icon Image Upload
+        if ($req->hasFile('icon_url')) {
+            $icon = $req->file('icon_url');
+            $iconName = time() . '_icon.' . $icon->getClientOriginalExtension();
+            $icon->move(public_path('uploads/services/icons'), $iconName);
+            $data['icon_url'] = 'uploads/services/icons/' . $iconName;
+        }
 
         Service::create($data);
         Alert::success('Success', 'Service create Successfull');
@@ -51,24 +77,67 @@ class ServiceController extends Controller
     }
 
     public function editService(Request $req){
+        // ১. ভ্যালিডেশন
+        $req->validate([
+            'title' => 'required|string|max:255',
+            'price' => 'nullable|numeric',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'icon_url' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024',
+            'short_description' => 'required|string',
+        ]);
+
+        $service = Service::findOrFail($req->id);
+
         $data['title'] = $req->title;
-        $data['image_url'] = $req->image_url;
-        $data['icon_url'] = $req->icon_url;
+        $data['price'] = $req->price;
         $data['description'] = $req->short_description;
-        $data['isActive'] = $req->isActive == "on" ? 1 : 0;
+        $data['isActive'] = $req->isActive == "1" || $req->isActive == "on" ? 1 : 0;
 
-        // dd($req->all());
+        // ২. New Main Image Upload (পুরাতন ছবি ডিলিট করে নতুনটা সেট করা)
+        if ($req->hasFile('image_url')) {
+            if ($service->image_url && File::exists(public_path($service->image_url))) {
+                File::delete(public_path($service->image_url));
+            }
 
-        Service::where(["id"=>$req->id])->update($data);
+            $image = $req->file('image_url');
+            $imageName = time() . '_image.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/services'), $imageName);
+            $data['image_url'] = 'uploads/services/' . $imageName;
+        }
+
+        // ৩. New Icon Upload (পুরাতন আইকন ডিলিট করে নতুনটা সেট করা)
+        if ($req->hasFile('icon_url')) {
+            if ($service->icon_url && File::exists(public_path($service->icon_url))) {
+                File::delete(public_path($service->icon_url));
+            }
+
+            $icon = $req->file('icon_url');
+            $iconName = time() . '_icon.' . $icon->getClientOriginalExtension();
+            $icon->move(public_path('uploads/services/icons'), $iconName);
+            $data['icon_url'] = 'uploads/services/icons/' . $iconName;
+        }
+
+        $service->update($data);
         Alert::success('Success', 'Service updated Successfully');
 
         return redirect()->route("viewServiceList");
     }
 
     public function deleteService($id){
-        Service::where(["id"=>$id])->delete();
+        $service = Service::find($id);
 
-        Alert::success('Success', 'Service deleted Successfully');
+        if ($service) {
+            // সার্ভিস মুছে ফেলার সময় ফাইলগুলোও সার্ভার থেকে ডিলিট করা
+            if ($service->image_url && File::exists(public_path($service->image_url))) {
+                File::delete(public_path($service->image_url));
+            }
+            if ($service->icon_url && File::exists(public_path($service->icon_url))) {
+                File::delete(public_path($service->icon_url));
+            }
+
+            $service->delete();
+            Alert::success('Success', 'Service deleted Successfully');
+        }
 
         return redirect()->back();
     }

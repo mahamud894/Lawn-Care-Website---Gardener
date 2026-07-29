@@ -34,7 +34,11 @@ class BookingController extends Controller
         $data["user_id"] = Auth::check() ? Auth::id() : null;
 
         Booking::create($data);
-        Alert::success("Success", "Booking submitted successfully");
+        //Alert::success("Success", "Booking submitted successfully");
+        Alert::success(
+        'Thank You! 🌿',
+        'Your quote request has been received. Our team will contact you shortly and assign a member for your service.'
+    );
         return redirect()->back();
     }
 

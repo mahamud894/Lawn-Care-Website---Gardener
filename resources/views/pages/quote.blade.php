@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Gardener - Gardening Website Template</title>
+    <title>Gardener - Gardening Website </title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -97,7 +97,7 @@
                 <div class="col-lg-7">
                     <div class="bg-white rounded p-4 p-sm-5 wow fadeIn" data-wow-delay="0.5s">
                         <h1 class="display-5 text-center mb-3">Request A Quote</h1>
-                        <p class="fs-5 fw-bold text-primary text-center mb-5">Please complete and submit the form below to get started.</p>
+                        <p class="fs-5 fw-bold text-primary text-center mb-4">Please complete and submit the form below to get started.</p>
 
                         @if ($errors->any())
                         <div class="alert alert-danger">
@@ -112,12 +112,36 @@
                         <form action="/admin-panel/create-booking" method="post">
                             @csrf
                             <div class="row g-3">
+
+                                {{-- 💡 Booking For Options (Myself / Someone Else) --}}
+                                <div class="col-12 mb-2 text-start">
+                                    <label class="form-label fw-bold text-dark">Booking For:</label>
+                                    <div class="d-flex gap-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="booking_for" id="forMyself" value="myself" checked>
+                                            <label class="form-check-label text-dark" for="forMyself">
+                                                For Myself
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="booking_for" id="forOthers" value="others">
+                                            <label class="form-check-label text-dark" for="forOthers">
+                                                For Someone Else
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Name Input (Auto-filled if logged in) --}}
                                 <div class="col-xl-12">
-                                    <input name="name" value="{{old("name")}}" type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;" required>
+                                    <input name="name" id="user_name" value="{{ old('name', Auth::check() ? Auth::user()->name : '') }}" type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;" required>
                                 </div>
+
+                                {{-- Email Input (Auto-filled if logged in) --}}
                                 <div class="col-12">
-                                    <input name="email" type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;" required>
+                                    <input name="email" id="user_email" value="{{ old('email', Auth::check() ? Auth::user()->email : '') }}" type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;" required>
                                 </div>
+
                                 <div class="col-12">
                                     <select name="service" class="form-select bg-light border-0" style="height: 55px;" required>
                                         <option value="" selected disabled>Select A Service</option>
@@ -133,7 +157,6 @@
                                     <input name="preferred_date" id="booking_date" type="date" class="form-control bg-light border-0" style="height: 55px;" required>
                                 </div>
 
-                                {{-- 💡 থিম লেআউটের সাথে মিল রেখে বক্সটির গ্রিড স্ট্রাকচার ও ইনপুট ক্লাস পারফেক্ট করা হলো --}}
                                 <div class="col-12">
                                     <select id="time_slot" name="time_slot" class="form-control bg-light border-0" style="height: 55px; color: #6c757d; background-color: #f8f9fa !important;" required disabled>
                                         <option value="">First select a date</option>
@@ -143,6 +166,7 @@
                                 <div class="col-12">
                                     <textarea name="message" class="form-control bg-light border-0" rows="3" placeholder="Message"></textarea>
                                 </div>
+
                                 <div class="col-12">
                                     @if(Auth::user())
                                     <button class="btn btn-dark w-100 py-3" type="submit">Submit</button>
@@ -184,10 +208,26 @@
     <script src="site/js/main.js"></script>
 
     <script>
+        // 💡 Booking For (Myself vs Others) Live Switch Script
+        $(document).ready(function() {
+            var loggedInName = "{{ Auth::check() ? Auth::user()->name : '' }}";
+            var loggedInEmail = "{{ Auth::check() ? Auth::user()->email : '' }}";
+
+            $('input[name="booking_for"]').on('change', function() {
+                if ($(this).val() === 'myself') {
+                    $('#user_name').val(loggedInName);
+                    $('#user_email').val(loggedInEmail);
+                } else if ($(this).val() === 'others') {
+                    $('#user_name').val('').focus();
+                    $('#user_email').val('');
+                }
+            });
+        });
+
+        // Date & Time Slot AJAX Script
         $('#booking_date').on('change', function() {
             var date = $(this).val();
             if(date) {
-                // স্লট লোড হওয়ার সময় টেক্সটের কালার পরিবর্তন
                 $('#time_slot').html('<option value="">Loading slots...</option>').prop('disabled', true).css('color', '#6c757d');
 
                 $.ajax({
@@ -208,7 +248,6 @@
                             }
                         });
 
-                        // স্লট একটিভ হলে টেক্সটের কালার ডার্ক হবে
                         $('#time_slot').html(html).prop('disabled', false).css('color', '#212529');
                     },
                     error: function() {
@@ -218,5 +257,7 @@
             }
         });
     </script>
+
+    @include('sweetalert::alert')
 </body>
 </html>
