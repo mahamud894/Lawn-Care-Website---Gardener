@@ -638,8 +638,10 @@
                     $('#time_slot').html('<option value="">Loading slots...</option>').prop('disabled', true).css('color', '#6c757d');
 
                     $.ajax({
-                        url: '/check-available-slots?date=' + date,
+                        url: '/check-available-slots',
                         type: 'GET',
+                        data: { date: date }, // 💡 এখানে ডেটা পাস করা হলো
+                        dataType: 'json',
                         success: function(bookedSlots) {
                             var allSlots = [
                                 "09:00 AM - 11:00 AM",

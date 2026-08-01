@@ -11,8 +11,8 @@ use App\Models\Service;
 class AdminController extends Controller
 {
     public function viewAdminPanel(){
-        // ডাটাবেজ থেকে লাইভ কাউন্টগুলো তুলে আনা হচ্ছে
-        $totalUsers = User::where('isAdmin', 0)->count(); // শুধু সাধারণ ইউজার
+        // Live counts are being retrieved from the database
+        $totalUsers = User::where('isAdmin', 0)->count(); // Only regular users
         $totalServices = Service::count();
 
         $pendingBookings = Booking::where('status', 'pending')->count();
@@ -21,7 +21,7 @@ class AdminController extends Controller
 
         $totalTeam = Team::count();
 
-        // সব ডাটা অ্যাডমিন প্যানেলের হোম পেজে পাঠানো হলো
+        // All data has been sent to the 'admin panel's home page.
         return view('pages.admin-panel.home', compact(
             'totalUsers',
             'totalServices',
@@ -33,7 +33,7 @@ class AdminController extends Controller
     }
 
     public function viewUsersList() {
-        // ডাটাবেজের সব ইউজারকে আইডি অনুযায়ী সিরিয়াল করে আনা হচ্ছে
+        //All users from the database are being retrieved and arranged sequentially by ID.
         $users = User::orderBy('id', 'desc')->get();
         return view('pages.admin-panel.users.list', compact('users'));
     }
@@ -42,17 +42,17 @@ class AdminController extends Controller
     public function toggleUserRole($id) {
     $user = User::findOrFail($id);
 
-    // নিজের অ্যাকাউন্ট নিজে চেঞ্জ করা ব্লক করা হলো
+    // The ability to change or block one's own account has been disabled.
     if (auth()->id() == $user->id) {
         \RealRashid\SweetAlert\Facades\Alert::error('Error', 'You cannot change your own status!');
         return redirect()->back();
     }
 
-    // যদি পেন্ডিং কোনো অ্যাডমিনকে মেইন অ্যাডমিন ক্লিক করে, তাকে একটিভ অ্যাডমিন বানানো হবে
+    // If a main admin clicks on a pending admin, that person will be made an active admin.
     if($user->isAdmin == 1 && $user->isAdminApproved == 0) {
         $user->isAdminApproved = 1;
     } else {
-        // রেগুলার ইউজার বা অলরেডি একটিভ থাকা রোলগুলোর মধ্যে টগল (User <-> Admin) হবে
+        // There will be a toggle (User <-> Admin) between regular users and roles that are already active.
         $user->isAdmin = $user->isAdmin == 1 ? 0 : 1;
         $user->isAdminApproved = 1;
     }

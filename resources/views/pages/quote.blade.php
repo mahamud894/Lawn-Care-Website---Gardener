@@ -8,6 +8,9 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
 
+    <!-- 💡 CSRF Token added for AJAX -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Favicon -->
     <link href="site/img/favicon.ico" rel="icon">
 
@@ -39,7 +42,6 @@
     </div>
     <!-- Spinner End -->
 
-
     <!-- Topbar Start -->
     <div class="container-fluid bg-dark text-light px-0 py-2">
         <div class="row gx-0 d-none d-lg-flex">
@@ -66,13 +68,11 @@
       </div>
     <!-- Topbar End -->
 
-
     <!-- Navbar Start -->
     <div class="container-fluid position-relative p-0">
         @include('common.site.navbar')
     </div>
     <!-- Navbar End -->
-
 
     <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
@@ -88,7 +88,6 @@
         </div>
     </div>
     <!-- Page Header End -->
-
 
     <!-- Quote Start -->
     <div class="container-fluid quote py-5" data-parallax="scroll" >
@@ -183,14 +182,11 @@
     </div>
     <!-- Quote End -->
 
-
     <!-- Footer Start -->
     @include('common.site.footer')
 
-
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
-
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -208,8 +204,15 @@
     <script src="site/js/main.js"></script>
 
     <script>
-        // 💡 Booking For (Myself vs Others) Live Switch Script
         $(document).ready(function() {
+            // CSRF Token Setup
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            // Booking For Live Switch
             var loggedInName = "{{ Auth::check() ? Auth::user()->name : '' }}";
             var loggedInEmail = "{{ Auth::check() ? Auth::user()->email : '' }}";
 
@@ -222,39 +225,46 @@
                     $('#user_email').val('');
                 }
             });
-        });
 
-        // Date & Time Slot AJAX Script
-        $('#booking_date').on('change', function() {
-            var date = $(this).val();
-            if(date) {
-                $('#time_slot').html('<option value="">Loading slots...</option>').prop('disabled', true).css('color', '#6c757d');
+            // Date & Time Slot AJAX Script
+           // Date & Time Slot AJAX Script
+            $('#booking_date').on('change', function() {
+                var selectedDate = $(this).val();
 
-                $.ajax({
-                    url: '/check-available-slots?date=' + date,
-                    type: 'GET',
-                    success: function(bookedSlots) {
-                        var allSlots = [
-                            "09:00 AM - 11:00 AM",
-                            "11:00 AM - 01:00 PM",
-                            "02:00 PM - 04:00 PM",
-                            "04:00 PM - 06:00 PM"
-                        ];
+                if(selectedDate) {
+                    $('#time_slot').html('<option value="">Loading slots...</option>').prop('disabled', true).css('color', '#6c757d');
 
-                        var html = '<option value="">Select a Time Slot</option>';
-                        allSlots.forEach(function(slot) {
-                            if (!bookedSlots.includes(slot)) {
-                                html += '<option value="' + slot + '">' + slot + '</option>';
-                            }
-                        });
+                    $.ajax({
+                        // 💡 পরিবর্তনটি এখানে: url() হেল্পার ব্যবহার করা হয়েছে যাতে ফুল ডোমেইন ইউআরএল পায়
+                        url: "{{ url('/check-available-slots') }}",
+                        type: 'GET',
+                        data: { date: selectedDate },
+                        dataType: 'json',
+                        success: function(bookedSlots) {
+                            var allSlots = [
+                                "09:00 AM - 11:00 AM",
+                                "11:00 AM - 01:00 PM",
+                                "02:00 PM - 04:00 PM",
+                                "04:00 PM - 06:00 PM"
+                            ];
 
-                        $('#time_slot').html(html).prop('disabled', false).css('color', '#212529');
-                    },
-                    error: function() {
-                        $('#time_slot').html('<option value="">Error loading slots</option>');
-                    }
-                });
-            }
+                            var html = '<option value="">Select a Time Slot</option>';
+                            allSlots.forEach(function(slot) {
+                                if (!bookedSlots.includes(slot)) {
+                                    html += '<option value="' + slot + '">' + slot + '</option>';
+                                }
+                            });
+
+                            $('#time_slot').html(html).prop('disabled', false).css('color', '#212529');
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("AJAX Error Status: " + xhr.status + " - " + error);
+                            alert("Status Code: " + xhr.status + "\nMessage: " + xhr.responseText);
+                            $('#time_slot').html('<option value="">Error loading slots</option>');
+                        }
+                    });
+                }
+            });
         });
     </script>
 

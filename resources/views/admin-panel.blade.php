@@ -91,7 +91,6 @@
                 </div>
                 <div class="d-flex align-items-center gap-3">
                     <button class="btn btn-outline-secondary d-none d-md-inline-flex align-items-center gap-2" type="button"><i class="bi bi-bell"></i> Notifications</button>
-                    <button class="btn btn-primary" type="button"><i class="bi bi-cloud-upload"></i> Export</button>
                 </div>
             </header>
 

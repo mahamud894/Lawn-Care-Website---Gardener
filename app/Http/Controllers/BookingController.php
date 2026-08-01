@@ -42,24 +42,24 @@ class BookingController extends Controller
         return redirect()->back();
     }
 
-    public function viewQuotePage(Request $request){ // 💡 Request $request ইনজেক্ট করা হয়েছে
+    public function viewQuotePage(Request $request){ // 💡 Request $request It has been injected.
     $services = Schema::hasTable('services') ? Service::all() : collect();
 
-    // URL থেকে service_id প্যারামিটারটি নেওয়া হচ্ছে (যেমন: /quote?service_id=2)
+    // The service_id parameter is being retrieved from the URL (e.g., /quote?service_id=2).
     $selectedServiceId = $request->query('service_id');
 
-    // ব্লেড ফাইলে ডাটা পাঠানো হলো
+    // The data is being passed to the blade file
     return view("pages.quote", compact("services", "selectedServiceId"));
    }
 
     public function viewAllBookings(){
-    // সব বুকিং তুলে আনা হচ্ছে
+    // All bookings are being retrieved
     $bookings = Booking::with(["user", "service", "teamMember"])->get();
 
-    // ডাটাবেজ থেকে সব টিম মেম্বারদের তুলে আনা হচ্ছে 💡
+    // All team members are being retrieved from the database. 💡
     $teamMembers = \App\Models\Team::all();
 
-    // বুকিং এবং টিম মেম্বার উভয় ডাটাই ব্লেড ফাইলে পাঠানো হলো
+    // The data for both bookings and team members is being passed to the blade file
     return view("pages.admin-panel.booking.list", [
         "bookings" => $bookings,
         "teamMembers" => $teamMembers
@@ -97,18 +97,24 @@ class BookingController extends Controller
     }
 
    public function viewMyBookings(){
-        // 💡 এখানে 'teamMember' রিলেশনটি লোড করে দেওয়া হলো, যেন ইউজার ড্যাশবোর্ডে ওয়ার্কারের নাম শো করে
+        // 💡 The 'teamMember' relationship is loaded here so that the worker's name is displayed on the user dashboard.
         $bookings = Booking::where(["user_id" => Auth::id()])->with(["user", "service", "teamMember"])->get();
         return view("pages.user-dashboard", compact('bookings'));
    }
 
     public function checkSlots(Request $request) {
-    // ওই নির্দিষ্ট ডেটে অলরেডি বুকড হওয়া স্লটগুলোর লিস্ট নেওয়া হচ্ছে
-    $bookedSlots = Booking::where('preferred_date', $request->date)
+        // Data was received using query('date').
+        $date = $request->query('date');
+
+        if (!$date) {
+            return response()->json([]);
+        }
+
+        $bookedSlots = Booking::where('preferred_date', $date)
                         ->whereIn('status', ['approved', 'done', 'pending'])
                         ->pluck('time_slot')
                         ->toArray();
 
-    return response()->json($bookedSlots);
-}
+        return response()->json($bookedSlots);
+    }
 }

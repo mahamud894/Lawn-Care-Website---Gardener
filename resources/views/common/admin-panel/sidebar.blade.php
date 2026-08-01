@@ -32,12 +32,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-card-checklist me-2"></i>Reports</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-gear me-2"></i>Settings</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="/logout"><i class="bi bi-gear me-2"></i>Logout</a>
                 </li>
             </ul>
@@ -54,7 +48,7 @@
                     </div>
                     <div>
                         <div class="fw-semibold">Admin User</div>
-                        <small class="text-muted">Last active 2h ago</small>
+                        <small class="text-muted">Active</small>
                     </div>
                 </div>
             </div>
