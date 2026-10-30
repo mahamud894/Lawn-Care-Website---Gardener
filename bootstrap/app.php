@@ -11,6 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Hosts like Render handle HTTPS in front of the app; trust them so
+        // links and redirects use https:// (otherwise CSS/images get blocked)
+        $middleware->trustProxies(at: '*');
+
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
             'gardener' => \App\Http\Middleware\EnsureUserIsGardener::class,

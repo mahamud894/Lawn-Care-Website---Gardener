@@ -136,9 +136,53 @@ php artisan migrate
 
 The new migrations only add what is missing, so existing data is kept. Existing services automatically get a page URL from their title.
 
-## Going live (fast settings)
+## Deploying to Render (Docker)
 
-Run these on the server after every update:
+This repository ships with a `Dockerfile` and a `render.yaml` blueprint.
+
+1. In Render: **New → Blueprint**, pick this repository, and confirm.
+2. Fill in the values it asks for: `APP_URL`, `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`,
+   and your mail settings. `APP_KEY` can be left empty — one is generated on the
+   first boot and kept on the disk.
+3. Deploy. On the first boot the app creates its tables and the main admin account,
+   then starts on the port Render provides.
+
+**Why the `starter` plan.** Photos uploaded through the site are files, and the
+database is a file. Free Render services have no disk, so those files are erased
+whenever the service restarts (which also happens after 15 minutes of no traffic).
+The blueprint therefore mounts a disk at `/data` and keeps uploads, the SQLite
+database, sessions and logs there. For a free demo instead, set `plan: free`,
+delete the `disk:` block, and add `SEED_DEMO_CONTENT=true` so the site refills
+itself with sample content each time it restarts.
+
+Want MySQL or Postgres instead of SQLite? Set `DB_CONNECTION`, `DB_HOST`,
+`DB_DATABASE`, `DB_USERNAME` and `DB_PASSWORD` in the environment variables;
+the disk is then only used for uploads.
+
+Running one-off commands (Render → Shell, paid plans):
+
+```bash
+php artisan images:optimize     # shrink images uploaded before this feature existed
+php artisan db:seed --class="Database\Seeders\DemoSeeder" --force
+```
+
+The same image runs anywhere Docker runs (Fly.io, Railway, a VPS, Coolify):
+
+```bash
+docker build -t gardener .
+docker run -p 8080:8080 -e PORT=8080 -v gardener-data:/data gardener
+```
+
+### Vercel is not a fit for this app
+
+Vercel runs PHP as serverless functions with a read-only filesystem, so uploaded
+photos cannot be saved, and it has no database of its own. Running this site there
+would mean rewriting uploads to go to S3 and renting a database elsewhere. Render,
+a VPS, or ordinary cPanel hosting are all simpler and cheaper for this project.
+
+## Going live (shared hosting)
+
+On cPanel or a VPS, run these on the server after every update:
 
 ```bash
 composer install --no-dev --optimize-autoloader

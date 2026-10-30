@@ -1,0 +1,20 @@
+# Installed inside the image instead
+/vendor
+/node_modules
+/public/build
+
+# Local-only
+.git
+.github
+.env
+.env.*
+!.env.example
+/storage/logs/*
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/database/*.sqlite
+/tests
+phpunit.xml
+.phpunit.result.cache
+/public/hot
