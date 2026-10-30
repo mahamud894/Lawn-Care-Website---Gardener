@@ -11,9 +11,17 @@
     <!-- Favicon -->
     <link href="{{ asset('site/img/favicon.ico') }}" rel="icon">
 
+    <!-- Start downloading the hero image immediately (phones get the small copy) -->
+    <link rel="preload" as="image" href="{{ asset('site/img/carousel-1.jpg') }}"
+          imagesrcset="{{ asset('site/img/carousel-1-sm.jpg') }} 800w, {{ asset('site/img/carousel-1.jpg') }} 1920w"
+          imagesizes="100vw" fetchpriority="high">
+
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://code.jquery.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
@@ -112,7 +120,9 @@
         <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="{{ asset('site/img/carousel-1.jpg') }}" alt="Image">
+                    <img class="w-100" src="{{ asset('site/img/carousel-1.jpg') }}"
+                         srcset="{{ asset('site/img/carousel-1-sm.jpg') }} 800w, {{ asset('site/img/carousel-1.jpg') }} 1920w"
+                         sizes="100vw" width="1920" height="1080" fetchpriority="high" decoding="async" alt="{{ __('Beautiful garden') }}">
                     <div class="carousel-caption">
                         <div class="container">
                             <div class="row justify-content-center">
@@ -125,7 +135,9 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img class="w-100" src="{{ asset('site/img/carousel-2.jpg') }}" alt="Image">
+                    <img class="w-100" src="{{ asset('site/img/carousel-2.jpg') }}"
+                         srcset="{{ asset('site/img/carousel-2-sm.jpg') }} 800w, {{ asset('site/img/carousel-2.jpg') }} 1920w"
+                         sizes="100vw" width="1920" height="1080" fetchpriority="low" decoding="async" alt="{{ __('Beautiful garden') }}">
                     <div class="carousel-caption">
                         <div class="container">
                             <div class="row justify-content-center">
@@ -205,7 +217,9 @@
         <div class="container">
             <div class="row g-5 align-items-end">
                 <div class="col-lg-3 col-md-5 wow fadeInUp" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded" data-wow-delay="0.1s" src="{{ asset('site/img/about.jpg') }}">
+                    <img loading="lazy" decoding="async" class="img-fluid rounded" data-wow-delay="0.1s" src="{{ asset('site/img/about.jpg') }}"
+                         srcset="{{ asset('site/img/about-sm.jpg') }} 400w, {{ asset('site/img/about.jpg') }} 500w"
+                         sizes="(max-width: 991px) 90vw, 500px" width="500" height="1000" alt="{{ __('About us') }}">
                 </div>
                 <div class="col-lg-6 col-md-7 wow fadeInUp" data-wow-delay="0.3s">
                     <h1 class="display-1 text-primary mb-0">10</h1>
@@ -332,11 +346,11 @@
                         @endif
 
                         <div class="service-img rounded">
-                            <img class="img-fluid" src="{{ asset($service->image_url) }}" alt="{{ $service->title }}">
+                            <img loading="lazy" decoding="async" class="img-fluid" src="{{ asset($service->image_url) }}" alt="{{ $service->title }}">
                         </div>
                         <div class="service-text rounded p-5">
                             <div class="btn-square rounded-circle mx-auto mb-3">
-                                <img class="img-fluid" src="{{ asset($service->icon_url) }}" alt="Icon">
+                                <img loading="lazy" decoding="async" class="img-fluid" src="{{ asset($service->icon_url) }}" alt="Icon">
                             </div>
                             <h4 class="mb-2"><a href="{{ $service->slug ? route('service.show', $service->slug) : route('service') }}" class="text-dark">{{ $service->title }}</a></h4>
 
@@ -403,7 +417,7 @@
                 @forelse($team as $member)
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="team-item rounded overflow-hidden shadow-sm h-100 bg-white">
-                        <img class="team-member-img" src="{{ asset($member->image_url) }}" alt="{{ $member->title }}">
+                        <img loading="lazy" decoding="async" class="team-member-img" src="{{ asset($member->image_url) }}" alt="{{ $member->title }}">
                         <div class="team-text">
                             <h4 class="mb-2">{{ $member->title }}</h4>
                             <p class="text-primary mb-3">{{ $member->position }}</p>

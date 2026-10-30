@@ -18,11 +18,11 @@
                     @endif
 
                     <div class="service-img rounded">
-                        <img class="img-fluid" src="{{ asset($service->image_url) }}" alt="{{ $service->title }}">
+                        <img loading="lazy" decoding="async" class="img-fluid" src="{{ asset($service->image_url) }}" alt="{{ $service->title }}">
                     </div>
                     <div class="service-text rounded p-5">
                         <div class="btn-square rounded-circle mx-auto mb-3">
-                            <img class="img-fluid" src="{{ asset($service->icon_url) }}" alt="Icon">
+                            <img loading="lazy" decoding="async" class="img-fluid" src="{{ asset($service->icon_url) }}" alt="Icon">
                         </div>
                         <h4 class="mb-2"><a href="{{ $service->slug ? route('service.show', $service->slug) : route('service') }}" class="text-dark">{{ $service->title }}</a></h4>
 

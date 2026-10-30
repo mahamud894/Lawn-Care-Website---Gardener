@@ -39,7 +39,7 @@
                             <label for="image_url" class="form-label">Service Main Image</label>
                             @if($service->image_url)
                                 <div class="mb-2">
-                                    <img src="{{ asset($service->image_url) }}" alt="Service Image" class="img-thumbnail" style="height: 80px; object-fit: cover;">
+                                    <img loading="lazy" decoding="async" src="{{ asset($service->image_url) }}" alt="Service Image" class="img-thumbnail" style="height: 80px; object-fit: cover;">
                                     <span class="text-muted d-block small">Current Image</span>
                                 </div>
                             @endif
@@ -52,7 +52,7 @@
                             <label for="icon_url" class="form-label">Icon Image</label>
                             @if($service->icon_url)
                                 <div class="mb-2">
-                                    <img src="{{ asset($service->icon_url) }}" alt="Service Icon" class="img-thumbnail" style="height: 50px; object-fit: contain; background: #f8f9fa;">
+                                    <img loading="lazy" decoding="async" src="{{ asset($service->icon_url) }}" alt="Service Icon" class="img-thumbnail" style="height: 50px; object-fit: contain; background: #f8f9fa;">
                                     <span class="text-muted d-block small">Current Icon</span>
                                 </div>
                             @endif

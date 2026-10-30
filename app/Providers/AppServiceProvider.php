@@ -29,9 +29,9 @@ class AppServiceProvider extends ServiceProvider
         View::composer('common.site.footer', function ($view) {
             static $services;
             try {
-                $services ??= Schema::hasTable('services')
+                $services ??= \App\Support\SiteCache::remember('footer.services', fn () => Schema::hasTable('services')
                     ? \App\Models\Service::where('isActive', 1)->orderBy('id')->take(6)->get(['id', 'title', 'slug'])
-                    : collect();
+                    : collect());
             } catch (\Throwable $e) {
                 $services = collect();
             }

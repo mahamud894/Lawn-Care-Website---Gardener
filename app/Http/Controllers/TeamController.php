@@ -58,7 +58,7 @@ class TeamController extends Controller
 
     public function viewTeamPage()
     {
-        $team = Schema::hasTable('teams') ? Team::where(['isActive' => 1])->get() : collect();
+        $team = \App\Support\SiteCache::remember('team.active', fn () => Schema::hasTable('teams') ? Team::where(['isActive' => 1])->get() : collect());
 
         return view('pages.about', compact('team'));
     }

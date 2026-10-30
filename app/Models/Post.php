@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Concerns\FlushesSiteCache;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    use FlushesSiteCache;
+
     protected $fillable = ['title', 'slug', 'excerpt', 'body', 'image_url', 'isPublished', 'published_at'];
 
     protected function casts(): array

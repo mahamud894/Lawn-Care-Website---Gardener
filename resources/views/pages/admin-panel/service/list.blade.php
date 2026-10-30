@@ -28,7 +28,7 @@
                         <!-- Image with asset() helper -->
                         <td>
                             @if($service->image_url)
-                                <img src="{{ asset($service->image_url) }}" alt="{{ $service->title }}" height="64px" class="rounded object-fit-cover">
+                                <img loading="lazy" decoding="async" src="{{ asset($service->image_url) }}" alt="{{ $service->title }}" height="64px" class="rounded object-fit-cover">
                             @else
                                 <span class="text-muted small">No Image</span>
                             @endif
@@ -37,7 +37,7 @@
                         <!-- Icon with asset() helper -->
                         <td>
                             @if($service->icon_url)
-                                <img src="{{ asset($service->icon_url) }}" alt="Icon" height="32px" class="rounded">
+                                <img loading="lazy" decoding="async" src="{{ asset($service->icon_url) }}" alt="Icon" height="32px" class="rounded">
                             @else
                                 <span class="text-muted small">No Icon</span>
                             @endif

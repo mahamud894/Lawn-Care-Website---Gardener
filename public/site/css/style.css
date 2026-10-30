@@ -203,6 +203,13 @@ h6,
     background-size: cover;
 }
 
+/* Phones and tablets get the 800px copy of the header photo */
+@media (max-width: 991.98px) {
+    .page-header {
+        background-image: linear-gradient(rgba(15, 66, 41, .6), rgba(15, 66, 41, .6)), url(../img/carousel-1-sm.jpg);
+    }
+}
+
 .page-header .breadcrumb-item+.breadcrumb-item::before {
     color: var(--light);
 }

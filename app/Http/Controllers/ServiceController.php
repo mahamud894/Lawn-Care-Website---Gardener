@@ -13,15 +13,13 @@ class ServiceController extends Controller
 {
     public function viewServicePage()
     {
-        if (Schema::hasTable('services')) {
+        $services = \App\Support\SiteCache::remember('services.active', function () {
             try {
-                $services = Service::where(['isActive' => 1])->get();
+                return Schema::hasTable('services') ? Service::where(['isActive' => 1])->get() : collect();
             } catch (\Exception $e) {
-                $services = collect();
+                return collect();
             }
-        } else {
-            $services = collect();
-        }
+        });
 
         return view('pages.service', ['services' => $services]);
     }

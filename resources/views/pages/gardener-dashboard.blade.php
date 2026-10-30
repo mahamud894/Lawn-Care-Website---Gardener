@@ -86,7 +86,7 @@
                     @if(!empty($job->photos))
                         <div class="d-flex gap-2 mt-2">
                             @foreach($job->photos as $photo)
-                                <a href="{{ asset($photo) }}" target="_blank"><img src="{{ asset($photo) }}" class="job-photo" alt="Lawn photo"></a>
+                                <a href="{{ asset($photo) }}" target="_blank"><img loading="lazy" decoding="async" src="{{ asset($photo) }}" class="job-photo" alt="Lawn photo"></a>
                             @endforeach
                         </div>
                     @endif

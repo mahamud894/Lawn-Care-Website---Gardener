@@ -13,7 +13,7 @@
         <div class="row g-5">
             <div class="col-lg-7 wow fadeInUp" data-wow-delay="0.1s">
                 @if($service->image_url)
-                    <img src="{{ asset($service->image_url) }}" alt="{{ $service->title }}" class="img-fluid rounded mb-4 w-100" style="max-height: 420px; object-fit: cover;">
+                    <img loading="lazy" decoding="async" src="{{ asset($service->image_url) }}" alt="{{ $service->title }}" class="img-fluid rounded mb-4 w-100" style="max-height: 420px; object-fit: cover;">
                 @endif
                 <p class="fs-5 mb-4">{{ $service->description }}</p>
                 @if($service->long_description)
@@ -57,7 +57,7 @@
                     <div class="col-md-4">
                         <a href="{{ route('service.show', $other->slug) }}" class="text-decoration-none">
                             <div class="bg-light rounded overflow-hidden h-100">
-                                @if($other->image_url)<img src="{{ asset($other->image_url) }}" class="img-fluid w-100" style="height: 180px; object-fit: cover;" alt="{{ $other->title }}">@endif
+                                @if($other->image_url)<img loading="lazy" decoding="async" src="{{ asset($other->image_url) }}" class="img-fluid w-100" style="height: 180px; object-fit: cover;" alt="{{ $other->title }}">@endif
                                 <div class="p-3">
                                     <h5 class="mb-1">{{ $other->title }}</h5>
                                     @if($other->price)<span class="text-primary fw-bold">{{ money($other->price) }}</span>@endif

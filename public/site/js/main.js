@@ -52,6 +52,10 @@
         itemSelector: '.portfolio-item',
         layoutMode: 'fitRows'
     });
+    // Images load lazily, so re-arrange the grid each time one finishes
+    $('.portfolio-container img').on('load', function () {
+        portfolioIsotope.isotope('layout');
+    });
     $('#portfolio-flters li').on('click', function () {
         $("#portfolio-flters li").removeClass('active');
         $(this).addClass('active');

@@ -79,7 +79,7 @@
                             @if(!empty($booking->photos))
                                 <div class="d-flex gap-1 mt-1">
                                     @foreach($booking->photos as $photo)
-                                        <a href="{{ asset($photo) }}" target="_blank"><img src="{{ asset($photo) }}" alt="Lawn photo" style="width: 40px; height: 40px; object-fit: cover;" class="rounded"></a>
+                                        <a href="{{ asset($photo) }}" target="_blank"><img loading="lazy" decoding="async" src="{{ asset($photo) }}" alt="Lawn photo" style="width: 40px; height: 40px; object-fit: cover;" class="rounded"></a>
                                     @endforeach
                                 </div>
                             @endif

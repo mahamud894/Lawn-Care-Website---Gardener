@@ -14,9 +14,9 @@ class ProjectController extends Controller
     /** Public Projects page */
     public function viewProjectPage()
     {
-        $projects = Schema::hasTable('projects')
+        $projects = \App\Support\SiteCache::remember('projects.active', fn () => Schema::hasTable('projects')
             ? Project::where('isActive', 1)->latest()->get()
-            : collect();
+            : collect());
 
         return view('pages.project', compact('projects'));
     }

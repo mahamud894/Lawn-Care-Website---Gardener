@@ -19,7 +19,7 @@
                             <!-- Recent image Preview -->
                             @if($team->image_url)
                                 <div class="mb-2">
-                                    <img src="{{ asset($team->image_url) }}" alt="{{ $team->title }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                                    <img loading="lazy" decoding="async" src="{{ asset($team->image_url) }}" alt="{{ $team->title }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
                                 </div>
                             @endif
 

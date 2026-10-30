@@ -37,7 +37,7 @@
     @foreach($projectItems as $i => $item)
     <div class="col-lg-4 col-md-6 portfolio-item {{ $item['filter'] }} wow fadeInUp" data-wow-delay="{{ 0.1 + ($i % 3) * 0.2 }}s">
         <div class="portfolio-inner rounded">
-            <img class="img-fluid" src="{{ $item['image'] }}" alt="{{ $item['title'] }}">
+            <img loading="lazy" decoding="async" class="img-fluid" src="{{ $item['image'] }}" alt="{{ $item['title'] }}">
             <div class="portfolio-text">
                 <h4 class="text-white mb-4">{{ $item['title'] }}</h4>
                 <div class="d-flex">

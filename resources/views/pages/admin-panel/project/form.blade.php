@@ -29,7 +29,7 @@
                         <div class="mb-3">
                             <label for="image" class="form-label">Photo {{ $project->exists ? '(leave empty to keep the current one)' : '' }}</label>
                             @if($project->image_url)
-                                <div class="mb-2"><img src="{{ asset($project->image_url) }}" alt="" style="max-height: 120px;" class="rounded"></div>
+                                <div class="mb-2"><img loading="lazy" decoding="async" src="{{ asset($project->image_url) }}" alt="" style="max-height: 120px;" class="rounded"></div>
                             @endif
                             <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror" accept="image/*" {{ $project->exists ? '' : 'required' }}>
                             @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror

@@ -23,7 +23,7 @@
                 <tbody>
                     @forelse($projects as $project)
                     <tr>
-                        <td><img src="{{ asset($project->image_url) }}" alt="{{ $project->title }}" style="width: 80px; height: 60px; object-fit: cover;" class="rounded"></td>
+                        <td><img loading="lazy" decoding="async" src="{{ asset($project->image_url) }}" alt="{{ $project->title }}" style="width: 80px; height: 60px; object-fit: cover;" class="rounded"></td>
                         <td>
                             <div class="fw-semibold">{{ $project->title }}</div>
                             <small class="text-muted">{{ \Illuminate\Support\Str::limit($project->description, 60) }}</small>

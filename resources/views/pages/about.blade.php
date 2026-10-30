@@ -14,6 +14,9 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://code.jquery.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
@@ -99,7 +102,9 @@
         <div class="container">
             <div class="row g-5 align-items-end">
                 <div class="col-lg-3 col-md-5 wow fadeInUp" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded" data-wow-delay="0.1s" src="site/img/about.jpg">
+                    <img loading="lazy" decoding="async" class="img-fluid rounded" data-wow-delay="0.1s" src="{{ asset('site/img/about.jpg') }}"
+                         srcset="{{ asset('site/img/about-sm.jpg') }} 400w, {{ asset('site/img/about.jpg') }} 500w"
+                         sizes="(max-width: 991px) 90vw, 500px" width="500" height="1000" alt="{{ __('About us') }}">
                 </div>
                 <div class="col-lg-6 col-md-7 wow fadeInUp" data-wow-delay="0.3s">
                     <h1 class="display-1 text-primary mb-0">10</h1>
@@ -170,7 +175,7 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="team-item rounded overflow-hidden shadow-sm h-100 bg-white">
                         <div class="team-img">
-                            <img class="img-fluid" src="{{$member->image_url}}" alt="{{$member->title}}">
+                            <img loading="lazy" decoding="async" class="img-fluid" src="{{$member->image_url}}" alt="{{$member->title}}">
                         </div>
                         <div class="team-text">
                             <h4 class="mb-2">{{$member->title}}</h4>

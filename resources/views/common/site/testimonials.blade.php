@@ -16,13 +16,13 @@
         </div>
     @empty
         <div class="testimonial-item">
-            <img class="img-fluid rounded mb-3" src="{{ asset('site/img/testimonial-1.jpg') }}" alt="">
+            <img loading="lazy" decoding="async" class="img-fluid rounded mb-3" src="{{ asset('site/img/testimonial-1.jpg') }}" alt="">
             <p class="fs-5">{{ __('"Excellent service from start to finish. They fixed our broken lawn drainage system and designed a stunning modern garden layout. Highly recommended!"') }}</p>
             <h4>{{ __('Sarah Jenkins') }}</h4>
             <span>{{ __('Villa Owner') }}</span>
         </div>
         <div class="testimonial-item">
-            <img class="img-fluid rounded mb-3" src="{{ asset('site/img/testimonial-2.jpg') }}" alt="">
+            <img loading="lazy" decoding="async" class="img-fluid rounded mb-3" src="{{ asset('site/img/testimonial-2.jpg') }}" alt="">
             <p class="fs-5">{{ __('"Gardener completely transformed our boring backyard into a lush green paradise! Their team was fast, incredibly professional, and very transparent about prices. Our family absolutely loves our new space!"') }}</p>
             <h4>{{ __('John Doe') }}</h4>
             <span>{{ __('Homeowner') }}</span>

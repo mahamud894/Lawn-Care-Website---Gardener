@@ -12,7 +12,7 @@
     <div class="container" style="max-width: 860px;">
         <p class="text-muted"><i class="far fa-calendar-alt me-1"></i>{{ ($post->published_at ?? $post->created_at)->translatedFormat('d F Y') }}</p>
         @if($post->image_url)
-            <img src="{{ asset($post->image_url) }}" alt="{{ $post->title }}" class="img-fluid rounded mb-4 w-100" style="max-height: 460px; object-fit: cover;">
+            <img loading="lazy" decoding="async" src="{{ asset($post->image_url) }}" alt="{{ $post->title }}" class="img-fluid rounded mb-4 w-100" style="max-height: 460px; object-fit: cover;">
         @endif
 
         {{-- Plain text with line breaks; links and HTML are not allowed for safety --}}

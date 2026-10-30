@@ -117,6 +117,37 @@ php artisan migrate
 
 The new migrations only add what is missing, so existing data is kept. Existing services automatically get a page URL from their title.
 
+## Going live (fast settings)
+
+Run these on the server after every update:
+
+```bash
+composer install --no-dev --optimize-autoloader
+npm ci && npm run build
+php artisan migrate --force
+php artisan optimize          # caches config, routes, views and events
+php artisan images:optimize   # shrinks any large images already uploaded
+```
+
+In `.env` on the server:
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+CACHE_STORE=file      # or redis
+SESSION_DRIVER=file   # or redis
+```
+
+Speed features already built in:
+
+- Uploaded photos are resized and saved as WebP automatically (a 5 MB phone photo becomes ~100–200 KB)
+- Images below the screen load only when scrolled to; phones get a smaller hero image
+- `public/.htaccess` turns on gzip compression and browser caching (Apache)
+- Public lists (services, team, projects, reviews, FAQ) are cached and refresh automatically when you edit them in the admin panel
+- Database indexes on the columns used for slot checks and filters
+
+If you change a theme image in `public/site/img`, run `php artisan images:optimize` again.
+
 ## Running tests
 
 ```bash

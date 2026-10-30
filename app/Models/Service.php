@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\FlushesSiteCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class Service extends Model
 {
+    use FlushesSiteCache;
+
     protected $guarded = [];
 
     protected static function booted(): void

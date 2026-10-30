@@ -16,7 +16,7 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="bg-light rounded overflow-hidden h-100 d-flex flex-column">
                         <a href="{{ route('blog.show', $post) }}">
-                            <img src="{{ $post->image_url ? asset($post->image_url) : asset('site/img/about.jpg') }}" alt="{{ $post->title }}" class="img-fluid w-100" style="height: 220px; object-fit: cover;">
+                            <img loading="lazy" decoding="async" src="{{ $post->image_url ? asset($post->image_url) : asset('site/img/about.jpg') }}" alt="{{ $post->title }}" class="img-fluid w-100" style="height: 220px; object-fit: cover;">
                         </a>
                         <div class="p-4 d-flex flex-column flex-grow-1">
                             <small class="text-muted mb-2"><i class="far fa-calendar-alt me-1"></i>{{ ($post->published_at ?? $post->created_at)->translatedFormat('d M Y') }}</small>

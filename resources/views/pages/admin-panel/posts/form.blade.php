@@ -40,7 +40,7 @@
 
                         <div class="mb-3">
                             <label class="form-label" for="image">Cover image</label>
-                            @if($post->image_url)<div class="mb-2"><img src="{{ asset($post->image_url) }}" alt="" style="max-height: 120px;" class="rounded"></div>@endif
+                            @if($post->image_url)<div class="mb-2"><img loading="lazy" decoding="async" src="{{ asset($post->image_url) }}" alt="" style="max-height: 120px;" class="rounded"></div>@endif
                             <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror" accept="image/*">
                             @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>

@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 /**
  * Saves uploaded images into public/uploads/<folder> with a unique name
- * and removes old ones. Returns paths like "uploads/services/abc.jpg".
+ * (resized and converted to WebP) and removes old ones. Returns paths like "uploads/services/abc.jpg".
  */
 class ImageUpload
 {
@@ -17,7 +17,14 @@ class ImageUpload
         $name = now()->format('YmdHis').'_'.Str::random(10).'.'.strtolower($file->getClientOriginalExtension());
         $file->move(public_path('uploads/'.$folder), $name);
 
-        return 'uploads/'.$folder.'/'.$name;
+        // Resize and convert to WebP so pages stay fast on mobile
+        $saved = ImageOptimizer::optimize(
+            public_path('uploads/'.$folder.'/'.$name),
+            ImageOptimizer::maxSizeFor($folder),
+            format: 'webp'
+        );
+
+        return 'uploads/'.$folder.'/'.basename($saved);
     }
 
     /** Replace an old image with a new upload (deletes the old file). */

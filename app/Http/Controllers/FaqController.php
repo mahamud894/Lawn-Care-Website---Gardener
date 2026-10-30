@@ -12,7 +12,7 @@ class FaqController extends Controller
 {
     public function index()
     {
-        $faqs = Schema::hasTable('faqs') ? Faq::where('isActive', 1)->orderBy('sort_order')->orderBy('id')->get() : collect();
+        $faqs = \App\Support\SiteCache::remember('faqs.active', fn () => Schema::hasTable('faqs') ? Faq::where('isActive', 1)->orderBy('sort_order')->orderBy('id')->get() : collect());
 
         return view('pages.faq', compact('faqs'));
     }
