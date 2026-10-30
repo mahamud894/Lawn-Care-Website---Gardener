@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 
 <head>
     <meta charset="utf-8">
@@ -88,16 +88,22 @@
         <div class="dashboard-header mb-5">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h2 class="fw-bold text-white mb-1">Welcome Back, {{ Auth::user()->name }}!</h2>
-                    <p class="mb-0 text-white-50">Here you can track your lawn care requests, active services, and history.</p>
+                    <h2 class="fw-bold text-white mb-1">{{ __('Welcome Back') }}, {{ Auth::user()->name }}!</h2>
+                    <p class="mb-0 text-white-50">{{ __('Here you can track your lawn care requests, active services, and history.') }}</p>
                 </div>
                 <div class="col-md-4 text-md-end mt-3 mt-md-0">
                     <a href="{{ route('quote') }}" class="btn btn-light text-success fw-bold py-2 px-4 rounded-pill shadow-sm">
-                        <i class="fa fa-plus me-2"></i>Book A New Service
+                        <i class="fa fa-plus me-2"></i>{{ __('Book A New Service') }}
                     </a>
                 </div>
             </div>
         </div>
+
+        @if(request('payment') === 'success')
+            <div class="alert alert-success"><i class="fa fa-check-circle me-1"></i>{{ __('Payment successful — thank you!') }}</div>
+        @elseif(in_array(request('payment'), ['failed', 'cancelled']))
+            <div class="alert alert-warning"><i class="fa fa-exclamation-circle me-1"></i>{{ __('The payment was not completed. You can try again or pay in cash on the service day.') }}</div>
+        @endif
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -113,7 +119,7 @@
             <div class="col-md-4">
                 <div class="card dashboard-card p-4 d-flex flex-row align-items-center justify-content-between">
                     <div>
-                        <h6 class="text-muted text-uppercase small fw-bold mb-1">Pending Requests</h6>
+                        <h6 class="text-muted text-uppercase small fw-bold mb-1">{{ __('Pending Requests') }}</h6>
                         <h2 class="fw-bold mb-0 text-dark">{{ $bookings->where('status', 'pending')->count() }}</h2>
                     </div>
                     <div class="icon-shape bg-warning bg-opacity-10 text-warning"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
@@ -122,7 +128,7 @@
             <div class="col-md-4">
                 <div class="card dashboard-card p-4 d-flex flex-row align-items-center justify-content-between">
                     <div>
-                        <h6 class="text-muted text-uppercase small fw-bold mb-1">Accepted / Active</h6>
+                        <h6 class="text-muted text-uppercase small fw-bold mb-1">{{ __('Accepted / Active') }}</h6>
                         <h2 class="fw-bold mb-0 text-dark">{{ $bookings->where('status', 'approved')->count() }}</h2>
                     </div>
                     <div class="icon-shape bg-info bg-opacity-10 text-info"><i class="fa fa-check-circle fa-2x"></i></div>
@@ -131,7 +137,7 @@
             <div class="col-md-4">
                 <div class="card dashboard-card p-4 d-flex flex-row align-items-center justify-content-between">
                     <div>
-                        <h6 class="text-muted text-uppercase small fw-bold mb-1">My Job History (Done)</h6>
+                        <h6 class="text-muted text-uppercase small fw-bold mb-1">{{ __('My Job History (Done)') }}</h6>
                         <h2 class="fw-bold mb-0 text-dark">{{ $bookings->where('status', 'done')->count() }}</h2>
                     </div>
                     <div class="icon-shape bg-success bg-opacity-10 text-success"><i class="fa fa-history fa-2x"></i></div>
@@ -142,16 +148,16 @@
         <div class="bg-white p-3 rounded-3 shadow-sm mb-4">
             <ul class="nav nav-pills gap-2" id="dashboardTabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">All Orders</button>
+                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">{{ __('All Orders') }}</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">Pending</button>
+                    <button class="nav-link" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">{{ __('Pending') }}</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab">Accepted</button>
+                    <button class="nav-link" id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab">{{ __('Accepted') }}</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">Job History (Done)</button>
+                    <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">{{ __('Job History (Done)') }}</button>
                 </li>
             </ul>
         </div>
@@ -236,6 +242,7 @@
     <script>
         // Load free time slots when a new date is picked in the reschedule pop-up
         var allSlots = @json(\App\Models\Booking::TIME_SLOTS);
+        // the server returns the slots that are already full
         $('.reschedule-date').on('change', function () {
             var select = $($(this).data('target'));
             select.html('<option value="">Loading slots...</option>').prop('disabled', true);

@@ -13,10 +13,17 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
+            'gardener' => \App\Http\Middleware\EnsureUserIsGardener::class,
         ]);
 
         $middleware->web(append: [
             \App\Http\Middleware\EnsureUserIsNotBlocked::class,
+            \App\Http\Middleware\SetLocale::class,
+        ]);
+
+        // SSLCommerz posts back to these URLs from its own site
+        $middleware->validateCsrfTokens(except: [
+            'payment/sslcommerz/*',
         ]);
 
         // Logged-in users visiting /login or /signup go to the home page

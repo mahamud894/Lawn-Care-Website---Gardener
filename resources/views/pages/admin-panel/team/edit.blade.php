@@ -8,7 +8,7 @@
                     <h5 class="card-title mb-0">Edit Team Member</h5>
                 </div>
                 <div class="card-body">
-                    <form action="/admin-panel/edit-team" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('editTeam') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" value="{{$team->id}}">
 
@@ -39,6 +39,8 @@
                             <input type="text" value="{{ old('position', $team->position) }}" class="form-control @error('position') is-invalid @enderror" id="position" name="position" required>
                             @error('position')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
+
+                        @include('pages.admin-panel.team.login-fields')
 
                         <div class="mb-3">
                             <input type="checkbox" name="isActive" id="isActive" class="mt-2" {{$team->isActive == 1 ? "checked" : ""}}>

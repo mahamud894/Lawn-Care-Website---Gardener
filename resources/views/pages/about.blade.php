@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>About Us — Gardener</title>
+    <title>{{ __('About Us — Gardener') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="lawn care, gardening, landscaping, lawn mowing, garden maintenance" name="keywords">
     <meta content="Meet the Gardener team: experienced gardeners and landscapers who care for your lawn and garden." name="description">
@@ -56,7 +56,7 @@
             </div>
             <div class="col-lg-5 px-5 text-end">
                 <div class="h-100 d-inline-flex align-items-center mx-n2">
-                    <span>Follow Us:</span>
+                    <span>{{ __('Follow Us:') }}</span>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-facebook-f"></i></a>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-twitter"></i></a>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-linkedin-in"></i></a>
@@ -81,12 +81,12 @@
     <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container text-center py-5">
-            <h1 class="display-3 text-white mb-4 animated slideInDown">About Us</h1>
+            <h1 class="display-3 text-white mb-4 animated slideInDown">{{ __('About Us') }}</h1>
             <nav aria-label="breadcrumb animated slideInDown">
                 <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">About</li>
+                    <li class="breadcrumb-item"><a href="#">{{ __('Home') }}</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ __('Pages') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('About') }}</li>
                 </ol>
             </nav>
         </div>
@@ -103,25 +103,25 @@
                 </div>
                 <div class="col-lg-6 col-md-7 wow fadeInUp" data-wow-delay="0.3s">
                     <h1 class="display-1 text-primary mb-0">10</h1>
-                    <p class="text-primary mb-4">Year of Experience</p>
-                    <h1 class="display-5 mb-4">We Make Your Home Like A Garden</h1>
-                    <p class="mb-4">At Gardener, we don't just plant trees; we sculpt emotions into your backyards. We believe your outdoor space should be a living, breathing extension of your living room—a peaceful sanctuary where you can escape the digital noise of the world. Blending the science of modern botany with the art of luxury landscaping, we craft eco-friendly ecosystems that grow more beautiful with every passing season.</p>
-                    <a class="btn btn-primary py-3 px-4" href="">Explore More</a>
+                    <p class="text-primary mb-4">{{ __('Year of Experience') }}</p>
+                    <h1 class="display-5 mb-4">{{ __('We Make Your Home Like A Garden') }}</h1>
+                    <p class="mb-4">{{ __('At Gardener, we don\'t just plant trees; we sculpt emotions into your backyards. We believe your outdoor space should be a living, breathing extension of your living room—a peaceful sanctuary where you can escape the digital noise of the world. Blending the science of modern botany with the art of luxury landscaping, we craft eco-friendly ecosystems that grow more beautiful with every passing season.') }}</p>
+                    <a class="btn btn-primary py-3 px-4" href="">{{ __('Explore More') }}</a>
                 </div>
                 <div class="col-lg-3 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="row g-5">
                         <div class="col-12 col-sm-6 col-lg-12">
                             <div class="border-start ps-4">
                                 <i class="fa fa-award fa-3x text-primary mb-3"></i>
-                                <h4 class="mb-3">Award Winning</h4>
-                                <span>Recognized for excellence. Celebrated for transforming dull concrete spaces into vibrant, award-winning green ecosystems</span>
+                                <h4 class="mb-3">{{ __('Award Winning') }}</h4>
+                                <span>{{ __('Recognized for excellence. Celebrated for transforming dull concrete spaces into vibrant, award-winning green ecosystems') }}</span>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-12">
                             <div class="border-start ps-4">
                                 <i class="fa fa-users fa-3x text-primary mb-3"></i>
-                                <h4 class="mb-3">Dedicated Team</h4>
-                                <span>Our team of experienced professionals is committed to delivering exceptional results for every client.</span>
+                                <h4 class="mb-3">{{ __('Dedicated Team') }}</h4>
+                                <span>{{ __('Our team of experienced professionals is committed to delivering exceptional results for every client.') }}</span>
                             </div>
                         </div>
                     </div>
@@ -138,19 +138,19 @@
             <div class="row g-5">
                 <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
                     <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 fw-semi-bold text-light">Happy Clients</span>
+                    <span class="fs-5 fw-semi-bold text-light">{{ __('Happy Clients') }}</span>
                 </div>
                 <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
                     <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 fw-semi-bold text-light">Garden Complated</span>
+                    <span class="fs-5 fw-semi-bold text-light">{{ __('Garden Complated') }}</span>
                 </div>
                 <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.5s">
                     <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 fw-semi-bold text-light">Dedicated Staff</span>
+                    <span class="fs-5 fw-semi-bold text-light">{{ __('Dedicated Staff') }}</span>
                 </div>
                 <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.7s">
                     <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 fw-semi-bold text-light">Awards Achieved</span>
+                    <span class="fs-5 fw-semi-bold text-light">{{ __('Awards Achieved') }}</span>
                 </div>
             </div>
         </div>
@@ -162,8 +162,8 @@
      <div class="container-xxl py-5 mu-5">
         <div class="container">
          <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-                <p class="fs-5 fw-bold text-primary">Our Team</p>
-                <h1 class="display-5 mb-5">Dedicated & Experienced Team Members</h1>
+                <p class="fs-5 fw-bold text-primary">{{ __('Our Team') }}</p>
+                <h1 class="display-5 mb-5">{{ __('Dedicated & Experienced Team Members') }}</h1>
          </div>
             <div class="row g-4">
                 @forelse($team as $member)
@@ -186,7 +186,7 @@
                 @empty
                 <div class="col-12">
                     <div class="text-center py-5">
-                        <p class="mb-0 text-muted">No team members available at the moment.</p>
+                        <p class="mb-0 text-muted">{{ __('No team members available at the moment.') }}</p>
                     </div>
                 </div>
                 @endforelse

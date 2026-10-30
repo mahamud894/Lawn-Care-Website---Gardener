@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Our Projects — Gardener</title>
+    <title>{{ __('Our Projects — Gardener') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="lawn care, gardening, landscaping, lawn mowing, garden maintenance" name="keywords">
     <meta content="See completed and ongoing garden and landscaping projects by the Gardener team." name="description">
@@ -52,12 +52,12 @@
     <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container text-center py-5">
-            <h1 class="display-3 text-white mb-4 animated slideInDown">Projects</h1>
+            <h1 class="display-3 text-white mb-4 animated slideInDown">{{ __('Projects') }}</h1>
             <nav aria-label="breadcrumb animated slideInDown">
                 <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Projects</li>
+                    <li class="breadcrumb-item"><a href="#">{{ __('Home') }}</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ __('Pages') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('Projects') }}</li>
                 </ol>
             </nav>
         </div>
@@ -69,8 +69,8 @@
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-                <p class="fs-5 fw-bold text-primary">Our Projects</p>
-                <h1 class="display-5 mb-5">Some Of Our Wonderful Projects</h1>
+                <p class="fs-5 fw-bold text-primary">{{ __('Our Projects') }}</p>
+                <h1 class="display-5 mb-5">{{ __('Some Of Our Wonderful Projects') }}</h1>
             </div>
             @include('common.site.projects-grid')
         </div>

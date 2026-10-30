@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Get a Free Quote — Gardener</title>
+    <title>{{ __('Get a Free Quote — Gardener') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="lawn care, gardening, landscaping, lawn mowing, garden maintenance" name="keywords">
     <meta content="Request a lawn care or gardening quote and pick a date and time that suits you." name="description">
@@ -57,7 +57,7 @@
             </div>
             <div class="col-lg-5 px-5 text-end">
                 <div class="h-100 d-inline-flex align-items-center mx-n2">
-                    <span>Follow Us:</span>
+                    <span>{{ __('Follow Us:') }}</span>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-facebook-f"></i></a>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-twitter"></i></a>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-linkedin-in"></i></a>
@@ -77,12 +77,12 @@
     <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container text-center py-5">
-            <h1 class="display-3 text-white mb-4 animated slideInDown">Get A Quote</h1>
+            <h1 class="display-3 text-white mb-4 animated slideInDown">{{ __('Get A Quote') }}</h1>
             <nav aria-label="breadcrumb animated slideInDown">
                 <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Get A Quote</li>
+                    <li class="breadcrumb-item"><a href="#">{{ __('Home') }}</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ __('Pages') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('Get A Quote') }}</li>
                 </ol>
             </nav>
         </div>
@@ -95,91 +95,10 @@
             <div class="row justify-content-center">
                 <div class="col-lg-7">
                     <div class="bg-white rounded p-4 p-sm-5 wow fadeIn" data-wow-delay="0.5s">
-                        <h1 class="display-5 text-center mb-3">Request A Quote</h1>
-                        <p class="fs-5 fw-bold text-primary text-center mb-4">Please complete and submit the form below to get started.</p>
+                        <h1 class="display-5 text-center mb-3">{{ __('Request A Quote') }}</h1>
+                        <p class="fs-5 fw-bold text-primary text-center mb-4">{{ __('Please complete and submit the form below to get started.') }}</p>
 
-                        @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
-
-                        <form id="bookingForm" action="{{ route('createBooking') }}" method="post">
-                            @csrf
-                            <div class="row g-3">
-
-                                {{-- 💡 Booking For Options (Myself / Someone Else) --}}
-                                <div class="col-12 mb-2 text-start">
-                                    <label class="form-label fw-bold text-dark">Booking For:</label>
-                                    <div class="d-flex gap-4">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="booking_for" id="forMyself" value="myself" checked>
-                                            <label class="form-check-label text-dark" for="forMyself">
-                                                For Myself
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="booking_for" id="forOthers" value="others">
-                                            <label class="form-check-label text-dark" for="forOthers">
-                                                For Someone Else
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- Name Input (Min length validation & Live Error Message added) --}}
-                                <div class="col-xl-12 text-start">
-                                    <input name="name" id="user_name" value="{{ old('name', Auth::check() ? Auth::user()->name : '') }}" type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;" minlength="6" required>
-                                    {{-- 💡 রিয়েল-টাইম এরর মেসেজ কনটেইনার --}}
-                                    <small id="name_error" class="text-danger mt-1 fw-bold d-block" style="display: none; font-size: 13px;"></small>
-                                </div>
-
-                                {{-- Email Input (Auto-filled if logged in) --}}
-                                <div class="col-12">
-                                    <input name="email" id="user_email" value="{{ old('email', Auth::check() ? Auth::user()->email : '') }}" type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;" required>
-                                </div>
-                                <div class="col-12">
-                                    <input type="text" name="address" value="{{ old('address') }}" class="form-control border-0 bg-light px-4" placeholder="Your Address" style="height: 55px;" required>
-                                </div>
-
-                                <div class="col-12">
-                                    <select name="service" class="form-select bg-light border-0" style="height: 55px;" required>
-                                        <option value="" selected disabled>Select A Service</option>
-                                        @foreach($services as $service)
-                                        <option value="{{$service->id}}" {{ old('service', $selectedServiceId) == $service->id ? 'selected' : '' }}>
-                                            {{$service->title}}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="col-12">
-                                    <input name="preferred_date" id="booking_date" type="date" min="{{ now()->addDay()->toDateString() }}" value="{{ old('preferred_date') }}" class="form-control bg-light border-0" style="height: 55px;" required>
-                                </div>
-
-                                <div class="col-12">
-                                    <select id="time_slot" name="time_slot" class="form-control bg-light border-0" style="height: 55px; color: #6c757d; background-color: #f8f9fa !important;" required disabled>
-                                        <option value="">First select a date</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-12">
-                                    <textarea name="message" class="form-control bg-light border-0" rows="3" placeholder="Message">{{ old('message') }}</textarea>
-                                </div>
-
-                                <div class="col-12">
-                                    @if(Auth::user())
-                                    <button class="btn btn-dark w-100 py-3" type="submit">Submit</button>
-                                    @else
-                                    <a href="/login" class="btn btn-dark w-100 py-3">Submit</a>
-                                    @endif
-                                </div>
-                            </div>
-                        </form>
+                        @include('common.site.booking-form', ['formId' => 'quote'])
                     </div>
                 </div>
             </div>
@@ -208,89 +127,7 @@
     <!-- Template Javascript -->
     <script src="site/js/main.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            // CSRF Token Setup
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            // 💡 Real-time Name Field Validation (6 Character Check)
-            function validateNameInput() {
-                var nameVal = $('#user_name').val().trim();
-                var errorElem = $('#name_error');
-
-                if (nameVal.length > 0 && nameVal.length < 6) {
-                    errorElem.text('Name must be at least 6 characters long (' + nameVal.length + '/6)').show();
-                    $('#user_name').addClass('border border-danger');
-                } else {
-                    errorElem.text('').hide();
-                    $('#user_name').removeClass('border border-danger');
-                }
-            }
-
-
-            $('#user_name').on('keyup input change', function() {
-                validateNameInput();
-            });
-
-            // Booking For Live Switch
-            var loggedInName = "{{ Auth::check() ? Auth::user()->name : '' }}";
-            var loggedInEmail = "{{ Auth::check() ? Auth::user()->email : '' }}";
-
-            $('input[name="booking_for"]').on('change', function() {
-                if ($(this).val() === 'myself') {
-                    $('#user_name').val(loggedInName);
-                    $('#user_email').val(loggedInEmail);
-                } else if ($(this).val() === 'others') {
-                    $('#user_name').val('').focus();
-                    $('#user_email').val('');
-                }
-                validateNameInput();
-            });
-
-            // Date & Time Slot AJAX Script
-            $('#booking_date').on('change', function() {
-                var selectedDate = $(this).val();
-
-                if(selectedDate) {
-                    $('#time_slot').html('<option value="">Loading slots...</option>').prop('disabled', true).css('color', '#6c757d');
-
-                    $.ajax({
-                        url: "{{ url('/check-available-slots') }}",
-                        type: 'GET',
-                        data: { date: selectedDate },
-                        dataType: 'json',
-                        success: function(bookedSlots) {
-                            var allSlots = @json(\App\Models\Booking::TIME_SLOTS);
-
-                            var oldSlot = @json(old('time_slot'));
-                            var freeSlots = allSlots.filter(function(slot) { return !bookedSlots.includes(slot); });
-                            var html = freeSlots.length
-                                ? '<option value="">Select a Time Slot</option>'
-                                : '<option value="">No free slots on this day — pick another date</option>';
-                            freeSlots.forEach(function(slot) {
-                                html += '<option value="' + slot + '"' + (slot === oldSlot ? ' selected' : '') + '>' + slot + '</option>';
-                            });
-
-                            $('#time_slot').html(html).prop('disabled', false).css('color', '#212529');
-                        },
-                        error: function(xhr, status, error) {
-                            console.error("AJAX Error Status: " + xhr.status + " - " + error);
-                            $('#time_slot').html('<option value="">Error loading slots</option>');
-                        }
-                    });
-                }
-            });
-
-            // After a failed submit, reload the slots for the date the user had picked
-            if ($('#booking_date').val()) {
-                $('#booking_date').trigger('change');
-            }
-        });
-    </script>
+    @include('common.site.booking-form-script')
 
     @include('sweetalert::alert')
 </body>

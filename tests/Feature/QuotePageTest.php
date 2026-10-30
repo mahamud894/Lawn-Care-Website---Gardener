@@ -10,6 +10,7 @@ function bookingData(array $overrides = []): array
     return array_merge([
         'name' => 'John Doe',
         'email' => 'john@example.com',
+        'phone' => '01712345678',
         'address' => '12 Green Road, Narail',
         'service' => Service::create(['title' => 'Lawn Mowing', 'description' => 'Mowing'])->id,
         'preferred_date' => now()->addDays(3)->toDateString(),

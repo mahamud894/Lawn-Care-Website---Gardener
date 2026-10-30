@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Contact Us — Gardener</title>
+    <title>{{ __('Contact Us — Gardener') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="lawn care, gardening, landscaping, lawn mowing, garden maintenance" name="keywords">
     <meta content="Questions about lawn care or a booking? Send the Gardener team a message." name="description">
@@ -55,7 +55,7 @@
             </div>
             <div class="col-lg-5 px-5 text-end">
                 <div class="h-100 d-inline-flex align-items-center mx-n2">
-                    <span>Follow Us:</span>
+                    <span>{{ __('Follow Us:') }}</span>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-facebook-f"></i></a>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-twitter"></i></a>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-linkedin-in"></i></a>
@@ -78,12 +78,12 @@
     <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container text-center py-5">
-            <h1 class="display-3 text-white mb-4 animated slideInDown">Contact Us</h1>
+            <h1 class="display-3 text-white mb-4 animated slideInDown">{{ __('Contact Us') }}</h1>
             <nav aria-label="breadcrumb animated slideInDown">
                 <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Contact</li>
+                    <li class="breadcrumb-item"><a href="#">{{ __('Home') }}</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ __('Pages') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('Contact') }}</li>
                 </ol>
             </nav>
         </div>
@@ -96,9 +96,9 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <p class="fs-5 fw-bold text-primary">Contact Us</p>
-                    <h1 class="display-5 mb-5">If You Have Any Query, Please Contact Us</h1>
-                    <p class="mb-4">Have a question about our services, pricing or an existing booking? Send us a message and we will reply as soon as possible.</p>
+                    <p class="fs-5 fw-bold text-primary">{{ __('Contact Us') }}</p>
+                    <h1 class="display-5 mb-5">{{ __('If You Have Any Query, Please Contact Us') }}</h1>
+                    <p class="mb-4">{{ __('Have a question about our services, pricing or an existing booking? Send us a message and we will reply as soon as possible.') }}</p>
 
                     @if ($errors->any())
                     <div class="alert alert-danger">
@@ -120,29 +120,29 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text" class="form-control" id="name" name="name" value="{{ old('name', Auth::user()->name ?? '') }}" placeholder="Your Name" required>
-                                    <label for="name">Your Name</label>
+                                    <label for="name">{{ __('Your Name') }}</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="email" class="form-control" id="email" name="email" value="{{ old('email', Auth::user()->email ?? '') }}" placeholder="Your Email" required>
-                                    <label for="email">Your Email</label>
+                                    <label for="email">{{ __('Your Email') }}</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
                                     <input type="text" class="form-control" id="subject" name="subject" value="{{ old('subject') }}" placeholder="Subject">
-                                    <label for="subject">Subject</label>
+                                    <label for="subject">{{ __('Subject') }}</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
                                     <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" style="height: 140px" required>{{ old('message') }}</textarea>
-                                    <label for="message">Message</label>
+                                    <label for="message">{{ __('Message') }}</label>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-primary py-3 px-4" type="submit">Send Message</button>
+                                <button class="btn btn-primary py-3 px-4" type="submit">{{ __('Send Message') }}</button>
                             </div>
                         </div>
                     </form>

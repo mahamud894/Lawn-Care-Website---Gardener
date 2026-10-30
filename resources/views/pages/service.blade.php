@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Our Services — Gardener</title>
+    <title>{{ __('Our Services — Gardener') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="lawn care, gardening, landscaping, lawn mowing, garden maintenance" name="keywords">
     <meta content="Lawn mowing, landscaping, pruning, irrigation and garden maintenance services with clear pricing." name="description">
@@ -71,7 +71,7 @@
             </div>
             <div class="col-lg-5 px-5 text-end">
                 <div class="h-100 d-inline-flex align-items-center mx-n2">
-                    <span>Follow Us:</span>
+                    <span>{{ __('Follow Us:') }}</span>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-facebook-f"></i></a>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-twitter"></i></a>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-linkedin-in"></i></a>
@@ -93,11 +93,11 @@
     <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container text-center py-5">
-            <h1 class="display-3 text-white mb-4 animated slideInDown">Services</h1>
+            <h1 class="display-3 text-white mb-4 animated slideInDown">{{ __('Services') }}</h1>
             <nav aria-label="breadcrumb animated slideInDown">
                 <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Services</li>
+                    <li class="breadcrumb-item"><a href="/">{{ __('Home') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('Services') }}</li>
                 </ol>
             </nav>
         </div>

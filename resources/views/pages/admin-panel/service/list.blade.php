@@ -47,7 +47,7 @@
 
                         <!-- Price display -->
                         <td>
-                            <strong>${{ number_format($service->price, 2) }}</strong>
+                            <strong>{{ money($service->price) }}</strong>
                         </td>
 
                         <td>{{ Str::limit($service->description, 50) }}</td>

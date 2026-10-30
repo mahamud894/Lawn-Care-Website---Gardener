@@ -3,10 +3,19 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\GardenerController;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TeamController;
@@ -20,6 +29,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'viewHomePage'])->name('home');
 Route::get('/about', [TeamController::class, 'viewTeamPage'])->name('about');
 Route::get('/service', [ServiceController::class, 'viewServicePage'])->name('service');
+Route::get('/service/{slug}', [ServiceController::class, 'show'])->name('service.show');
+Route::get('/blog', [PostController::class, 'index'])->name('blog');
+Route::get('/blog/{post}', [PostController::class, 'show'])->name('blog.show');
+Route::get('/faq', [FaqController::class, 'index'])->name('faq');
+
+// Language switcher (English / বাংলা)
+Route::get('/lang/{locale}', function (string $locale) {
+    if (array_key_exists($locale, config('gardener.locales'))) {
+        session(['locale' => $locale]);
+    }
+
+    return redirect()->back();
+})->name('locale');
 Route::get('/project', [ProjectController::class, 'viewProjectPage'])->name('project');
 
 Route::get('/contact', [ContactController::class, 'viewContactPage'])->name('contact');
@@ -32,7 +54,9 @@ Route::get('/check-available-slots', [BookingController::class, 'checkSlots'])->
 
 // Sitemap for search engines (submit /sitemap.xml in Google Search Console)
 Route::get('/sitemap.xml', function () {
-    $urls = collect(['home', 'service', 'about', 'project', 'contact', 'quote'])->map(fn ($name) => route($name));
+    $urls = collect(['home', 'service', 'about', 'project', 'contact', 'quote', 'blog', 'faq'])->map(fn ($name) => route($name))
+        ->merge(\App\Models\Service::where('isActive', 1)->pluck('slug')->filter()->map(fn ($slug) => route('service.show', $slug)))
+        ->merge(\App\Models\Post::published()->pluck('slug')->map(fn ($slug) => route('blog.show', $slug)));
 
     $xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
         .$urls->map(fn ($u) => '<url><loc>'.e($u).'</loc></url>')->implode('')
@@ -57,7 +81,18 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])->name('password.email')->middleware('throttle:5,1');
     Route::get('/reset-password/{token}', [PasswordResetController::class, 'viewResetForm'])->name('password.reset');
     Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])->name('password.update');
+
+    Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('google.redirect');
+    Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('google.callback');
 });
+
+/*
+| SSLCommerz returns here (POST from their site, CSRF-exempt)
+*/
+Route::post('/payment/sslcommerz/success', [PaymentController::class, 'success'])->name('payment.success');
+Route::post('/payment/sslcommerz/fail', [PaymentController::class, 'fail'])->name('payment.fail');
+Route::post('/payment/sslcommerz/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
+Route::post('/payment/sslcommerz/ipn', [PaymentController::class, 'ipn'])->name('payment.ipn');
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +106,23 @@ Route::middleware('auth')->group(function () {
     Route::post('/my-bookings/{booking}/cancel', [BookingController::class, 'cancelMyBooking'])->name('user.bookings.cancel');
     Route::post('/my-bookings/{booking}/reschedule', [BookingController::class, 'rescheduleMyBooking'])->name('user.bookings.reschedule');
     Route::post('/my-bookings/{booking}/review', [ReviewController::class, 'store'])->name('user.bookings.review');
+    Route::post('/my-bookings/{booking}/stop-repeat', [BookingController::class, 'stopRepeating'])->name('user.bookings.stopRepeat');
+    Route::post('/my-bookings/{booking}/pay', [PaymentController::class, 'pay'])->name('user.bookings.pay');
+    Route::get('/bookings/{booking}/invoice', [InvoiceController::class, 'show'])->name('bookings.invoice');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Gardener portal — team members with a login
+|--------------------------------------------------------------------------
+*/
+Route::prefix('gardener')->middleware(['auth', 'gardener'])->group(function () {
+    Route::get('/', [GardenerController::class, 'dashboard'])->name('gardener.dashboard');
+    Route::post('/jobs/{booking}/done', [GardenerController::class, 'markDone'])->name('gardener.jobs.done');
 });
 
 /*
@@ -105,6 +157,11 @@ Route::prefix('admin-panel')->middleware(['auth', 'admin'])->group(function () {
 
     // Bookings
     Route::get('/booking-list', [BookingController::class, 'viewAllBookings'])->name('viewAllBookings');
+    Route::get('/bookings/export', [BookingController::class, 'exportCsv'])->name('admin.bookings.export');
+    Route::post('/bookings/{id}/paid', [BookingController::class, 'markPaid'])->name('admin.bookings.paid');
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('admin.calendar');
+    Route::get('/reports', [ReportController::class, 'index'])->name('admin.reports');
+    Route::get('/activity', [AdminController::class, 'viewActivityLog'])->name('admin.activity');
     Route::post('/bookings/{id}/status', [BookingController::class, 'updateStatus'])->name('admin.bookings.status');
     Route::get('/bookings/{id}/assign', [AdminController::class, 'showAssignPage'])->name('admin.bookings.assignView');
     Route::post('/bookings/{id}/assign', [AdminController::class, 'assignTeam'])->name('admin.bookings.assignTeam');
@@ -116,6 +173,20 @@ Route::prefix('admin-panel')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/projects/{project}/edit', [ProjectController::class, 'edit'])->name('admin.projects.edit');
     Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('admin.projects.update');
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('admin.projects.delete');
+
+    // Blog
+    Route::get('/posts', [PostController::class, 'adminIndex'])->name('admin.posts.list');
+    Route::get('/posts/create', [PostController::class, 'create'])->name('admin.posts.create');
+    Route::post('/posts', [PostController::class, 'store'])->name('admin.posts.store');
+    Route::get('/posts/{post:id}/edit', [PostController::class, 'edit'])->name('admin.posts.edit');
+    Route::put('/posts/{post:id}', [PostController::class, 'update'])->name('admin.posts.update');
+    Route::delete('/posts/{post:id}', [PostController::class, 'destroy'])->name('admin.posts.delete');
+
+    // FAQ
+    Route::get('/faqs', [FaqController::class, 'adminIndex'])->name('admin.faqs.list');
+    Route::post('/faqs', [FaqController::class, 'store'])->name('admin.faqs.store');
+    Route::put('/faqs/{faq}', [FaqController::class, 'update'])->name('admin.faqs.update');
+    Route::delete('/faqs/{faq}', [FaqController::class, 'destroy'])->name('admin.faqs.delete');
 
     // Contact messages
     Route::get('/messages', [ContactController::class, 'index'])->name('admin.messages.list');

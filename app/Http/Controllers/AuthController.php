@@ -85,15 +85,9 @@ class AuthController extends Controller
         Auth::login($user, $request->boolean('remember'));
         $request->session()->regenerate();
 
-        if (! $user->isAdmin) {
-            Alert::success('Success', 'User Login Successful');
+        Alert::success('Success', $user->isAdmin ? 'Admin Login Successful' : 'Login Successful');
 
-            return redirect()->intended(route('home'));
-        }
-
-        Alert::success('Success', 'Admin Login Successful');
-
-        return redirect()->intended(route('viewAdminPanel'));
+        return redirect()->intended($user->homeRoute());
     }
 
     public function logout(Request $request)

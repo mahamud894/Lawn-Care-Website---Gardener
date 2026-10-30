@@ -5,14 +5,24 @@ A full lawn care business website built with **Laravel 12**. Customers can brows
 ## Features
 
 **For customers**
-- Service, About, Projects and Contact pages
-- Online booking with live time-slot availability (a slot can never be double-booked)
-- Personal dashboard: track status and assigned gardener, cancel or reschedule, leave a star review after the job is done
-- E-mail updates when a booking is received, approved, completed or assigned
-- Sign up, login, and "forgot password" by e-mail
+- Service, About, Projects, Blog, FAQ and Contact pages — every service has its own page
+- English / বাংলা language switcher
+- Online booking with live time-slot availability; each slot takes one booking per active gardener
+- Live price estimate from lawn size, optional lawn photos, and repeating bookings (weekly / every 2 weeks / monthly)
+- Personal dashboard: track status and gardener, cancel, reschedule, stop repeats, pay online, print invoices, leave reviews
+- Online payment with SSLCommerz (bKash, Nagad, Rocket, cards) or cash on the day
+- E-mail and SMS updates; floating WhatsApp button
+- Sign up, login, "Continue with Google", forgot password, profile page
+
+**For gardeners**
+- Their own login (created from the team form) showing today's and upcoming jobs with phone, map link and photos
+- Mark jobs done from the phone and record cash collected
 
 **For the admin**
 - Dashboard with live counts (bookings by status, unread messages, reviews waiting)
+- Month calendar of bookings, business reports with charts (bookings, revenue, top services, gardeners)
+- CSV export (opens in Excel), activity log of every change
+- Blog and FAQ editor
 - Manage services, team members and project gallery (with photo upload)
 - Booking list with search, status/date filters and pagination; approve, reject, mark done, assign a team member
 - Contact messages inbox
@@ -84,6 +94,19 @@ MAIL_FROM_ADDRESS=you@gmail.com
 
 If mail is not set up, bookings and contact messages still work — the e-mail is just skipped and logged.
 
+### Optional services
+
+All of these are off by default and switch on when you fill in `.env` (see `.env.example`):
+
+| Feature | Settings |
+| --- | --- |
+| Online payment | `SSLCOMMERZ_STORE_ID`, `SSLCOMMERZ_STORE_PASSWORD`, `SSLCOMMERZ_SANDBOX` |
+| SMS | `SMS_DRIVER=bulksmsbd`, `SMS_API_KEY`, `SMS_SENDER_ID` |
+| Google login | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` (redirect URI: `APP_URL/auth/google/callback`) |
+| Business details | `BUSINESS_NAME`, `CURRENCY`, `CURRENCY_SYMBOL`, `WHATSAPP_NUMBER` |
+
+For SSLCommerz, set your site's IPN URL in their panel to `APP_URL/payment/sslcommerz/ipn`.
+
 ## Upgrading an existing database
 
 If you already have the site running, just run:
@@ -92,7 +115,7 @@ If you already have the site running, just run:
 php artisan migrate
 ```
 
-The new migrations only add what is missing (`isBlocked`, `address`, `team_member_id`, and the new `contact_messages`, `projects` and `reviews` tables), so existing data is kept.
+The new migrations only add what is missing, so existing data is kept. Existing services automatically get a page URL from their title.
 
 ## Running tests
 

@@ -7,7 +7,7 @@
             <div class="card mt-4">
                 <div class="card-header">Add New Team Member</div>
                 <div class="card-body">
-                    <form action="/admin-panel/add-team" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('admin.team.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
 
                         <!-- Image File Input -->
@@ -28,6 +28,8 @@
                             <input type="text" name="position" id="position" class="form-control @error('position') is-invalid @enderror" value="{{ old('position') }}">
                             @error('position')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
+
+                        @include('pages.admin-panel.team.login-fields', ['team' => null])
 
                         <div class="d-flex justify-content-end">
                             <a href="{{ url()->previous() }}" class="btn btn-secondary me-2">Cancel</a>

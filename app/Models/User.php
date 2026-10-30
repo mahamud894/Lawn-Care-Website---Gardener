@@ -23,8 +23,10 @@ class User extends Authenticatable
         'phone',
         'password',
         'isAdmin',
+        'isGardener',
         'isAdminApproved',
         'isBlocked',
+        'google_id',
     ];
 
     /**
@@ -48,12 +50,29 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'isAdmin' => 'boolean',
+            'isGardener' => 'boolean',
             'isAdminApproved' => 'boolean',
             'isBlocked' => 'boolean',
         ];
     }
     public function bookings()
     {
-     return $this->hasMany(Booking::class);
+        return $this->hasMany(Booking::class);
+    }
+
+    /** Team profile for gardener accounts. */
+    public function teamMember()
+    {
+        return $this->hasOne(Team::class);
+    }
+
+    /** Where this user should land after logging in. */
+    public function homeRoute(): string
+    {
+        if ($this->isAdmin) {
+            return route('viewAdminPanel');
+        }
+
+        return $this->isGardener ? route('gardener.dashboard') : route('home');
     }
 }

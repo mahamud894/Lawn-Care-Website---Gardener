@@ -8,9 +8,8 @@ use App\Models\Booking;
 use App\Models\Team;
 use App\Models\Service;
 use App\Models\ContactMessage;
+use App\Models\ActivityLog;
 use App\Models\Review;
-use App\Notifications\BookingStatusChanged;
-use App\Support\SafeNotify;
 use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
@@ -41,6 +40,11 @@ class AdminController extends Controller
         ));
     }
 
+    public function viewActivityLog() {
+        $logs = ActivityLog::with('user')->latest('id')->paginate(30);
+        return view('pages.admin-panel.activity', compact('logs'));
+    }
+
     public function viewUsersList() {
         //All users from the database are being retrieved and arranged sequentially by ID.
         $users = User::orderBy('id', 'desc')->get();
@@ -68,6 +72,7 @@ class AdminController extends Controller
     }
 
     $user->save();
+    ActivityLog::record('user.role', "{$user->email} is now ".($user->isAdmin ? 'an admin' : 'a regular user'), $user);
     \RealRashid\SweetAlert\Facades\Alert::success('Success', 'User status updated successfully');
     return redirect()->back();
 }
@@ -82,6 +87,7 @@ public function deleteUser($id) {
     }
 
     // Delete permanently from database
+    ActivityLog::record('user.delete', "Deleted account {$user->email}", $user);
     $user->delete();
 
     \RealRashid\SweetAlert\Facades\Alert::success('Success', 'Account deleted successfully');
@@ -100,6 +106,7 @@ public function toggleBlock($id) {
     $user->save();
 
     $status = $user->isBlocked == 1 ? 'Blocked' : 'Unblocked';
+    ActivityLog::record('user.block', "{$status} {$user->email}", $user);
     \RealRashid\SweetAlert\Facades\Alert::success('Success', "User has been {$status} successfully");
     return redirect()->back();
 }
@@ -110,6 +117,13 @@ public function assignTeam(Request $request, $id) {
     ]);
 
     $booking = Booking::findOrFail($id);
+
+    // A gardener can't be in two places at the same time
+    if ($request->team_member_id && in_array((int) $request->team_member_id, $booking->busyTeamMemberIds())) {
+        \RealRashid\SweetAlert\Facades\Alert::error('Busy', 'This team member already has another job at the same date and time.');
+        return redirect()->back();
+    }
+
     $booking->team_member_id = $request->team_member_id ?: null;
 
     // Assigning a member approves a pending booking automatically
@@ -118,9 +132,11 @@ public function assignTeam(Request $request, $id) {
     }
 
     $booking->save();
+    $booking->load(['service', 'teamMember']);
+    ActivityLog::record('booking.assign', "Booking #{$booking->id} assigned to ".($booking->teamMember?->title ?? 'nobody'), $booking);
 
     if ($booking->team_member_id) {
-        SafeNotify::toEmail($booking->email, new BookingStatusChanged($booking->load(['service', 'teamMember'])));
+        \App\Services\BookingWorkflow::notifyCustomer($booking);
         \RealRashid\SweetAlert\Facades\Alert::success('Success', 'Team member assigned successfully!');
     } else {
         \RealRashid\SweetAlert\Facades\Alert::success('Success', 'Team member removed from this booking.');
@@ -131,8 +147,9 @@ public function assignTeam(Request $request, $id) {
 
 public function showAssignPage($id) {
     $booking = Booking::findOrFail($id);
-    $teamMembers = Team::all();
+    $teamMembers = Team::where('isActive', 1)->get();
+    $busyIds = $booking->busyTeamMemberIds();
 
-    return view('pages.admin-panel.booking.assign', compact('booking', 'teamMembers'));
+    return view('pages.admin-panel.booking.assign', compact('booking', 'teamMembers', 'busyIds'));
 }
 }

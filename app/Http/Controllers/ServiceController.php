@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Service;
 use App\Support\ImageUpload;
 use Illuminate\Http\Request;
@@ -25,6 +26,15 @@ class ServiceController extends Controller
         return view('pages.service', ['services' => $services]);
     }
 
+    /** Public page for one service, e.g. /service/lawn-mowing */
+    public function show(string $slug)
+    {
+        $service = Service::where('slug', $slug)->where('isActive', 1)->firstOrFail();
+        $others = Service::where('isActive', 1)->where('id', '!=', $service->id)->take(3)->get();
+
+        return view('pages.service-detail', compact('service', 'others'));
+    }
+
     public function viewServiceAddForm(){
         return view('pages.admin-panel.service.add');
     }
@@ -37,11 +47,15 @@ class ServiceController extends Controller
             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'icon_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
             'short_description' => 'required|string',
+            'long_description' => 'nullable|string|max:20000',
+            'price_per_100_sqft' => 'nullable|numeric|min:0',
         ]);
 
         $data['title'] = $req->title;
         $data['price'] = $req->price;
         $data['description'] = $req->short_description;
+        $data['long_description'] = $req->long_description;
+        $data['price_per_100_sqft'] = $req->price_per_100_sqft;
 
         // ২. Service Main Image Upload
         if ($req->hasFile('image_url')) {
@@ -53,7 +67,8 @@ class ServiceController extends Controller
             $data['icon_url'] = ImageUpload::store($req->file('icon_url'), 'services/icons');
         }
 
-        Service::create($data);
+        $service = Service::create($data);
+        ActivityLog::record('service.create', "Added service {$service->title}", $service);
         Alert::success('Success', 'Service create Successfull');
 
         return redirect()->route("viewServiceList");
@@ -78,6 +93,8 @@ class ServiceController extends Controller
             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'icon_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
             'short_description' => 'required|string',
+            'long_description' => 'nullable|string|max:20000',
+            'price_per_100_sqft' => 'nullable|numeric|min:0',
         ]);
 
         $service = Service::findOrFail($req->id);
@@ -85,6 +102,8 @@ class ServiceController extends Controller
         $data['title'] = $req->title;
         $data['price'] = $req->price;
         $data['description'] = $req->short_description;
+        $data['long_description'] = $req->long_description;
+        $data['price_per_100_sqft'] = $req->price_per_100_sqft;
         $data['isActive'] = $req->isActive == "1" || $req->isActive == "on" ? 1 : 0;
 
         // ২. New Main Image Upload (delete old upload new)
@@ -98,6 +117,7 @@ class ServiceController extends Controller
         }
 
         $service->update($data);
+        ActivityLog::record('service.update', "Updated service {$service->title}", $service);
         Alert::success('Success', 'Service updated Successfully');
 
         return redirect()->route("viewServiceList");
@@ -111,6 +131,7 @@ class ServiceController extends Controller
             ImageUpload::delete($service->image_url);
             ImageUpload::delete($service->icon_url);
 
+            ActivityLog::record('service.delete', "Deleted service {$service->title}", $service);
             $service->delete();
             Alert::success('Success', 'Service deleted Successfully');
         }

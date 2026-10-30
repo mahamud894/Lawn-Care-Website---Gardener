@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Gardener — Lawn Care & Gardening Services</title>
+    <title>{{ __('Gardener — Lawn Care & Gardening Services') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="lawn care, gardening, landscaping, lawn mowing, garden maintenance" name="keywords">
     <meta content="Professional lawn mowing, landscaping, pruning and garden maintenance. Book a trusted gardener online in minutes." name="description">
@@ -89,7 +89,7 @@
             </div>
             <div class="col-lg-5 px-5 text-end">
                 <div class="h-100 d-inline-flex align-items-center mx-n2">
-                    <span>Follow Us:</span>
+                    <span>{{ __('Follow Us:') }}</span>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-facebook-f"></i></a>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-twitter"></i></a>
                     <a class="btn btn-link text-light" href=""><i class="fab fa-linkedin-in"></i></a>
@@ -117,8 +117,8 @@
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-lg-8">
-                                    <h1 class="display-1 text-white mb-5 animated slideInDown">Make Your Home Like Garden</h1>
-                                    <a href="" class="btn btn-primary py-sm-3 px-sm-4">Explore More</a>
+                                    <h1 class="display-1 text-white mb-5 animated slideInDown">{{ __('Make Your Home Like Garden') }}</h1>
+                                    <a href="" class="btn btn-primary py-sm-3 px-sm-4">{{ __('Explore More') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -130,8 +130,8 @@
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-lg-7">
-                                    <h1 class="display-1 text-white mb-5 animated slideInDown">Create Your Own Small Garden At Home</h1>
-                                    <a href="" class="btn btn-primary py-sm-3 px-sm-4">Explore More</a>
+                                    <h1 class="display-1 text-white mb-5 animated slideInDown">{{ __('Create Your Own Small Garden At Home') }}</h1>
+                                    <a href="" class="btn btn-primary py-sm-3 px-sm-4">{{ __('Explore More') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -140,11 +140,11 @@
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
+                <span class="visually-hidden">{{ __('Previous') }}</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+                <span class="visually-hidden">{{ __('Next') }}</span>
             </button>
         </div>
     </div>
@@ -162,8 +162,8 @@
                                 <i class="fa fa-times text-primary"></i>
                             </div>
                             <div class="ps-3">
-                                <h4>No Hidden Cost</h4>
-                                <span>No hidden fees, no surprise charges—just 100% upfront honesty.</span>
+                                <h4>{{ __('No Hidden Cost') }}</h4>
+                                <span>{{ __('No hidden fees, no surprise charges—just 100% upfront honesty.') }}</span>
                             </div>
                         </div>
                     </div>
@@ -175,8 +175,8 @@
                                 <i class="fa fa-users text-primary"></i>
                             </div>
                             <div class="ps-3">
-                                <h4>Dedicated Team</h4>
-                                <span>Our expert team doesn't just cut grass; they understand plant health and modern landscape layouts.</span>
+                                <h4>{{ __('Dedicated Team') }}</h4>
+                                <span>{{ __('Our expert team doesn\'t just cut grass; they understand plant health and modern landscape layouts.') }}</span>
                             </div>
                         </div>
                     </div>
@@ -188,8 +188,8 @@
                                 <i class="fa fa-phone text-primary"></i>
                             </div>
                             <div class="ps-3">
-                                <h4>24/7 Available</h4>
-                                <span>From storm emergencies to quick bookings, we are always just one call away.</span>
+                                <h4>{{ __('24/7 Available') }}</h4>
+                                <span>{{ __('From storm emergencies to quick bookings, we are always just one call away.') }}</span>
                             </div>
                         </div>
                     </div>
@@ -209,25 +209,25 @@
                 </div>
                 <div class="col-lg-6 col-md-7 wow fadeInUp" data-wow-delay="0.3s">
                     <h1 class="display-1 text-primary mb-0">10</h1>
-                    <p class="text-primary mb-4">Year of Experience</p>
-                    <h1 class="display-5 mb-4">We Make Your Home Like A Garden</h1>
-                    <p class="mb-4">At Gardener, we don't just plant trees; we sculpt emotions into your backyards. We believe your outdoor space should be a living, breathing extension of your living room—a peaceful sanctuary where you can escape the digital noise of the world. Blending the science of modern botany with the art of luxury landscaping, we craft eco-friendly ecosystems that grow more beautiful with every passing season.</p>
-                    <a class="btn btn-primary py-3 px-4" href="">Explore More</a>
+                    <p class="text-primary mb-4">{{ __('Year of Experience') }}</p>
+                    <h1 class="display-5 mb-4">{{ __('We Make Your Home Like A Garden') }}</h1>
+                    <p class="mb-4">{{ __('At Gardener, we don\'t just plant trees; we sculpt emotions into your backyards. We believe your outdoor space should be a living, breathing extension of your living room—a peaceful sanctuary where you can escape the digital noise of the world. Blending the science of modern botany with the art of luxury landscaping, we craft eco-friendly ecosystems that grow more beautiful with every passing season.') }}</p>
+                    <a class="btn btn-primary py-3 px-4" href="">{{ __('Explore More') }}</a>
                 </div>
                 <div class="col-lg-3 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="row g-5">
                         <div class="col-12 col-sm-6 col-lg-12">
                             <div class="border-start ps-4">
                                 <i class="fa fa-award fa-3x text-primary mb-3"></i>
-                                <h4 class="mb-3">Award Winning</h4>
-                                <span>Recognized for excellence. Celebrated for transforming dull concrete spaces into vibrant, award-winning green ecosystems</span>
+                                <h4 class="mb-3">{{ __('Award Winning') }}</h4>
+                                <span>{{ __('Recognized for excellence. Celebrated for transforming dull concrete spaces into vibrant, award-winning green ecosystems') }}</span>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-12">
                             <div class="border-start ps-4">
                                 <i class="fa fa-users fa-3x text-primary mb-3"></i>
-                                <h4 class="mb-3">Dedicated Team</h4>
-                                <span>Our team of experienced professionals is committed to delivering exceptional results for every client.</span>
+                                <h4 class="mb-3">{{ __('Dedicated Team') }}</h4>
+                                <span>{{ __('Our team of experienced professionals is committed to delivering exceptional results for every client.') }}</span>
                             </div>
                         </div>
                     </div>
@@ -244,19 +244,19 @@
             <div class="row g-5">
                 <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
                     <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 fw-semi-bold text-light">Happy Clients</span>
+                    <span class="fs-5 fw-semi-bold text-light">{{ __('Happy Clients') }}</span>
                 </div>
                 <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
                     <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 fw-semi-bold text-light">Garden Complated</span>
+                    <span class="fs-5 fw-semi-bold text-light">{{ __('Garden Complated') }}</span>
                 </div>
                 <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.5s">
                     <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 fw-semi-bold text-light">Dedicated Staff</span>
+                    <span class="fs-5 fw-semi-bold text-light">{{ __('Dedicated Staff') }}</span>
                 </div>
                 <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.7s">
                     <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 fw-semi-bold text-light">Awards Achieved</span>
+                    <span class="fs-5 fw-semi-bold text-light">{{ __('Awards Achieved') }}</span>
                 </div>
             </div>
         </div>
@@ -269,10 +269,10 @@
         <div class="container">
             <div class="row g-5 align-items-center">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <p class="fs-5 fw-bold text-primary">Why Choosing Us!</p>
-                    <h1 class="display-5 mb-4">Few Reasons Why People Choose Us!</h1>
-                    <p class="mb-4">Ready to experience the ultimate gardening and landscaping service? Our dedicated team blends modern tools with eco-friendly practices to keep your garden blooming in every season. From residential yards to massive commercial projects, we treat every lawn with unmatched care and perfection. Discover why hundreds of homeowners trust us to make their homes look like a paradise.</p>
-                    <a class="btn btn-primary py-3 px-4" href="">Explore More</a>
+                    <p class="fs-5 fw-bold text-primary">{{ __('Why Choosing Us!') }}</p>
+                    <h1 class="display-5 mb-4">{{ __('Few Reasons Why People Choose Us!') }}</h1>
+                    <p class="mb-4">{{ __('Ready to experience the ultimate gardening and landscaping service? Our dedicated team blends modern tools with eco-friendly practices to keep your garden blooming in every season. From residential yards to massive commercial projects, we treat every lawn with unmatched care and perfection. Discover why hundreds of homeowners trust us to make their homes look like a paradise.') }}</p>
+                    <a class="btn btn-primary py-3 px-4" href="">{{ __('Explore More') }}</a>
                 </div>
                 <div class="col-lg-6">
                     <div class="row g-4 align-items-center">
@@ -283,7 +283,7 @@
                                         <div class="btn-square bg-light rounded-circle mx-auto mb-4" style="width: 90px; height: 90px;">
                                             <i class="fa fa-check fa-3x text-primary"></i>
                                         </div>
-                                        <h4 class="mb-0">100% Satisfaction</h4>
+                                        <h4 class="mb-0">{{ __('100% Satisfaction') }}</h4>
                                     </div>
                                 </div>
                                 <div class="col-12 wow fadeIn" data-wow-delay="0.5s">
@@ -291,7 +291,7 @@
                                         <div class="btn-square bg-light rounded-circle mx-auto mb-4" style="width: 90px; height: 90px;">
                                             <i class="fa fa-users fa-3x text-primary"></i>
                                         </div>
-                                        <h4 class="mb-0">Dedicated Team</h4>
+                                        <h4 class="mb-0">{{ __('Dedicated Team') }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -301,7 +301,7 @@
                                 <div class="btn-square bg-light rounded-circle mx-auto mb-4" style="width: 90px; height: 90px;">
                                     <i class="fa fa-tools fa-3x text-primary"></i>
                                 </div>
-                                <h4 class="mb-0">Modern Equipment</h4>
+                                <h4 class="mb-0">{{ __('Modern Equipment') }}</h4>
                             </div>
                         </div>
                     </div>
@@ -316,8 +316,8 @@
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-                <p class="fs-5 fw-bold text-primary">Our Services</p>
-                <h1 class="display-5 mb-5">Services That We Offer For You</h1>
+                <p class="fs-5 fw-bold text-primary">{{ __('Our Services') }}</p>
+                <h1 class="display-5 mb-5">{{ __('Services That We Offer For You') }}</h1>
             </div>
             <div class="row g-4">
               @foreach($services as $service)
@@ -327,7 +327,7 @@
                         <!-- 💡 Pricing Badge Added -->
                         @if(!empty($service->price))
                             <div class="service-price-badge">
-                                ${{ number_format($service->price, 2) }}
+                                {{ money($service->price) }}
                             </div>
                         @endif
 
@@ -338,17 +338,18 @@
                             <div class="btn-square rounded-circle mx-auto mb-3">
                                 <img class="img-fluid" src="{{ asset($service->icon_url) }}" alt="Icon">
                             </div>
-                            <h4 class="mb-2">{{ $service->title }}</h4>
+                            <h4 class="mb-2"><a href="{{ $service->slug ? route('service.show', $service->slug) : route('service') }}" class="text-dark">{{ $service->title }}</a></h4>
 
                             <!-- 💡 Optional Price Sub-display -->
                             @if(!empty($service->price))
-                                <p class="text-primary fw-bold mb-3">${{ number_format($service->price, 2) }}</p>
+                                <p class="text-primary fw-bold mb-3">{{ money($service->price) }}</p>
                             @endif
 
                             <p class="mb-4">{{ $service->description }}</p>
                             <a class="btn btn-sm" href="{{ route('quote', ['service_id' => $service->id]) }}">
-                                <i class="fa fa-plus text-primary me-2"></i>Book Now
+                                <i class="fa fa-plus text-primary me-2"></i>{{ __('Book Now') }}
                             </a>
+                        @if($service->slug)<a class="btn btn-sm" href="{{ route('service.show', $service->slug) }}"><i class="fa fa-info-circle text-primary me-2"></i>{{ __('Details') }}</a>@endif
                         </div>
                     </div>
                 </div>
@@ -366,95 +367,10 @@
             <div class="row justify-content-center">
                 <div class="col-lg-7">
                     <div class="bg-white rounded p-4 p-sm-5 wow fadeIn" data-wow-delay="0.5s">
-                        <h1 class="display-5 text-center mb-3">Request A Quote</h1>
-                        <p class="fs-5 fw-bold text-primary text-center mb-4">Please complete and submit the form below to get started.</p>
+                        <h1 class="display-5 text-center mb-3">{{ __('Request A Quote') }}</h1>
+                        <p class="fs-5 fw-bold text-primary text-center mb-4">{{ __('Please complete and submit the form below to get started.') }}</p>
 
-                        @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
-
-                        <form action="{{ route('createBooking') }}" method="post">
-                            @csrf
-                            <div class="row g-3">
-
-                                {{-- Booking For Options --}}
-                                <div class="col-12 mb-2 text-start">
-                                    <label class="form-label fw-bold text-dark">Booking For:</label>
-                                    <div class="d-flex gap-4">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="booking_for" id="homeForMyself" value="myself" checked>
-                                            <label class="form-check-label text-dark" for="homeForMyself">
-                                                For Myself
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="booking_for" id="homeForOthers" value="others">
-                                            <label class="form-check-label text-dark" for="homeForOthers">
-                                                For Someone Else
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- Name Input --}}
-                                <div class="col-xl-12">
-                                    <input name="name" id="home_user_name" value="{{ old('name', Auth::check() ? Auth::user()->name : '') }}" type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;" required>
-                                </div>
-
-                                {{-- Email Input --}}
-                                <div class="col-12">
-                                    <input name="email" id="home_user_email" value="{{ old('email', Auth::check() ? Auth::user()->email : '') }}" type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;" required>
-                                </div>
-
-                                <div class="col-12">
-                                    <input type="text" name="address" value="{{ old('address') }}" class="form-control border-0 bg-light px-4" placeholder="Your Address" style="height: 55px;" required>
-                                </div>
-
-                                {{-- Service Selection Dropdown with Price --}}
-                                <div class="col-12">
-                                    <select name="service" id="homeServiceSelect" class="form-select bg-light border-0" style="height: 55px;" required>
-                                        <option value="" selected disabled>Select A Service</option>
-                                        @foreach($services as $service)
-                                            <option value="{{ $service->id }}">
-                                                {{ $service->title }} {{ !empty($service->price) ? '($' . number_format($service->price, 2) . ')' : '' }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                {{-- Date Input --}}
-                                <div class="col-12">
-                                    <input name="preferred_date" id="booking_date" type="date" min="{{ now()->addDay()->toDateString() }}" class="form-control bg-light border-0" style="height: 55px;" required>
-                                </div>
-
-                                {{-- Time Slot Selection Dropdown --}}
-                                <div class="col-12">
-                                    <select id="time_slot" name="time_slot" class="form-control bg-light border-0" style="height: 55px; color: #6c757d; background-color: #f8f9fa !important;" required disabled>
-                                        <option value="">First select a date</option>
-                                    </select>
-                                </div>
-
-                                {{-- Message Field --}}
-                                <div class="col-12">
-                                    <textarea name="message" class="form-control bg-light border-0" rows="3" placeholder="Message"></textarea>
-                                </div>
-
-                                {{-- Submit Button --}}
-                                <div class="col-12">
-                                    @if(Auth::user())
-                                    <button class="btn btn-dark w-100 py-3" type="submit">Submit</button>
-                                    @else
-                                    <a href="/login" class="btn btn-dark w-100 py-3">Submit</a>
-                                    @endif
-                                </div>
-                            </div>
-                        </form>
+                        @include('common.site.booking-form', ['formId' => 'home'])
                     </div>
                 </div>
             </div>
@@ -467,8 +383,8 @@
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-                <p class="fs-5 fw-bold text-primary">Our Projects</p>
-                <h1 class="display-5 mb-5">Some Of Our Wonderful Projects</h1>
+                <p class="fs-5 fw-bold text-primary">{{ __('Our Projects') }}</p>
+                <h1 class="display-5 mb-5">{{ __('Some Of Our Wonderful Projects') }}</h1>
             </div>
             @include('common.site.projects-grid', ['limit' => 3])
         </div>
@@ -480,8 +396,8 @@
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-                <p class="fs-5 fw-bold text-primary">Our Team</p>
-                <h1 class="display-5 mb-5">Dedicated & Experienced Team Members</h1>
+                <p class="fs-5 fw-bold text-primary">{{ __('Our Team') }}</p>
+                <h1 class="display-5 mb-5">{{ __('Dedicated & Experienced Team Members') }}</h1>
             </div>
             <div class="row g-4">
                 @forelse($team as $member)
@@ -502,7 +418,7 @@
                 @empty
                 <div class="col-12">
                     <div class="text-center py-5">
-                        <p class="mb-0 text-muted">No team members available at the moment.</p>
+                        <p class="mb-0 text-muted">{{ __('No team members available at the moment.') }}</p>
                     </div>
                 </div>
                 @endforelse
@@ -517,10 +433,10 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-5 wow fadeInUp" data-wow-delay="0.1s">
-                    <p class="fs-5 fw-bold text-primary">Testimonial</p>
-                    <h1 class="display-5 mb-5">What Our Clients Say About Us!</h1>
-                    <p class="mb-4">Real stories from real homeowners. Discover how our passion for landscaping and premium garden care has helped hundreds of clients create their dream outdoor sanctuaries.</p>
-                    <a class="btn btn-primary py-3 px-4" href="{{ route('quote') }}">Book A Service</a>
+                    <p class="fs-5 fw-bold text-primary">{{ __('Testimonial') }}</p>
+                    <h1 class="display-5 mb-5">{{ __('What Our Clients Say About Us!') }}</h1>
+                    <p class="mb-4">{{ __('Real stories from real homeowners. Discover how our passion for landscaping and premium garden care has helped hundreds of clients create their dream outdoor sanctuaries.') }}</p>
+                    <a class="btn btn-primary py-3 px-4" href="{{ route('quote') }}">{{ __('Book A Service') }}</a>
                 </div>
                 <div class="col-lg-7 wow fadeInUp" data-wow-delay="0.5s">
                     @include('common.site.testimonials')
@@ -555,58 +471,7 @@
     <!-- Template Javascript -->
     <script src="{{ asset('site/js/main.js') }}"></script>
 
-    <script>
-        function selectServiceOnHome(serviceId) {
-            var selectBox = document.getElementById('homeServiceSelect');
-            if(selectBox) {
-                selectBox.value = serviceId;
-            }
-        }
-
-        $(document).ready(function() {
-            var loggedInName = "{{ Auth::check() ? Auth::user()->name : '' }}";
-            var loggedInEmail = "{{ Auth::check() ? Auth::user()->email : '' }}";
-
-            $('input[name="booking_for"]').on('change', function() {
-                if ($(this).val() === 'myself') {
-                    $('#home_user_name').val(loggedInName);
-                    $('#home_user_email').val(loggedInEmail);
-                } else if ($(this).val() === 'others') {
-                    $('#home_user_name').val('').focus();
-                    $('#home_user_email').val('');
-                }
-            });
-
-            $('#booking_date').on('change', function() {
-                var date = $(this).val();
-                if(date) {
-                    $('#time_slot').html('<option value="">Loading slots...</option>').prop('disabled', true).css('color', '#6c757d');
-
-                    $.ajax({
-                        url: "{{ route('checkSlots') }}",
-                        type: 'GET',
-                        data: { date: date },
-                        dataType: 'json',
-                        success: function(bookedSlots) {
-                            var allSlots = @json(\App\Models\Booking::TIME_SLOTS);
-                            var freeSlots = allSlots.filter(function(slot) { return !bookedSlots.includes(slot); });
-                            var html = freeSlots.length
-                                ? '<option value="">Select a Time Slot</option>'
-                                : '<option value="">No free slots on this day — pick another date</option>';
-                            freeSlots.forEach(function(slot) {
-                                html += '<option value="' + slot + '">' + slot + '</option>';
-                            });
-
-                            $('#time_slot').html(html).prop('disabled', false).css('color', '#212529');
-                        },
-                        error: function() {
-                            $('#time_slot').html('<option value="">Error loading slots</option>');
-                        }
-                    });
-                }
-            });
-        });
-    </script>
+    @include('common.site.booking-form-script')
 
     @include('sweetalert::alert')
 </body>

@@ -39,6 +39,12 @@ class BookingStatusChanged extends Notification
             $mail->line('Assigned gardener: '.$b->teamMember->title);
         }
 
+        // After a finished job, ask for a review
+        if ($b->status === 'done' && $b->user_id) {
+            return $mail->line('How did we do? Your review helps other customers choose us.')
+                ->action('Leave a review', route('user.dashboard'));
+        }
+
         return $mail->action('View my bookings', route('user.dashboard'));
     }
 }

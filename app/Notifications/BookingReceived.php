@@ -23,7 +23,7 @@ class BookingReceived extends Notification
         return (new MailMessage)
             ->subject('We received your booking request')
             ->greeting('Hi '.$b->name.',')
-            ->line('Thank you for choosing '.config('app.name').'! We have received your request.')
+            ->line('Thank you for choosing '.config('gardener.business_name').'! We have received your request.')
             ->line('Service: '.($b->service->title ?? 'Not specified'))
             ->line('Date: '.($b->preferred_date ?? 'Not specified').' — '.($b->time_slot ?? ''))
             ->line('Address: '.$b->address)

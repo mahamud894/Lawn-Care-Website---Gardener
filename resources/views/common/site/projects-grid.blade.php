@@ -27,9 +27,9 @@
 <div class="row wow fadeInUp" data-wow-delay="0.3s">
     <div class="col-12 text-center">
         <ul class="list-inline rounded mb-5" id="portfolio-flters">
-            <li class="mx-2 active" data-filter="*">All</li>
-            <li class="mx-2" data-filter=".first">Complete Projects</li>
-            <li class="mx-2" data-filter=".second">Ongoing Projects</li>
+            <li class="mx-2 active" data-filter="*">{{ __('All') }}</li>
+            <li class="mx-2" data-filter=".first">{{ __('Complete Projects') }}</li>
+            <li class="mx-2" data-filter=".second">{{ __('Ongoing Projects') }}</li>
         </ul>
     </div>
 </div>

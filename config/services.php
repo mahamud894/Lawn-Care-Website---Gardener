@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    // "Sign in with Google" — create credentials at https://console.cloud.google.com/apis/credentials
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+    ],
+
 ];

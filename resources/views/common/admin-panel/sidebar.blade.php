@@ -25,6 +25,12 @@
                     class="bi bi-journal-plus me-2"></i></i>Booking List</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link {{ Route::is('admin.calendar') ? 'active' : '' }}" href="{{ route('admin.calendar') }}"><i class="bi bi-calendar3 me-2"></i>Calendar</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ Route::is('admin.reports') ? 'active' : '' }}" href="{{ route('admin.reports') }}"><i class="bi bi-bar-chart-fill me-2"></i>Reports</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/admin-panel/add-team"><i
                     class="bi bi-person-plus-fill me-2"></i></i>Add Team Member</a>
         </li>
@@ -36,6 +42,12 @@
             <a class="nav-link {{ Route::is('admin.projects.*') ? 'active' : '' }}" href="{{ route('admin.projects.list') }}">
                 <i class="bi bi-images me-2"></i>Projects
             </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ Route::is('admin.posts.*') ? 'active' : '' }}" href="{{ route('admin.posts.list') }}"><i class="bi bi-pencil-square me-2"></i>Blog</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ Route::is('admin.faqs.*') ? 'active' : '' }}" href="{{ route('admin.faqs.list') }}"><i class="bi bi-question-circle-fill me-2"></i>FAQ</a>
         </li>
         <li class="nav-item">
             <a class="nav-link {{ Route::is('admin.messages.*') ? 'active' : '' }}" href="{{ route('admin.messages.list') }}">
@@ -54,6 +66,9 @@
                 href="{{ route('admin.users.list') }}">
                 <i class="bi bi-people-fill me-2"></i>Users
             </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ Route::is('admin.activity') ? 'active' : '' }}" href="{{ route('admin.activity') }}"><i class="bi bi-clock-history me-2"></i>Activity Log</a>
         </li>
         <li class="nav-item">
             <form action="{{ route('logout') }}" method="POST">
