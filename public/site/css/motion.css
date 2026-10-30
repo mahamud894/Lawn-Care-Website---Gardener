@@ -1,0 +1,209 @@
+/*
+ * Motion — loaded after style.css on every public page.
+ * Goal: animations that feel quick and calm, never hide content for long,
+ * and switch off for people who ask their phone/computer for less motion.
+ */
+
+:root {
+    --ease-out: cubic-bezier(.22, .61, .36, 1);   /* fast start, soft landing */
+    --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+    --reveal-distance: 24px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* ---------------------------------------------------------------
+ * Scroll reveal (WOW.js + animate.css)
+ * animate.css moves things 100% of their own height and takes 1s.
+ * Tall sections jumped from far away; now they glide a short way.
+ * --------------------------------------------------------------- */
+.animated {
+    animation-duration: .7s;
+    animation-timing-function: var(--ease-out);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translate3d(0, var(--reveal-distance), 0); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translate3d(0, calc(var(--reveal-distance) * -1), 0); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes slideInDown {
+    from { opacity: 0; transform: translate3d(0, calc(var(--reveal-distance) * -1), 0); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translate3d(calc(var(--reveal-distance) * -1), 0, 0); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translate3d(var(--reveal-distance), 0, 0); }
+    to { opacity: 1; transform: none; }
+}
+
+/* Phones: even shorter moves feel better on a small screen */
+@media (max-width: 767.98px) {
+    :root { --reveal-distance: 16px; }
+    .animated { animation-duration: .55s; }
+}
+
+/* ---------------------------------------------------------------
+ * Hero slider: soft crossfade, slow zoom on the photo,
+ * and the heading/button replay on every slide.
+ * --------------------------------------------------------------- */
+#header-carousel.carousel-fade .carousel-item {
+    transition-duration: 1s;
+    transition-timing-function: var(--ease-in-out);
+}
+
+#header-carousel .carousel-item {
+    overflow: hidden;
+}
+
+#header-carousel .carousel-item.active img,
+#header-carousel .carousel-item-next img,
+#header-carousel .carousel-item-prev img {
+    animation: heroZoom 7s var(--ease-out) both;
+}
+
+@keyframes heroZoom {
+    from { transform: scale(1.08); }
+    to { transform: scale(1); }
+}
+
+#header-carousel .hero-text {
+    opacity: 0;
+}
+
+/* Starts as soon as the next slide begins fading in (not after) */
+#header-carousel .carousel-item.active .hero-text,
+#header-carousel .carousel-item-next .hero-text,
+#header-carousel .carousel-item-prev .hero-text {
+    animation: heroTextIn .8s var(--ease-out) both;
+}
+
+#header-carousel .carousel-item.active .hero-text-2,
+#header-carousel .carousel-item-next .hero-text-2,
+#header-carousel .carousel-item-prev .hero-text-2 {
+    animation-delay: .15s;
+}
+
+@keyframes heroTextIn {
+    from { opacity: 0; transform: translate3d(0, 20px, 0); }
+    to { opacity: 1; transform: none; }
+}
+
+/* ---------------------------------------------------------------
+ * Small touches
+ * --------------------------------------------------------------- */
+.btn {
+    transition: color .2s, background-color .2s, border-color .2s, box-shadow .2s, transform .2s var(--ease-out);
+}
+
+.btn-primary:hover,
+.btn-dark:hover,
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(15, 66, 41, .18);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Visible keyboard focus (Tab key) without outlines on mouse click */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid rgba(52, 142, 56, .45);
+    outline-offset: 2px;
+}
+
+/* Navbar gets a soft shadow once you scroll */
+.navbar.fixed-top {
+    transition: box-shadow .3s var(--ease-out);
+}
+
+.navbar.fixed-top.is-scrolled {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .08) !important;
+}
+
+/* Back-to-top button slides in instead of a jQuery fade on every scroll */
+.back-to-top {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: opacity .3s var(--ease-out), transform .3s var(--ease-out), visibility 0s linear .3s;
+}
+
+.back-to-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+}
+
+/* Cards lift a little on hover (devices with a mouse only) */
+@media (hover: hover) {
+    .service-item,
+    .team-item,
+    .job-card,
+    .dashboard-card {
+        transition: transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
+    }
+
+    .team-item:hover,
+    .job-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, .08);
+    }
+}
+
+/* ---------------------------------------------------------------
+ * Respect "reduce motion" (iPhone, Android, Windows, macOS setting)
+ * --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        animation-delay: 0s !important;
+        transition-duration: .01ms !important;
+        transition-delay: 0s !important;
+    }
+
+    .wow,
+    #header-carousel .hero-text {
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    #header-carousel .carousel-item.active img {
+        animation: none !important;
+    }
+}

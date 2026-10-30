@@ -24,6 +24,7 @@
     <link href="{{ asset('site/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
     <link href="{{ asset('site/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('site/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('site/css/motion.css') }}" rel="stylesheet">
     @stack('styles')
 </head>
 <body>
@@ -31,7 +32,7 @@
         @include('common.site.navbar')
     </div>
 
-    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid page-header py-5 mb-5">
         <div class="container text-center py-5">
             <h1 class="display-4 text-white mb-4 animated slideInDown">@yield('header')</h1>
             <nav aria-label="breadcrumb animated slideInDown">

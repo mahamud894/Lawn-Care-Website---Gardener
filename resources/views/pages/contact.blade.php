@@ -33,14 +33,10 @@
 
     <!-- Template Stylesheet -->
     <link href="site/css/style.css" rel="stylesheet">
+    <link href="{{ asset('site/css/motion.css') }}" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
-    </div>
-    <!-- Spinner End -->
 
 
     <!-- Topbar Start -->
@@ -59,10 +55,8 @@
             <div class="col-lg-5 px-5 text-end">
                 <div class="h-100 d-inline-flex align-items-center mx-n2">
                     <span>{{ __('Follow Us:') }}</span>
-                    <a class="btn btn-link text-light" href=""><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-link text-light" href=""><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-link text-light" href=""><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-link text-light" href=""><i class="fab fa-instagram"></i></a>
+                    <a class="btn btn-link text-light" href="https://wa.me/{{ config('gardener.whatsapp_number') }}" target="_blank" rel="noopener" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a class="btn btn-link text-light" href="mailto:mdmahamudul894@gmail.com" title="E-mail"><i class="fa fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -79,7 +73,7 @@
 
 
     <!-- Page Header Start -->
-    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid page-header py-5 mb-5">
         <div class="container text-center py-5">
             <h1 class="display-3 text-white mb-4 animated slideInDown">{{ __('Contact Us') }}</h1>
             <nav aria-label="breadcrumb animated slideInDown">

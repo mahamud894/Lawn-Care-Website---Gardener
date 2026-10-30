@@ -38,6 +38,7 @@
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('site/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('site/css/motion.css') }}" rel="stylesheet">
     <style>
         .team-member-img {
             width: 100%;
@@ -76,11 +77,6 @@
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
-    </div>
-    <!-- Spinner End -->
 
     <!-- Topbar Start -->
      <div class="container-fluid bg-dark text-light px-0 py-2">
@@ -98,10 +94,8 @@
             <div class="col-lg-5 px-5 text-end">
                 <div class="h-100 d-inline-flex align-items-center mx-n2">
                     <span>{{ __('Follow Us:') }}</span>
-                    <a class="btn btn-link text-light" href=""><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-link text-light" href=""><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-link text-light" href=""><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-link text-light" href=""><i class="fab fa-instagram"></i></a>
+                    <a class="btn btn-link text-light" href="https://wa.me/{{ config('gardener.whatsapp_number') }}" target="_blank" rel="noopener" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a class="btn btn-link text-light" href="mailto:mdmahamudul894@gmail.com" title="E-mail"><i class="fa fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -117,7 +111,7 @@
 
     <!-- Carousel Start -->
     <div class="container-fluid p-0 wow fadeIn" data-wow-delay="0.1s">
-        <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="6000">
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img class="w-100" src="{{ asset('site/img/carousel-1.jpg') }}"
@@ -127,8 +121,8 @@
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-lg-8">
-                                    <h1 class="display-1 text-white mb-5 animated slideInDown">{{ __('Make Your Home Like Garden') }}</h1>
-                                    <a href="" class="btn btn-primary py-sm-3 px-sm-4">{{ __('Explore More') }}</a>
+                                    <h1 class="display-1 text-white mb-5 hero-text">{{ __('Make Your Home Like Garden') }}</h1>
+                                    <a href="{{ route('service') }}" class="btn btn-primary py-sm-3 px-sm-4 hero-text hero-text-2">{{ __('Explore More') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -142,8 +136,8 @@
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-lg-7">
-                                    <h1 class="display-1 text-white mb-5 animated slideInDown">{{ __('Create Your Own Small Garden At Home') }}</h1>
-                                    <a href="" class="btn btn-primary py-sm-3 px-sm-4">{{ __('Explore More') }}</a>
+                                    <h1 class="display-1 text-white mb-5 hero-text">{{ __('Create Your Own Small Garden At Home') }}</h1>
+                                    <a href="{{ route('quote') }}" class="btn btn-primary py-sm-3 px-sm-4 hero-text hero-text-2">{{ __('Get A Quote') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -226,7 +220,7 @@
                     <p class="text-primary mb-4">{{ __('Year of Experience') }}</p>
                     <h1 class="display-5 mb-4">{{ __('We Make Your Home Like A Garden') }}</h1>
                     <p class="mb-4">{{ __('At Gardener, we don\'t just plant trees; we sculpt emotions into your backyards. We believe your outdoor space should be a living, breathing extension of your living room—a peaceful sanctuary where you can escape the digital noise of the world. Blending the science of modern botany with the art of luxury landscaping, we craft eco-friendly ecosystems that grow more beautiful with every passing season.') }}</p>
-                    <a class="btn btn-primary py-3 px-4" href="">{{ __('Explore More') }}</a>
+                    <a class="btn btn-primary py-3 px-4" href="{{ route('about') }}">{{ __('Explore More') }}</a>
                 </div>
                 <div class="col-lg-3 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="row g-5">
@@ -286,7 +280,7 @@
                     <p class="fs-5 fw-bold text-primary">{{ __('Why Choosing Us!') }}</p>
                     <h1 class="display-5 mb-4">{{ __('Few Reasons Why People Choose Us!') }}</h1>
                     <p class="mb-4">{{ __('Ready to experience the ultimate gardening and landscaping service? Our dedicated team blends modern tools with eco-friendly practices to keep your garden blooming in every season. From residential yards to massive commercial projects, we treat every lawn with unmatched care and perfection. Discover why hundreds of homeowners trust us to make their homes look like a paradise.') }}</p>
-                    <a class="btn btn-primary py-3 px-4" href="">{{ __('Explore More') }}</a>
+                    <a class="btn btn-primary py-3 px-4" href="{{ route('about') }}">{{ __('Explore More') }}</a>
                 </div>
                 <div class="col-lg-6">
                     <div class="row g-4 align-items-center">

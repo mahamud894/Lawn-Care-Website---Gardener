@@ -33,14 +33,10 @@
 
     <!-- Template Stylesheet -->
     <link href="site/css/style.css" rel="stylesheet">
+    <link href="{{ asset('site/css/motion.css') }}" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
-    </div>
-    <!-- Spinner End -->
 
 
 
@@ -53,7 +49,7 @@
 
 
     <!-- Page Header Start -->
-    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid page-header py-5 mb-5">
         <div class="container text-center py-5">
             <h1 class="display-3 text-white mb-4 animated slideInDown">{{ __('Projects') }}</h1>
             <nav aria-label="breadcrumb animated slideInDown">

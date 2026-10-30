@@ -28,9 +28,13 @@ $(function () {
 
         // Free time slots for the chosen date
         var slot = form.find('.bf-slot');
+        var lastRequest = 0;
         form.find('.bf-date').on('change', function () {
             var date = $(this).val();
             if (!date) return;
+            var requestId = ++lastRequest;
+            // Keep the slot the visitor already picked (or the one from a failed submit)
+            var keep = slot.val() || slot.data('old');
             slot.html('<option value="">' + t.loading + '</option>').prop('disabled', true).css('color', '#6c757d');
 
             $.ajax({
@@ -38,16 +42,17 @@ $(function () {
                 data: { date: date },
                 dataType: 'json',
                 success: function (fullSlots) {
+                    if (requestId !== lastRequest) return; // an older answer arrived late — ignore it
                     var free = allSlots.filter(function (s) { return !fullSlots.includes(s); });
-                    var old = slot.data('old');
                     var html = '<option value="">' + (free.length ? t.select : t.none) + '</option>';
                     free.forEach(function (s) {
-                        html += '<option value="' + s + '"' + (s === old ? ' selected' : '') + '>' + s + '</option>';
+                        html += '<option value="' + s + '"' + (s === keep ? ' selected' : '') + '>' + s + '</option>';
                     });
                     slot.html(html).prop('disabled', false).css('color', '#212529');
                 },
                 error: function () {
-                    slot.html('<option value="">' + t.error + '</option>');
+                    if (requestId !== lastRequest) return;
+                    slot.html('<option value="">' + t.error + '</option>').prop('disabled', false);
                 }
             });
         });

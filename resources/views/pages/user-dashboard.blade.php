@@ -10,6 +10,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="/site/css/style.css" rel="stylesheet">
+    <link href="{{ asset('site/css/motion.css') }}" rel="stylesheet">
 
     <style>
         body {
@@ -243,13 +244,18 @@
         // Load free time slots when a new date is picked in the reschedule pop-up
         var allSlots = @json(\App\Models\Booking::TIME_SLOTS);
         // the server returns the slots that are already full
+        var lastRequest = {};
         $('.reschedule-date').on('change', function () {
             var select = $($(this).data('target'));
+            var key = $(this).data('target');
+            var requestId = lastRequest[key] = (lastRequest[key] || 0) + 1;
+            var keep = select.val();
             select.html('<option value="">Loading slots...</option>').prop('disabled', true);
             $.getJSON("{{ route('checkSlots') }}", { date: $(this).val() }, function (booked) {
+                if (requestId !== lastRequest[key]) return; // a newer date was picked meanwhile
                 var free = allSlots.filter(function (s) { return !booked.includes(s); });
                 var html = free.length ? '<option value="">Select a Time Slot</option>' : '<option value="">No free slots — pick another date</option>';
-                free.forEach(function (s) { html += '<option value="' + s + '">' + s + '</option>'; });
+                free.forEach(function (s) { html += '<option value="' + s + '"' + (s === keep ? ' selected' : '') + '>' + s + '</option>'; });
                 select.html(html).prop('disabled', false);
             });
         });
