@@ -108,7 +108,7 @@
                         </div>
                         @endif
 
-                        <form action="/admin-panel/create-booking" method="post">
+                        <form id="bookingForm" action="/admin-panel/create-booking" method="post">
                             @csrf
                             <div class="row g-3">
 
@@ -131,14 +131,19 @@
                                     </div>
                                 </div>
 
-                                {{-- Name Input (Auto-filled if logged in) --}}
-                                <div class="col-xl-12">
-                                    <input name="name" id="user_name" value="{{ old('name', Auth::check() ? Auth::user()->name : '') }}" type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;" required>
+                                {{-- Name Input (Min length validation & Live Error Message added) --}}
+                                <div class="col-xl-12 text-start">
+                                    <input name="name" id="user_name" value="{{ old('name', Auth::check() ? Auth::user()->name : '') }}" type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;" minlength="6" required>
+                                    {{-- 💡 রিয়েল-টাইম এরর মেসেজ কনটেইনার --}}
+                                    <small id="name_error" class="text-danger mt-1 fw-bold d-block" style="display: none; font-size: 13px;"></small>
                                 </div>
 
                                 {{-- Email Input (Auto-filled if logged in) --}}
                                 <div class="col-12">
                                     <input name="email" id="user_email" value="{{ old('email', Auth::check() ? Auth::user()->email : '') }}" type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;" required>
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" name="address" class="form-control border-0 bg-light px-4" placeholder="Your Address" style="height: 55px;" required>
                                 </div>
 
                                 <div class="col-12">
@@ -212,6 +217,25 @@
                 }
             });
 
+            // 💡 Real-time Name Field Validation (6 Character Check)
+            function validateNameInput() {
+                var nameVal = $('#user_name').val().trim();
+                var errorElem = $('#name_error');
+
+                if (nameVal.length > 0 && nameVal.length < 6) {
+                    errorElem.text('Name must be at least 6 characters long (' + nameVal.length + '/6)').show();
+                    $('#user_name').addClass('border border-danger');
+                } else {
+                    errorElem.text('').hide();
+                    $('#user_name').removeClass('border border-danger');
+                }
+            }
+
+
+            $('#user_name').on('keyup input change', function() {
+                validateNameInput();
+            });
+
             // Booking For Live Switch
             var loggedInName = "{{ Auth::check() ? Auth::user()->name : '' }}";
             var loggedInEmail = "{{ Auth::check() ? Auth::user()->email : '' }}";
@@ -224,10 +248,10 @@
                     $('#user_name').val('').focus();
                     $('#user_email').val('');
                 }
+                validateNameInput();
             });
 
             // Date & Time Slot AJAX Script
-           // Date & Time Slot AJAX Script
             $('#booking_date').on('change', function() {
                 var selectedDate = $(this).val();
 
@@ -235,7 +259,6 @@
                     $('#time_slot').html('<option value="">Loading slots...</option>').prop('disabled', true).css('color', '#6c757d');
 
                     $.ajax({
-                        // 💡 পরিবর্তনটি এখানে: url() হেল্পার ব্যবহার করা হয়েছে যাতে ফুল ডোমেইন ইউআরএল পায়
                         url: "{{ url('/check-available-slots') }}",
                         type: 'GET',
                         data: { date: selectedDate },

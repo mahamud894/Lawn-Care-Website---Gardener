@@ -13,15 +13,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Default Super Admin তৈরি করা
+        // Default Super Admin creaing
         User::updateOrCreate(
-            ['email' => 'admin@gmail.com'], // এই ইমেইল থাকলে আপডেট করবে, না থাকলে নতুন বানাবে
+            ['email' => 'admin@gmail.com'],
             [
                 'name' => 'Super Admin',
                 'phone' => '01700000000',
-                'password' => Hash::make('123456'), // পাসওয়ার্ড: 123456
+                'password' => Hash::make('123456'),
                 'isAdmin' => 1,
-                'isAdminApproved' => 1, // একবারে এপ্রুভড থাকবে
+                'isAdminApproved' => 1,
             ]
         );
     }

@@ -9,7 +9,7 @@
             <form action="{{ route('admin.bookings.assignTeam', $booking->id) }}" method="POST">
                 @csrf
                 <div class="mb-4">
-                    {{-- 💡 ১. সবার ওপরে Un-assign করার নতুন অপশনটি যোগ করা হলো --}}
+                    {{-- ১. Un-assign / Remove Team Member --}}
                     <div class="d-flex align-items-center p-3 mb-2 rounded border border-danger-subtle" style="background-color: #fff5f5;">
                         <input class="form-check-input me-3" type="radio" name="team_member_id" id="unassign" value="" {{ is_null($booking->team_member_id) ? 'checked' : '' }} required style="transform: scale(1.2); cursor: pointer;">
                         <label class="form-check-label text-danger fw-bold mb-0" for="unassign" style="cursor: pointer; font-size: 1rem; width: 100%;">
@@ -17,7 +17,7 @@
                         </label>
                     </div>
 
-                    {{-- ২. আপনার আগের মেম্বারদের লুপ --}}
+                    {{-- ২. Assign Team Member --}}
                     @forelse($teamMembers as $member)
                         <div class="d-flex align-items-center p-3 mb-2 rounded border" style="background-color: #f8f9fa;">
                             <input class="form-check-input me-3" type="radio" name="team_member_id" id="member_{{ $member->id }}" value="{{ $member->id }}" {{ $booking->team_member_id == $member->id ? 'checked' : '' }} required style="transform: scale(1.2); cursor: pointer;">

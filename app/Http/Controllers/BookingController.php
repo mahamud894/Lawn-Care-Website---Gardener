@@ -15,6 +15,7 @@ class BookingController extends Controller
         $rules = [
             'name' => ['required', 'min:6'],
             'email' => ['required', 'email'],
+            'address' => ['required', 'string'],
             'preferred_date' => ['nullable', 'date'],
             'time_slot' => ['required'],
         ];
@@ -27,6 +28,7 @@ class BookingController extends Controller
 
         $data["name"] = $req->name;
         $data["email"] = $req->email;
+        $data["address"] = $req->address;
         $data["message"] = $req->message;
         $data["preferred_date"] = $req->preferred_date;
         $data["time_slot"] = $req->time_slot;

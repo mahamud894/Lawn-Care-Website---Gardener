@@ -347,7 +347,7 @@
 
                             <p class="mb-4">{{ $service->description }}</p>
                             <a class="btn btn-sm" href="{{ route('quote', ['service_id' => $service->id]) }}">
-                                <i class="fa fa-plus text-primary me-2"></i>Read More
+                                <i class="fa fa-plus text-primary me-2"></i>Book Now
                             </a>
                         </div>
                     </div>
@@ -410,6 +410,10 @@
                                 {{-- Email Input --}}
                                 <div class="col-12">
                                     <input name="email" id="home_user_email" value="{{ old('email', Auth::check() ? Auth::user()->email : '') }}" type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;" required>
+                                </div>
+
+                                <div class="col-12">
+                                    <input type="text" name="address" class="form-control border-0 bg-light px-4" placeholder="Your Address" style="height: 55px;" required>
                                 </div>
 
                                 {{-- Service Selection Dropdown with Price --}}

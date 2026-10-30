@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('bookings', function (Blueprint $table) {
-            // শুধু একবার time_slot কলামটি থাকবে
+            // only time_slot cloum
             $table->string('time_slot')->nullable()->after('preferred_date');
         });
     }

@@ -8,7 +8,6 @@
                     <h5 class="card-title mb-0">Edit Service</h5>
                 </div>
                 <div class="card-body">
-                    <!-- enctype="multipart/form-data" যুক্ত করা হয়েছে -->
                     <form action="/admin-panel/edit-service" method="post" enctype="multipart/form-data">
                         @csrf
 

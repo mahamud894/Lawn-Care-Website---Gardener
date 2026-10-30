@@ -30,7 +30,7 @@ class ServiceController extends Controller
     }
 
     public function storeService(Request $req){
-        // ১. ফর্ম ভ্যালিডেশন
+        // ১. form validation
         $req->validate([
             'title' => 'required|string|max:255',
             'price' => 'nullable|numeric',
@@ -77,7 +77,7 @@ class ServiceController extends Controller
     }
 
     public function editService(Request $req){
-        // ১. ভ্যালিডেশন
+
         $req->validate([
             'title' => 'required|string|max:255',
             'price' => 'nullable|numeric',
@@ -93,7 +93,7 @@ class ServiceController extends Controller
         $data['description'] = $req->short_description;
         $data['isActive'] = $req->isActive == "1" || $req->isActive == "on" ? 1 : 0;
 
-        // ২. New Main Image Upload (পুরাতন ছবি ডিলিট করে নতুনটা সেট করা)
+        // ২. New Main Image Upload (delete old upload new)
         if ($req->hasFile('image_url')) {
             if ($service->image_url && File::exists(public_path($service->image_url))) {
                 File::delete(public_path($service->image_url));
@@ -105,7 +105,7 @@ class ServiceController extends Controller
             $data['image_url'] = 'uploads/services/' . $imageName;
         }
 
-        // ৩. New Icon Upload (পুরাতন আইকন ডিলিট করে নতুনটা সেট করা)
+        // ৩. New Icon Upload (old delete andnew set)
         if ($req->hasFile('icon_url')) {
             if ($service->icon_url && File::exists(public_path($service->icon_url))) {
                 File::delete(public_path($service->icon_url));
@@ -127,7 +127,7 @@ class ServiceController extends Controller
         $service = Service::find($id);
 
         if ($service) {
-            // সার্ভিস মুছে ফেলার সময় ফাইলগুলোও সার্ভার থেকে ডিলিট করা
+            // file remove time service will remove from server
             if ($service->image_url && File::exists(public_path($service->image_url))) {
                 File::delete(public_path($service->image_url));
             }

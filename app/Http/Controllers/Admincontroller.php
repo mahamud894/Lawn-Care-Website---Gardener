@@ -38,7 +38,7 @@ class AdminController extends Controller
         return view('pages.admin-panel.users.list', compact('users'));
     }
 
-    // ২. ওয়ান-ক্লিকে রোল পরিবর্তন (User কে Admin / Admin কে User) করার মেথড
+    // ২. one click role change (User to Admin / Admin to User) method
     public function toggleUserRole($id) {
     $user = User::findOrFail($id);
 
@@ -62,16 +62,16 @@ class AdminController extends Controller
     return redirect()->back();
 }
 public function deleteUser($id) {
-    // ডাটাবেজ থেকে ইউজার বা অ্যাডমিনকে খুঁজে বের করা হচ্ছে
+    // here finding the user or admin from database
     $user = User::findOrFail($id);
 
-    // 💡 নিরাপত্তা লজিক: লগইন থাকা মেইন এডমিন যাতে ভুল করে নিজেকে নিজে ডিলিট না করতে পারে
+    // security logic : main admin can not delete hisown logged-in account
     if (auth()->id() == $user->id) {
         \RealRashid\SweetAlert\Facades\Alert::error('Error', 'You cannot delete your own logged-in account!');
         return redirect()->back();
     }
 
-    // ডাটাবেজ থেকে পার্মানেন্টলি ডিলিট করা হচ্ছে
+    // Delete permanently from database
     $user->delete();
 
     \RealRashid\SweetAlert\Facades\Alert::success('Success', 'Account deleted successfully');
@@ -85,7 +85,7 @@ public function toggleBlock($id) {
         return redirect()->back();
     }
 
-    // ০ থাকলে ১ হবে, ১ থাকলে ০ হবে (Toggle)
+    // If 0 change in 1, If 1 change in 0  (Toggle)
     $user->isBlocked = $user->isBlocked == 1 ? 0 : 1;
     $user->save();
 
@@ -97,8 +97,7 @@ public function toggleBlock($id) {
 public function assignTeam(Request $request, $id) {
     $booking = Booking::findOrFail($id);
     $booking->team_member_id = $request->team_member_id;
-    $booking->status = 'approved'; // টিম মেম্বার এসাইন করলে বুকিং অটো এপ্রুভড হবে
-    $booking->save();
+    $booking->status = 'approved'; // If assign team member the booking approve autometicly
 
     \RealRashid\SweetAlert\Facades\Alert::success('Success', 'Team member assigned successfully!');
     return redirect()->back();

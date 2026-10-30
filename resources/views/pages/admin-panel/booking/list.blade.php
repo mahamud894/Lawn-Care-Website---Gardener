@@ -36,27 +36,27 @@
                                 <li>Name: {{$booking->user?->name ?? 'Guest'}}</li>
                                 <li>Email: {{$booking->user?->email ?? 'N/A'}}</li>
                                 <li>Phone: {{$booking->user?->phone ?? 'N/A'}}</li>
+                                <li>Address: {{$booking->address ?? 'N/A'}}</li>
                             </ul>
                         </td>
-                        {{-- ১. আপনার আগের Preferred Date কলাম --}}
+                        {{--  Preferred Date column --}}
                         <td>{{ $booking->preferred_date ? \Illuminate\Support\Carbon::parse($booking->preferred_date)->format('d M Y') : 'N/A' }}</td>
 
-                        {{-- 💡 ২. নতুন যোগ করা Time Slot এর ডাটা --}}
+                        {{-- new Time Slot data --}}
                         <td>
                             <span class="badge bg-light text-dark border">{{ $booking->time_slot ?? 'N/A' }}</span>
                         </td>
 
-                        {{-- 💡 ৩. নতুন যোগ করা Assign Team Member এর ড্রপডাউন ফর্ম --}}
+
                         <td>
-                            {{-- 💡 কন্ডিশন চেক: যদি টিম মেম্বার অলরেডি অ্যাসাইন করা থাকে --}}
+                            {{--  Condition check: If a team member is already assigned --}}
                             @if($booking->team_member_id)
                                 <div class="d-flex flex-column align-items-center">
-                                    {{-- সবুজ ব্যাজ --}}
+
                                     <span class="badge bg-success rounded-pill px-3 py-2 fw-bold text-white d-inline-flex align-items-center gap-1">
                                         <i class="bi bi-person-check-fill"></i> Member Assigned
                                     </span>
 
-                                    {{-- মেম্বারের নাম/আইডি এবং পাশে চেঞ্জ করার এডিট লিঙ্ক 💡 --}}
                                     <div class="small mt-1 d-flex align-items-center gap-1">
                                         <span class="text-muted">({{ $booking->teamMember?->name ?? 'ID: '.$booking->team_member_id }})</span>
                                         <a href="{{ route('admin.bookings.assignView', $booking->id) }}" class="text-primary text-decoration-none fw-bold ms-1" title="Change Team Member">
@@ -65,7 +65,7 @@
                                     </div>
                                 </div>
                             @else
-                                {{-- 💡 যদি অ্যাসাইন করা না থাকে, তবে আগের বাটনটি দেখাবে --}}
+                                {{--  Condition check: If no team member is assigned --}}
                                 <div class="text-center">
                                     <a href="{{ route('admin.bookings.assignView', $booking->id) }}" class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-bold">
                                         <i class="bi bi-person-plus-fill me-1"></i> Assign Team
@@ -73,7 +73,7 @@
                                 </div>
                             @endif
                         </td>
-                        {{-- ৪. আপনার আগের মেসেজ কলামটি এখন ঠিকঠাক জায়গামতো আছে --}}
+
                         <td>{{$booking->message}}</td>
 
                         <td>

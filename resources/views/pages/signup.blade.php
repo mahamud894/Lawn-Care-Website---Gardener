@@ -51,7 +51,7 @@
                     placeholder="Enter your phone"
                 >
             </div>
-            {{-- 💡 রেড মার্ক করা অংশ: এখানে Tailwind CSS এর সাথে নিখুঁত ডিজাইন ও গ্যাপ নিশ্চিত করা হয়েছে --}}
+
             <div>
                 <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Register As</label>
                 <select

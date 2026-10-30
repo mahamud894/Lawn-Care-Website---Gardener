@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('image_url')->nullable(); // ছবি না দিলেও যেন সমস্যা না হয়
-            $table->string('icon_url')->nullable();  // আইকন অপশনাল রাখা হলো
-            $table->decimal('price', 10, 2)->nullable(); // প্রাইসিং যুক্ত করা হলো (যেমন: 99.99)
+            $table->string('image_url')->nullable();
+            $table->string('icon_url')->nullable();
+            $table->decimal('price', 10, 2)->nullable();
             $table->text('description');
             $table->boolean('isActive')->default(true);
             $table->timestamps();

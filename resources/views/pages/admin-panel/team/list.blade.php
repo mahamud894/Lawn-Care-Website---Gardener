@@ -25,7 +25,7 @@
                     <tr>
                         <td>
                             @if(!empty($teamMember->image_url))
-                                {{-- ছবি অনলাইন লিংক হলে সরাসরি দেখাবে, আর লোকাল হলে asset() দিয়ে লোড করবে --}}
+                                {{--  the image is an online link, it will be displayed directly; if it is local, it will be loaded using `asset()`. --}}
                                 <img src="{{ \Illuminate\Support\Str::startsWith($teamMember->image_url, ['http://', 'https://']) ? $teamMember->image_url : asset($teamMember->image_url) }}"
                                      alt="{{ $teamMember->title }}"
                                      style="height: 64px; width: 64px; object-fit: cover; border-radius: 4px;">

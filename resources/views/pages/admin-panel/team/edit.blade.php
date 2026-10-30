@@ -8,7 +8,6 @@
                     <h5 class="card-title mb-0">Edit Team Member</h5>
                 </div>
                 <div class="card-body">
-                    <!-- enctype="multipart/form-data" adding -->
                     <form action="/admin-panel/edit-team" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" value="{{$team->id}}">

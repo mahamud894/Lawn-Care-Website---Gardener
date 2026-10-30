@@ -7,7 +7,6 @@
             <div class="card mt-4">
                 <div class="card-header">Add New Service</div>
                 <div class="card-body">
-                    <!-- enctype="multipart/form-data" যোগ করা হয়েছে -->
                     <form action="/admin-panel/add-service" method="post" enctype="multipart/form-data">
                         @csrf
 
