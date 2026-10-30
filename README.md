@@ -1,6 +1,25 @@
-# 🌿 Gardener — Lawn Care & Gardening Website
+<h1 align="center">🌿 Gardener</h1>
 
-A full lawn care business website built with **Laravel 12**. Customers can browse services, book a visit for a specific date and time slot, track their bookings and leave reviews. The owner runs everything from an admin panel.
+<p align="center">
+  <b>Lawn care & gardening business website — online booking, gardener portal, payments and admin panel.</b>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/PHP-8.2%2B-777BB4?logo=php&logoColor=white" alt="PHP 8.2+">
+  <img src="https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel&logoColor=white" alt="Laravel 12">
+  <img src="https://img.shields.io/badge/Bootstrap-5-7952B3?logo=bootstrap&logoColor=white" alt="Bootstrap 5">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS 4">
+  <img src="https://img.shields.io/badge/Vite-7-646CFF?logo=vite&logoColor=white" alt="Vite 7">
+  <br>
+  <img src="https://img.shields.io/badge/database-MySQL%20%7C%20SQLite-4479A1?logo=mysql&logoColor=white" alt="MySQL or SQLite">
+  <img src="https://img.shields.io/badge/payments-bKash%20%7C%20Nagad%20%7C%20Cards-E2136E" alt="bKash, Nagad, cards via SSLCommerz">
+  <img src="https://img.shields.io/badge/language-English%20%7C%20%E0%A6%AC%E0%A6%BE%E0%A6%82%E0%A6%B2%E0%A6%BE-2E7D32" alt="English and Bangla">
+  <img src="https://img.shields.io/badge/tested%20with-Pest-F28D1A" alt="Tested with Pest">
+</p>
+
+---
+
+A full lawn care business website built with **Laravel 12**. Customers can browse services, book a visit for a specific date and time slot, track their bookings and leave reviews. Gardeners see their jobs on their phone, and the owner runs everything from an admin panel.
 
 ## Features
 
