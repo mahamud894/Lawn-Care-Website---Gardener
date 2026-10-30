@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -60,13 +62,27 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
+        // Only wrong passwords count towards the limit (5 per minute for one
+        // e-mail from one IP), so people sharing a Wi-Fi can still log in.
+        $throttleKey = 'login:'.Str::lower($credentials['email']).'|'.$request->ip();
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+            Alert::error(__('Too many attempts'), __('Please wait :seconds seconds and try again.', ['seconds' => $seconds]));
+
+            return redirect()->back()->withInput($request->only('email'));
+        }
+
         // Check the password first, so we never reveal whether an e-mail
         // is registered / blocked / pending to someone who doesn't know it.
         if (! Auth::validate($credentials)) {
+            RateLimiter::hit($throttleKey, 60);
             Alert::error('Error', 'Invalid Credentials!');
 
             return redirect()->back()->withInput($request->only('email'));
         }
+
+        RateLimiter::clear($throttleKey);
 
         $user = User::where('email', $credentials['email'])->first();
 

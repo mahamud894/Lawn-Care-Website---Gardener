@@ -122,6 +122,14 @@ class Booking extends Model
             ->all();
     }
 
+    /** Position of a time slot in the day (09:00 AM = 0 …), for sorting. */
+    public static function slotOrder(?string $slot): int
+    {
+        $i = array_search($slot, self::TIME_SLOTS, true);
+
+        return $i === false ? 99 : $i;
+    }
+
     /** Team members already working another booking at this date + slot. */
     public function busyTeamMemberIds(): array
     {

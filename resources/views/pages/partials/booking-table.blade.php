@@ -82,7 +82,7 @@
                             </button>
                         @endif
 
-                        @if(in_array($booking->status, ['pending', 'approved']))
+                        @if(in_array($booking->status, ['pending', 'approved']) && ! $booking->isPaid())
                             <form action="{{ route('user.bookings.cancel', $booking) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Cancel this booking?') }}')">
                                 @csrf
                                 <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">

@@ -22,9 +22,10 @@ class GardenerController extends Controller
         $jobs = Booking::with('service')
             ->where('team_member_id', $member->id)
             ->whereIn('status', ['approved', 'pending'])
-            ->orderBy('preferred_date')
-            ->orderBy('time_slot')
-            ->get();
+            ->get()
+            // Sort by date, then by real time of day (not alphabetically: "02:00 PM" < "09:00 AM")
+            ->sortBy(fn ($b) => substr((string) $b->preferred_date, 0, 10).'-'.str_pad(Booking::slotOrder($b->time_slot), 2, '0', STR_PAD_LEFT))
+            ->values();
 
         $todayJobs = $jobs->filter(fn ($b) => substr((string) $b->preferred_date, 0, 10) === $today);
         $upcomingJobs = $jobs->filter(fn ($b) => substr((string) $b->preferred_date, 0, 10) > $today);

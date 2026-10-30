@@ -81,10 +81,22 @@ class BookingWorkflow
             return null;
         }
 
-        $date = $nextDate->toDateString();
-        $slot = Booking::slotIsTaken($date, $booking->time_slot)
-            ? collect(Booking::TIME_SLOTS)->first(fn ($s) => ! Booking::slotIsTaken($date, $s))
-            : $booking->time_slot;
+        // Same slot if free; otherwise the first free slot that day;
+        // if the whole day is full, try the following days (up to 2 weeks).
+        $date = null;
+        $slot = null;
+        for ($i = 0; $i < 14 && ! $slot; $i++) {
+            $date = $nextDate->copy()->addDays($i)->toDateString();
+            $slot = ! Booking::slotIsTaken($date, $booking->time_slot)
+                ? $booking->time_slot
+                : collect(Booking::TIME_SLOTS)->first(fn ($s) => ! Booking::slotIsTaken($date, $s));
+        }
+
+        if (! $slot) {
+            ActivityLog::record('booking.recurring', "No free slot found for the next visit of #{$booking->id}", $booking);
+
+            return null;
+        }
 
         $next = Booking::create([
             'name' => $booking->name,
@@ -97,7 +109,9 @@ class BookingWorkflow
             'service_id' => $booking->service_id,
             'user_id' => $booking->user_id,
             // Keep the same gardener if they are free
-            'team_member_id' => $slot === $booking->time_slot ? $booking->team_member_id : null,
+            'team_member_id' => $slot === $booking->time_slot && ! in_array($booking->team_member_id, Booking::query()->whereDate('preferred_date', $date)->where('time_slot', $slot)->whereIn('status', Booking::ACTIVE_STATUSES)->pluck('team_member_id')->all())
+                ? $booking->team_member_id
+                : null,
             'preferred_date' => $date,
             'time_slot' => $slot,
             'recurrence' => $booking->recurrence,

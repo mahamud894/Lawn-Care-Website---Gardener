@@ -61,3 +61,13 @@
 # .jfif photos are JPEGs
 AddType image/jpeg .jfif
 AddType image/webp .webp
+
+# Same upload limits for hosts running PHP as an Apache module
+<IfModule mod_php.c>
+    php_value upload_max_filesize 10M
+    php_value post_max_size 32M
+</IfModule>
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 10M
+    php_value post_max_size 32M
+</IfModule>

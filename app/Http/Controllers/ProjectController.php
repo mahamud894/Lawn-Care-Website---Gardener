@@ -83,7 +83,7 @@ class ProjectController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'category' => ['required', Rule::in(array_keys(Project::CATEGORIES))],
             'description' => ['nullable', 'string', 'max:2000'],
-            'image' => [$imageRequired ? 'required' : 'nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:3072'],
+            'image' => [$imageRequired ? 'required' : 'nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:8192'],
         ]);
 
         return [

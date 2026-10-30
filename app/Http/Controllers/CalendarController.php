@@ -24,8 +24,8 @@ class CalendarController extends Controller
         $bookings = Booking::with(['service', 'teamMember'])
             ->whereBetween('preferred_date', [$start->toDateString(), $end->toDateString().' 23:59:59'])
             ->whereNotIn('status', ['cancelled', 'rejected'])
-            ->orderBy('time_slot')
             ->get()
+            ->sortBy(fn ($b) => Booking::slotOrder($b->time_slot))
             ->groupBy(fn ($b) => substr((string) $b->preferred_date, 0, 10));
 
         $weeks = [];

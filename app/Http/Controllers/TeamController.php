@@ -25,7 +25,7 @@ class TeamController extends Controller
         $req->validate([
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048', // Max 2MB
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:8192', // shrunk automatically after upload
             'login_email' => 'nullable|email|max:255',
             'login_password' => 'nullable|string|min:8',
         ]);
@@ -86,7 +86,7 @@ class TeamController extends Controller
             'id' => 'required|exists:teams,id',
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8192',
             'isActive' => 'sometimes|in:on',
             'login_email' => 'nullable|email|max:255',
             'login_password' => 'nullable|string|min:8',

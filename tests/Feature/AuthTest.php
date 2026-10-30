@@ -55,14 +55,25 @@ it('refuses blocked users even with the right password', function () {
     $this->assertGuest();
 });
 
-it('rate-limits repeated login attempts', function () {
-    $user = User::factory()->create();
+it('locks an e-mail after 5 wrong passwords, even if the 6th is right', function () {
+    $user = User::factory()->create(['password' => 'password123']);
 
     foreach (range(1, 5) as $i) {
         $this->post('/login', ['email' => $user->email, 'password' => 'wrong']);
     }
 
-    $this->post('/login', ['email' => $user->email, 'password' => 'wrong'])->assertStatus(429);
+    $this->post('/login', ['email' => $user->email, 'password' => 'password123']);
+    $this->assertGuest();
+});
+
+it('does not block other people logging in from the same network', function () {
+    $users = User::factory()->count(7)->create(['password' => 'password123']);
+
+    foreach ($users as $user) {
+        $this->post('/login', ['email' => $user->email, 'password' => 'password123'])->assertRedirect();
+        $this->assertAuthenticatedAs($user);
+        $this->post('/logout');
+    }
 });
 
 it('only logs out via POST', function () {

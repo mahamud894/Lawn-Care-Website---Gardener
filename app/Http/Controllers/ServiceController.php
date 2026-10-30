@@ -42,8 +42,8 @@ class ServiceController extends Controller
         $req->validate([
             'title' => 'required|string|max:255',
             'price' => 'nullable|numeric',
-            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'icon_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8192',
+            'icon_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'short_description' => 'required|string',
             'long_description' => 'nullable|string|max:20000',
             'price_per_100_sqft' => 'nullable|numeric|min:0',
@@ -88,8 +88,8 @@ class ServiceController extends Controller
         $req->validate([
             'title' => 'required|string|max:255',
             'price' => 'nullable|numeric',
-            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'icon_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8192',
+            'icon_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'short_description' => 'required|string',
             'long_description' => 'nullable|string|max:20000',
             'price_per_100_sqft' => 'nullable|numeric|min:0',

@@ -45,10 +45,10 @@ Route::get('/lang/{locale}', function (string $locale) {
 Route::get('/project', [ProjectController::class, 'viewProjectPage'])->name('project');
 
 Route::get('/contact', [ContactController::class, 'viewContactPage'])->name('contact');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store')->middleware('throttle:5,1');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store')->middleware('throttle:contact');
 
 Route::get('/quote', [BookingController::class, 'viewQuotePage'])->name('quote');
-Route::post('/bookings', [BookingController::class, 'createBooking'])->name('createBooking')->middleware('throttle:10,1');
+Route::post('/bookings', [BookingController::class, 'createBooking'])->name('createBooking')->middleware('throttle:booking');
 // Returns the time slots already taken on a date (used by the quote form)
 Route::get('/check-available-slots', [BookingController::class, 'checkSlots'])->name('checkSlots');
 
@@ -72,13 +72,14 @@ Route::get('/sitemap.xml', function () {
 */
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'viewLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'loginCheck'])->name('loginCheck')->middleware('throttle:5,1');
+    // Wrong passwords are limited per e-mail inside the controller; this only stops floods
+    Route::post('/login', [AuthController::class, 'loginCheck'])->name('loginCheck')->middleware('throttle:login');
 
     Route::get('/signup', [AuthController::class, 'viewSignup'])->name('viewSignup');
-    Route::post('/signup', [AuthController::class, 'signup'])->name('signup')->middleware('throttle:5,1');
+    Route::post('/signup', [AuthController::class, 'signup'])->name('signup')->middleware('throttle:signup');
 
     Route::get('/forgot-password', [PasswordResetController::class, 'viewForgotForm'])->name('password.request');
-    Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])->name('password.email')->middleware('throttle:5,1');
+    Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])->name('password.email')->middleware('throttle:password-reset');
     Route::get('/reset-password/{token}', [PasswordResetController::class, 'viewResetForm'])->name('password.reset');
     Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])->name('password.update');
 

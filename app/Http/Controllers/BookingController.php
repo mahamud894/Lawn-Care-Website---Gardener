@@ -57,11 +57,15 @@ class BookingController extends Controller
             'recurrence' => ['nullable', Rule::in(array_keys(Booking::RECURRENCES))],
             'message' => ['nullable', 'string', 'max:2000'],
             'photos' => ['nullable', 'array', 'max:3'],
-            'photos.*' => ['image', 'mimes:jpeg,png,jpg,webp', 'max:4096'],
+            'photos.*' => ['image', 'mimes:jpeg,png,jpg,webp', 'max:8192'],
         ], [
             'preferred_date.after' => __('Please choose a date from tomorrow onwards.'),
             'time_slot.in' => __('Please choose a valid time slot.'),
             'photos.max' => __('You can upload up to 3 photos.'),
+            'photos.*.max' => __('Each photo must be smaller than 8 MB.'),
+            'photos.*.uploaded' => __('A photo could not be uploaded. Please try a smaller photo.'),
+            'photos.*.image' => __('Please upload photos only (JPG, PNG or WebP).'),
+            'photos.*.mimes' => __('Please upload photos only (JPG, PNG or WebP).'),
         ]);
 
         $service = Service::find($validated['service']);
@@ -110,8 +114,8 @@ class BookingController extends Controller
             ]);
         }
 
-        // Remember the phone number for next time
-        if (! Auth::user()->phone) {
+        // Remember the phone number for next time (unless another account already uses it)
+        if (! Auth::user()->phone && ! \App\Models\User::where('phone', $validated['phone'])->exists()) {
             Auth::user()->update(['phone' => $validated['phone']]);
         }
 
@@ -162,6 +166,13 @@ class BookingController extends Controller
 
         if (! in_array($booking->status, ['pending', 'approved'])) {
             Alert::error(__('Not allowed'), __('Only pending or approved bookings can be cancelled.'));
+
+            return back();
+        }
+
+        // Money has to be returned by a person, so paid bookings go through us
+        if ($booking->isPaid()) {
+            Alert::info(__('Please contact us'), __('This booking is already paid. Please contact us to cancel it and arrange your refund.'));
 
             return back();
         }
@@ -268,8 +279,12 @@ class BookingController extends Controller
                 'Date', 'Time slot', 'Repeats', 'Status', 'Gardener', 'Price', 'Payment', 'Paid amount', 'Message',
             ]);
 
+            // A cell starting with = + - @ would run as a formula in Excel,
+            // so customer-typed text is prefixed with ' to keep it as plain text.
+            $safe = fn ($v) => is_string($v) && $v !== '' && in_array($v[0], ['=', '+', '-', '@', "\t", "\r"]) ? "'".$v : $v;
+
             foreach ($bookings as $b) {
-                fputcsv($out, [
+                fputcsv($out, array_map($safe, [
                     $b->id,
                     $b->created_at?->format('Y-m-d H:i'),
                     $b->name,
@@ -287,7 +302,7 @@ class BookingController extends Controller
                     $b->payment_status.($b->payment_method ? " ({$b->payment_method})" : ''),
                     $b->amount_paid,
                     $b->message,
-                ]);
+                ]));
             }
 
             fclose($out);
