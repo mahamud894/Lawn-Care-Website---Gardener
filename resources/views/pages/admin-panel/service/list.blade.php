@@ -61,7 +61,7 @@
                         </td>
                         <td>
                             <a href="{{ route('viewServiceEditForm', $service->id) }}" class="btn btn-info btn-sm text-white">Edit</a>
-                            <a href="{{ route('deleteService', $service->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this service?')">Delete</a>
+                            <form action="{{ route('deleteService', $service->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this service?')">@csrf @method('DELETE')<button type="submit" class="btn btn-danger btn-sm">Delete</button></form>
                         </td>
                     </tr>
                     @endforeach

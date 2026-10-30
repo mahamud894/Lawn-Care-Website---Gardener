@@ -16,6 +16,11 @@ return [
     'name' => env('APP_NAME', 'Laravel'),
 
     /*
+    | E-mail address that receives new booking and contact form alerts.
+    */
+    'admin_email' => env('ADMIN_EMAIL', env('MAIL_FROM_ADDRESS')),
+
+    /*
     |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------

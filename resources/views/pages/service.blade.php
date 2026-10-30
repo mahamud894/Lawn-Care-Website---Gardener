@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Gardener - Services</title>
+    <title>Our Services — Gardener</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="lawn care, gardening, landscaping, lawn mowing, garden maintenance" name="keywords">
+    <meta content="Lawn mowing, landscaping, pruning, irrigation and garden maintenance services with clear pricing." name="description">
 
     <!-- Favicon -->
     <link href="{{ asset('site/img/favicon.ico') }}" rel="icon">

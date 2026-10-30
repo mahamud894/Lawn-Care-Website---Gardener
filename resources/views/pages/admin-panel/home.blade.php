@@ -92,5 +92,39 @@
             </div>
         </div>
     </div>
+
+    <h5 class="fw-bold text-dark mb-4 mt-5"><i class="bi bi-inbox-fill text-success me-2"></i>Needs Your Attention</h5>
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6">
+            <a href="{{ route('admin.messages.list') }}" class="text-decoration-none">
+                <div class="card admin-card p-4 h-100 border-0 shadow-sm rounded-4 bg-white" style="border-left: 5px solid #dc3545 !important;">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="text-uppercase text-muted small fw-bold mb-1">Unread Messages</h6>
+                            <h2 class="mb-0 fw-bold text-danger">{{ $unreadMessages }}</h2>
+                        </div>
+                        <div class="p-3 bg-danger bg-opacity-10 rounded-3 text-danger">
+                            <i class="bi bi-envelope-exclamation-fill fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-md-6">
+            <a href="{{ route('admin.reviews.list') }}" class="text-decoration-none">
+                <div class="card admin-card p-4 h-100 border-0 shadow-sm rounded-4 bg-white" style="border-left: 5px solid #ffc107 !important;">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="text-uppercase text-muted small fw-bold mb-1">Reviews Waiting Approval</h6>
+                            <h2 class="mb-0 fw-bold text-warning">{{ $pendingReviews }}</h2>
+                        </div>
+                        <div class="p-3 bg-warning bg-opacity-10 rounded-3 text-warning">
+                            <i class="bi bi-star-half fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
 </main>
 @endsection

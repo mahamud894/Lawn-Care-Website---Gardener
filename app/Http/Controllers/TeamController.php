@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Team;
+use App\Support\ImageUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\File;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class TeamController extends Controller
@@ -25,15 +25,8 @@ class TeamController extends Controller
         ]);
 
         // 2. Handling file upload
-        $imagePath = null;
-        if ($req->hasFile('image')) {
-            $image = $req->file('image');
-            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-
-            // Saved to public/uploads/team folder
-            $image->move(public_path('uploads/team'), $imageName);
-            $imagePath = 'uploads/team/' . $imageName;
-        }
+        // Saved to public/uploads/team folder
+        $imagePath = ImageUpload::store($req->file('image'), 'team');
 
         // 3. Save to database
         Team::create([
@@ -85,15 +78,7 @@ class TeamController extends Controller
 
         // If a new image is uploaded, delete the old image and save the new one
         if ($req->hasFile('image')) {
-            // Delete old image from public folder
-            if ($team->image_url && File::exists(public_path($team->image_url))) {
-                File::delete(public_path($team->image_url));
-            }
-
-            $image = $req->file('image');
-            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads/team'), $imageName);
-            $imagePath = 'uploads/team/' . $imageName;
+            $imagePath = ImageUpload::replace($team->image_url, $req->file('image'), 'team');
         }
 
         $team->update([
@@ -113,9 +98,7 @@ class TeamController extends Controller
         $team = Team::findOrFail($id);
 
         // Delete the team member's image from the folder when deleting the member
-        if ($team->image_url && File::exists(public_path($team->image_url))) {
-            File::delete(public_path($team->image_url));
-        }
+        ImageUpload::delete($team->image_url);
 
         $team->delete();
 

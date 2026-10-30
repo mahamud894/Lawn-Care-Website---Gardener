@@ -11,7 +11,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
+        ]);
+
+        $middleware->web(append: [
+            \App\Http\Middleware\EnsureUserIsNotBlocked::class,
+        ]);
+
+        // Logged-in users visiting /login or /signup go to the home page
+        $middleware->redirectUsersTo('/');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Gardener - Gardening Website Template</title>
+    <title>Our Projects — Gardener</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="lawn care, gardening, landscaping, lawn mowing, garden maintenance" name="keywords">
+    <meta content="See completed and ongoing garden and landscaping projects by the Gardener team." name="description">
 
     <!-- Favicon -->
     <link href="site/img/favicon.ico" rel="icon">
@@ -72,89 +72,7 @@
                 <p class="fs-5 fw-bold text-primary">Our Projects</p>
                 <h1 class="display-5 mb-5">Some Of Our Wonderful Projects</h1>
             </div>
-            <div class="row wow fadeInUp" data-wow-delay="0.3s">
-                <div class="col-12 text-center">
-                    <ul class="list-inline rounded mb-5" id="portfolio-flters">
-                        <li class="mx-2 active" data-filter="*">All</li>
-                        <li class="mx-2" data-filter=".first">Complete Projects</li>
-                        <li class="mx-2" data-filter=".second">Ongoing Projects</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row g-4 portfolio-container">
-                <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="site/img/service-1.jpg" alt="">
-                        <div class="portfolio-text">
-                            <h4 class="text-white mb-4">Landscaping</h4>
-                            <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="img/service-1.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item second wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="site/img/service-2.jpg" alt="">
-                        <div class="portfolio-text">
-                            <h4 class="text-white mb-4">Pruning plants</h4>
-                            <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="img/service-2.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="site/img/service-3.jpg" alt="">
-                        <div class="portfolio-text">
-                            <h4 class="text-white mb-4">Irrigation & Drainage</h4>
-                            <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="img/service-3.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item second wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="site/img/service-4.jpg" alt="">
-                        <div class="portfolio-text">
-                            <h4 class="text-white mb-4">Garden Maintenance</h4>
-                            <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="img/service-4.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="site/img/service-5.jpg" alt="">
-                        <div class="portfolio-text">
-                            <h4 class="text-white mb-4">Green Technology</h4>
-                            <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="img/service-5.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item second wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="site/img/service-6.jpg" alt="">
-                        <div class="portfolio-text">
-                            <h4 class="text-white mb-4">Urban Gardening</h4>
-                            <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="img/service-6.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @include('common.site.projects-grid')
         </div>
     </div>
     <!-- Projects End -->

@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Gardener</title>
+    <title>About Us — Gardener</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="lawn care, gardening, landscaping, lawn mowing, garden maintenance" name="keywords">
+    <meta content="Meet the Gardener team: experienced gardeners and landscapers who care for your lawn and garden." name="description">
 
     <!-- Favicon -->
     <link href="site/img/favicon.ico" rel="icon">

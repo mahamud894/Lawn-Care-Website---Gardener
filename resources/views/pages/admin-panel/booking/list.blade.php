@@ -8,7 +8,31 @@
                 <h5 class="card-title mb-1">Booking List</h5>
                 <p class="text-muted mb-0">View all booking list.</p>
             </div>
+            <span class="badge bg-secondary">{{ $bookings->total() }} bookings</span>
         </div>
+
+        {{-- Search & filter --}}
+        <form method="GET" action="{{ route('viewAllBookings') }}" class="row g-2 mb-3">
+            <div class="col-md-4">
+                <input type="text" name="search" value="{{ request('search') }}" class="form-control form-control-sm" placeholder="Search name, email or address">
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select form-select-sm">
+                    <option value="">All statuses</option>
+                    @foreach($statuses as $status)
+                        <option value="{{ $status }}" @selected(request('status') === $status)>{{ ucfirst($status) }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="date" name="date" value="{{ request('date') }}" class="form-control form-control-sm">
+            </div>
+            <div class="col-md-2 d-flex gap-1">
+                <button class="btn btn-sm btn-dark w-100" type="submit"><i class="bi bi-funnel"></i> Filter</button>
+                <a href="{{ route('viewAllBookings') }}" class="btn btn-sm btn-outline-secondary" title="Clear filters">Clear</a>
+            </div>
+        </form>
+
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
@@ -26,7 +50,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($bookings as $booking)
+                    @forelse($bookings as $booking)
                     <tr>
                         <td>{{$booking->name}}</td>
                         <td>{{$booking->email}}</td>
@@ -58,7 +82,7 @@
                                     </span>
 
                                     <div class="small mt-1 d-flex align-items-center gap-1">
-                                        <span class="text-muted">({{ $booking->teamMember?->name ?? 'ID: '.$booking->team_member_id }})</span>
+                                        <span class="text-muted">({{ $booking->teamMember?->title ?? 'ID: '.$booking->team_member_id }})</span>
                                         <a href="{{ route('admin.bookings.assignView', $booking->id) }}" class="text-primary text-decoration-none fw-bold ms-1" title="Change Team Member">
                                             <i class="bi bi-pencil-square"></i> Change
                                         </a>
@@ -83,23 +107,35 @@
                             <span class="badge bg-danger text-capitalize">{{$booking->status}}</span>
                             @elseif($booking->status == "done")
                             <span class="badge bg-success text-capitalize">{{$booking->status}}</span>
+                            @elseif($booking->status == "cancelled")
+                            <span class="badge bg-secondary text-capitalize">{{$booking->status}}</span>
                             @else
                             <span class="badge bg-info text-capitalize">{{$booking->status}}</span>
                             @endif
                         </td>
                         <td>
                             <div class="d-flex gap-1">
-                                <a href="{{route("pendingBooking", $booking->id)}}" class="btn btn-warning text-white btn-sm">Pending</a>
-                                <a href="{{route("doneBooking", $booking->id)}}" class="btn btn-success text-white btn-sm">Done</a>
-                                <a href="{{route("approveBooking", $booking->id)}}" class="btn btn-info text-white btn-sm">Approve</a>
-                                <a href="{{route("rejectBooking", $booking->id)}}" class="btn btn-danger text-white btn-sm">Reject</a>
+                                @foreach(['pending' => 'warning', 'done' => 'success', 'approved' => 'info', 'rejected' => 'danger'] as $action => $color)
+                                    <form action="{{ route('admin.bookings.status', $booking->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <input type="hidden" name="status" value="{{ $action }}">
+                                        <button type="submit" class="btn btn-{{ $color }} text-white btn-sm" @disabled($booking->status === $action)>{{ $action === 'approved' ? 'Approve' : ($action === 'rejected' ? 'Reject' : ucfirst($action)) }}</button>
+                                    </form>
+                                @endforeach
                             </div>
                         </td>
                     </tr>
-                    @endforeach
-
+                    @empty
+                    <tr>
+                        <td colspan="10" class="text-center text-muted py-4">No bookings found.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <div class="mt-3">
+            {{ $bookings->links() }}
         </div>
     </div>
 </div>

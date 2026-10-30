@@ -11,6 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // The default users migration already creates this table
+        if (Schema::hasTable('sessions')) {
+            return;
+        }
+
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             // use unsignedBigInteger without FK to avoid cross-DB issues
@@ -27,6 +32,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sessions');
+        // Left to the users migration, which owns this table
+
     }
 };

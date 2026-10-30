@@ -1,59 +1,112 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🌿 Gardener — Lawn Care & Gardening Website
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A full lawn care business website built with **Laravel 12**. Customers can browse services, book a visit for a specific date and time slot, track their bookings and leave reviews. The owner runs everything from an admin panel.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**For customers**
+- Service, About, Projects and Contact pages
+- Online booking with live time-slot availability (a slot can never be double-booked)
+- Personal dashboard: track status and assigned gardener, cancel or reschedule, leave a star review after the job is done
+- E-mail updates when a booking is received, approved, completed or assigned
+- Sign up, login, and "forgot password" by e-mail
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**For the admin**
+- Dashboard with live counts (bookings by status, unread messages, reviews waiting)
+- Manage services, team members and project gallery (with photo upload)
+- Booking list with search, status/date filters and pagination; approve, reject, mark done, assign a team member
+- Contact messages inbox
+- Approve which customer reviews appear on the home page
+- Manage users: block/unblock, promote/demote, approve admin requests, delete
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Security**
+- Admin panel is only open to approved, non-blocked admins
+- Every action that changes data uses POST/DELETE with CSRF protection
+- Login, signup, booking and contact forms are rate-limited
+- Blocked users are logged out on their next click
+- Contact form has a hidden spam trap
 
-## Learning Laravel
+## Tech stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Laravel 12 · PHP 8.2+ · MySQL (or SQLite) · Blade · Bootstrap 5 · Tailwind (auth pages) · jQuery · SweetAlert · Pest
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Getting started
 
-## Laravel Sponsors
+```bash
+git clone https://github.com/mahamud894/Lawn-Care-Website---Gardener.git
+cd Lawn-Care-Website---Gardener
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+composer install
+npm install && npm run build
 
-### Premium Partners
+cp .env.example .env
+php artisan key:generate
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Edit `.env`:
 
-## Contributing
+```env
+DB_CONNECTION=mysql
+DB_DATABASE=gardener
+DB_USERNAME=root
+DB_PASSWORD=
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Who receives new booking / contact e-mails
+ADMIN_EMAIL=you@example.com
 
-## Code of Conduct
+# The main admin account created by the seeder
+SEED_ADMIN_EMAIL=you@example.com
+SEED_ADMIN_PASSWORD=choose-a-strong-password
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Then:
 
-## Security Vulnerabilities
+```bash
+php artisan migrate
+php artisan db:seed      # creates the main admin
+php artisan serve
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Open http://127.0.0.1:8000 and log in with the admin e-mail/password from `.env`.
 
-## License
+### Sending real e-mails
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+By default `MAIL_MAILER=log`, so e-mails are written to `storage/logs/laravel.log` instead of being sent. To send real e-mails, fill in the SMTP settings, for example Gmail with an [app password](https://support.google.com/accounts/answer/185833):
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=you@gmail.com
+MAIL_PASSWORD=your-app-password
+MAIL_FROM_ADDRESS=you@gmail.com
+```
+
+If mail is not set up, bookings and contact messages still work — the e-mail is just skipped and logged.
+
+## Upgrading an existing database
+
+If you already have the site running, just run:
+
+```bash
+php artisan migrate
+```
+
+The new migrations only add what is missing (`isBlocked`, `address`, `team_member_id`, and the new `contact_messages`, `projects` and `reviews` tables), so existing data is kept.
+
+## Running tests
+
+```bash
+php artisan test
+```
+
+## Project structure
+
+| Path | What's there |
+| --- | --- |
+| `routes/web.php` | All routes, grouped into public / guest / customer / admin |
+| `app/Http/Controllers` | Page logic (bookings, services, team, projects, reviews, contact, auth) |
+| `app/Http/Middleware` | Admin-only access and blocked-user logout |
+| `app/Notifications` | E-mails sent to customers and the admin |
+| `resources/views/pages` | Public pages, customer dashboard and admin panel |
+| `tests/Feature` | Pest tests |

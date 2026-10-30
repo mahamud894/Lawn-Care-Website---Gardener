@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Gardener - Gardening Website </title>
+    <title>Get a Free Quote — Gardener</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="lawn care, gardening, landscaping, lawn mowing, garden maintenance" name="keywords">
+    <meta content="Request a lawn care or gardening quote and pick a date and time that suits you." name="description">
 
     <!-- 💡 CSRF Token added for AJAX -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -108,7 +108,7 @@
                         </div>
                         @endif
 
-                        <form id="bookingForm" action="/admin-panel/create-booking" method="post">
+                        <form id="bookingForm" action="{{ route('createBooking') }}" method="post">
                             @csrf
                             <div class="row g-3">
 
@@ -143,14 +143,14 @@
                                     <input name="email" id="user_email" value="{{ old('email', Auth::check() ? Auth::user()->email : '') }}" type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12">
-                                    <input type="text" name="address" class="form-control border-0 bg-light px-4" placeholder="Your Address" style="height: 55px;" required>
+                                    <input type="text" name="address" value="{{ old('address') }}" class="form-control border-0 bg-light px-4" placeholder="Your Address" style="height: 55px;" required>
                                 </div>
 
                                 <div class="col-12">
                                     <select name="service" class="form-select bg-light border-0" style="height: 55px;" required>
                                         <option value="" selected disabled>Select A Service</option>
                                         @foreach($services as $service)
-                                        <option value="{{$service->id}}" {{ $selectedServiceId == $service->id ? 'selected' : '' }}>
+                                        <option value="{{$service->id}}" {{ old('service', $selectedServiceId) == $service->id ? 'selected' : '' }}>
                                             {{$service->title}}
                                         </option>
                                         @endforeach
@@ -158,7 +158,7 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <input name="preferred_date" id="booking_date" type="date" class="form-control bg-light border-0" style="height: 55px;" required>
+                                    <input name="preferred_date" id="booking_date" type="date" min="{{ now()->addDay()->toDateString() }}" value="{{ old('preferred_date') }}" class="form-control bg-light border-0" style="height: 55px;" required>
                                 </div>
 
                                 <div class="col-12">
@@ -168,7 +168,7 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <textarea name="message" class="form-control bg-light border-0" rows="3" placeholder="Message"></textarea>
+                                    <textarea name="message" class="form-control bg-light border-0" rows="3" placeholder="Message">{{ old('message') }}</textarea>
                                 </div>
 
                                 <div class="col-12">
@@ -264,30 +264,31 @@
                         data: { date: selectedDate },
                         dataType: 'json',
                         success: function(bookedSlots) {
-                            var allSlots = [
-                                "09:00 AM - 11:00 AM",
-                                "11:00 AM - 01:00 PM",
-                                "02:00 PM - 04:00 PM",
-                                "04:00 PM - 06:00 PM"
-                            ];
+                            var allSlots = @json(\App\Models\Booking::TIME_SLOTS);
 
-                            var html = '<option value="">Select a Time Slot</option>';
-                            allSlots.forEach(function(slot) {
-                                if (!bookedSlots.includes(slot)) {
-                                    html += '<option value="' + slot + '">' + slot + '</option>';
-                                }
+                            var oldSlot = @json(old('time_slot'));
+                            var freeSlots = allSlots.filter(function(slot) { return !bookedSlots.includes(slot); });
+                            var html = freeSlots.length
+                                ? '<option value="">Select a Time Slot</option>'
+                                : '<option value="">No free slots on this day — pick another date</option>';
+                            freeSlots.forEach(function(slot) {
+                                html += '<option value="' + slot + '"' + (slot === oldSlot ? ' selected' : '') + '>' + slot + '</option>';
                             });
 
                             $('#time_slot').html(html).prop('disabled', false).css('color', '#212529');
                         },
                         error: function(xhr, status, error) {
                             console.error("AJAX Error Status: " + xhr.status + " - " + error);
-                            alert("Status Code: " + xhr.status + "\nMessage: " + xhr.responseText);
                             $('#time_slot').html('<option value="">Error loading slots</option>');
                         }
                     });
                 }
             });
+
+            // After a failed submit, reload the slots for the date the user had picked
+            if ($('#booking_date').val()) {
+                $('#booking_date').trigger('change');
+            }
         });
     </script>
 

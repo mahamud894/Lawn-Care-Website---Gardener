@@ -7,6 +7,11 @@ use App\Models\User;
 use App\Models\Booking;
 use App\Models\Team;
 use App\Models\Service;
+use App\Models\ContactMessage;
+use App\Models\Review;
+use App\Notifications\BookingStatusChanged;
+use App\Support\SafeNotify;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -20,6 +25,8 @@ class AdminController extends Controller
         $doneBookings = Booking::where('status', 'done')->count();
 
         $totalTeam = Team::count();
+        $unreadMessages = ContactMessage::where('isRead', false)->count();
+        $pendingReviews = Review::where('isApproved', false)->count();
 
         // All data has been sent to the 'admin panel's home page.
         return view('pages.admin-panel.home', compact(
@@ -28,13 +35,16 @@ class AdminController extends Controller
             'pendingBookings',
             'approvedBookings',
             'doneBookings',
-            'totalTeam'
+            'totalTeam',
+            'unreadMessages',
+            'pendingReviews'
         ));
     }
 
     public function viewUsersList() {
         //All users from the database are being retrieved and arranged sequentially by ID.
         $users = User::orderBy('id', 'desc')->get();
+        // Note: the Users page shows customers and admins in two separate tables
         return view('pages.admin-panel.users.list', compact('users'));
     }
 
@@ -95,12 +105,28 @@ public function toggleBlock($id) {
 }
 
 public function assignTeam(Request $request, $id) {
-    $booking = Booking::findOrFail($id);
-    $booking->team_member_id = $request->team_member_id;
-    $booking->status = 'approved'; // If assign team member the booking approve autometicly
+    $request->validate([
+        'team_member_id' => ['nullable', Rule::exists('teams', 'id')],
+    ]);
 
-    \RealRashid\SweetAlert\Facades\Alert::success('Success', 'Team member assigned successfully!');
-    return redirect()->back();
+    $booking = Booking::findOrFail($id);
+    $booking->team_member_id = $request->team_member_id ?: null;
+
+    // Assigning a member approves a pending booking automatically
+    if ($booking->team_member_id && $booking->status === 'pending') {
+        $booking->status = 'approved';
+    }
+
+    $booking->save();
+
+    if ($booking->team_member_id) {
+        SafeNotify::toEmail($booking->email, new BookingStatusChanged($booking->load(['service', 'teamMember'])));
+        \RealRashid\SweetAlert\Facades\Alert::success('Success', 'Team member assigned successfully!');
+    } else {
+        \RealRashid\SweetAlert\Facades\Alert::success('Success', 'Team member removed from this booking.');
+    }
+
+    return redirect()->route('viewAllBookings');
 }
 
 public function showAssignPage($id) {

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
+use App\Support\ImageUpload;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -35,7 +35,7 @@ class ServiceController extends Controller
             'title' => 'required|string|max:255',
             'price' => 'nullable|numeric',
             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'icon_url' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024',
+            'icon_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
             'short_description' => 'required|string',
         ]);
 
@@ -45,18 +45,12 @@ class ServiceController extends Controller
 
         // ২. Service Main Image Upload
         if ($req->hasFile('image_url')) {
-            $image = $req->file('image_url');
-            $imageName = time() . '_image.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads/services'), $imageName);
-            $data['image_url'] = 'uploads/services/' . $imageName;
+            $data['image_url'] = ImageUpload::store($req->file('image_url'), 'services');
         }
 
         // ৩. Service Icon Image Upload
         if ($req->hasFile('icon_url')) {
-            $icon = $req->file('icon_url');
-            $iconName = time() . '_icon.' . $icon->getClientOriginalExtension();
-            $icon->move(public_path('uploads/services/icons'), $iconName);
-            $data['icon_url'] = 'uploads/services/icons/' . $iconName;
+            $data['icon_url'] = ImageUpload::store($req->file('icon_url'), 'services/icons');
         }
 
         Service::create($data);
@@ -72,7 +66,7 @@ class ServiceController extends Controller
     }
 
     public function viewServiceEditForm($id){
-        $service = Service::where(["id"=>$id])->first();
+        $service = Service::findOrFail($id);
         return view("pages.admin-panel.service.edit", ["service"=>$service]);
     }
 
@@ -82,7 +76,7 @@ class ServiceController extends Controller
             'title' => 'required|string|max:255',
             'price' => 'nullable|numeric',
             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'icon_url' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024',
+            'icon_url' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
             'short_description' => 'required|string',
         ]);
 
@@ -95,26 +89,12 @@ class ServiceController extends Controller
 
         // ২. New Main Image Upload (delete old upload new)
         if ($req->hasFile('image_url')) {
-            if ($service->image_url && File::exists(public_path($service->image_url))) {
-                File::delete(public_path($service->image_url));
-            }
-
-            $image = $req->file('image_url');
-            $imageName = time() . '_image.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads/services'), $imageName);
-            $data['image_url'] = 'uploads/services/' . $imageName;
+            $data['image_url'] = ImageUpload::replace($service->image_url, $req->file('image_url'), 'services');
         }
 
         // ৩. New Icon Upload (old delete andnew set)
         if ($req->hasFile('icon_url')) {
-            if ($service->icon_url && File::exists(public_path($service->icon_url))) {
-                File::delete(public_path($service->icon_url));
-            }
-
-            $icon = $req->file('icon_url');
-            $iconName = time() . '_icon.' . $icon->getClientOriginalExtension();
-            $icon->move(public_path('uploads/services/icons'), $iconName);
-            $data['icon_url'] = 'uploads/services/icons/' . $iconName;
+            $data['icon_url'] = ImageUpload::replace($service->icon_url, $req->file('icon_url'), 'services/icons');
         }
 
         $service->update($data);
@@ -128,12 +108,8 @@ class ServiceController extends Controller
 
         if ($service) {
             // file remove time service will remove from server
-            if ($service->image_url && File::exists(public_path($service->image_url))) {
-                File::delete(public_path($service->image_url));
-            }
-            if ($service->icon_url && File::exists(public_path($service->icon_url))) {
-                File::delete(public_path($service->icon_url));
-            }
+            ImageUpload::delete($service->image_url);
+            ImageUpload::delete($service->icon_url);
 
             $service->delete();
             Alert::success('Success', 'Service deleted Successfully');

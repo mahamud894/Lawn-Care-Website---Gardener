@@ -48,6 +48,13 @@
         .badge-approved { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
         .badge-done { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .badge-rejected { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .badge-cancelled { background-color: #e2e3e5; color: #41464b; border: 1px solid #d3d6d8; }
+        .star-picker { direction: rtl; display: inline-flex; gap: 4px; }
+        .star-picker input { display: none; }
+        .star-picker label { font-size: 1.8rem; color: #ccc; cursor: pointer; }
+        .star-picker input:checked ~ label,
+        .star-picker label:hover,
+        .star-picker label:hover ~ label { color: #ffc107; }
 
         .nav-pills .nav-link {
             color: #555;
@@ -91,6 +98,16 @@
                 </div>
             </div>
         </div>
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <div class="row g-4 mb-5">
             <div class="col-md-4">
@@ -155,9 +172,81 @@
         </div>
     </div>
 
+
+    {{-- Reschedule & review pop-ups (one per booking) --}}
+    @foreach($bookings as $booking)
+        @if($booking->status === 'pending')
+        <div class="modal fade" id="rescheduleModal{{ $booking->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <form action="{{ route('user.bookings.reschedule', $booking) }}" method="POST" class="modal-content">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title">Reschedule — {{ $booking->service?->title ?? 'Booking' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label class="form-label fw-semibold">New date</label>
+                        <input type="date" name="preferred_date" class="form-control mb-3 reschedule-date" data-target="#slot{{ $booking->id }}" min="{{ now()->addDay()->toDateString() }}" required>
+                        <label class="form-label fw-semibold">Time slot</label>
+                        <select name="time_slot" id="slot{{ $booking->id }}" class="form-select" required disabled>
+                            <option value="">First select a date</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Save new date</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @endif
+
+        @if($booking->status === 'done' && ! $booking->review)
+        <div class="modal fade" id="reviewModal{{ $booking->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <form action="{{ route('user.bookings.review', $booking) }}" method="POST" class="modal-content">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title">How was your {{ $booking->service?->title ?? 'service' }}?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="star-picker mb-3">
+                            @for($s = 5; $s >= 1; $s--)
+                                <input type="radio" name="rating" id="r{{ $booking->id }}_{{ $s }}" value="{{ $s }}" required>
+                                <label for="r{{ $booking->id }}_{{ $s }}" title="{{ $s }} star"><i class="fa fa-star"></i></label>
+                            @endfor
+                        </div>
+                        <textarea name="comment" class="form-control" rows="4" minlength="10" maxlength="1000" placeholder="Tell others about your experience (at least 10 characters)" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Submit Review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @endif
+    @endforeach
+
     @include('common.site.footer')
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Load free time slots when a new date is picked in the reschedule pop-up
+        var allSlots = @json(\App\Models\Booking::TIME_SLOTS);
+        $('.reschedule-date').on('change', function () {
+            var select = $($(this).data('target'));
+            select.html('<option value="">Loading slots...</option>').prop('disabled', true);
+            $.getJSON("{{ route('checkSlots') }}", { date: $(this).val() }, function (booked) {
+                var free = allSlots.filter(function (s) { return !booked.includes(s); });
+                var html = free.length ? '<option value="">Select a Time Slot</option>' : '<option value="">No free slots — pick another date</option>';
+                free.forEach(function (s) { html += '<option value="' + s + '">' + s + '</option>'; });
+                select.html(html).prop('disabled', false);
+            });
+        });
+    </script>
+    @include('sweetalert::alert')
 </body>
 </html>

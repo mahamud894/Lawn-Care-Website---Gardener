@@ -52,19 +52,19 @@
                                 <div class="d-flex align-items-center justify-content-center gap-2">
                                     {{-- 💡 ব্লক/আনব্লক টগল বাটন --}}
                                     @if($user->isBlocked == 1)
-                                        <a href="{{ route('admin.users.toggleBlock', $user->id) }}" class="btn btn-success btn-sm rounded-pill px-3 py-1 text-white fw-bold">
+                                        <form action="{{ route('admin.users.toggleBlock', $user->id) }}" method="POST" class="d-inline">@csrf <button type="submit" class="btn btn-success btn-sm rounded-pill px-3 py-1 text-white fw-bold">
                                             <i class="bi bi-unlock-fill me-1"></i> Unblock
-                                        </a>
+                                        </button></form>
                                     @else
-                                        <a href="{{ route('admin.users.toggleBlock', $user->id) }}" class="btn btn-warning btn-sm rounded-pill px-3 py-1 text-dark fw-bold">
+                                        <form action="{{ route('admin.users.toggleBlock', $user->id) }}" method="POST" class="d-inline">@csrf <button type="submit" class="btn btn-warning btn-sm rounded-pill px-3 py-1 text-dark fw-bold">
                                             <i class="bi bi-shield-slash-fill me-1"></i> Block
-                                        </a>
+                                        </button></form>
                                     @endif
 
                                     {{-- ডিলিট বাটন --}}
-                                    <a href="{{ route('admin.users.delete', $user->id) }}" onclick="return confirm('Are you sure you want to delete this user permanently?')" class="btn btn-danger btn-sm rounded-pill px-3 py-1 text-white">
+                                    <form action="{{ route('admin.users.delete', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this user permanently?')">@csrf @method('DELETE') <button type="submit" class="btn btn-danger btn-sm rounded-pill px-3 py-1 text-white">
                                         <i class="bi bi-trash-fill me-1"></i> Delete
-                                    </a>
+                                    </button></form>
                                 </div>
                             </td>
                         </tr>
@@ -139,19 +139,19 @@
                                 <div class="d-flex align-items-center justify-content-center gap-2">
                                     @if(auth()->id() !== $user->id)
                                         @if(isset($user->isAdminApproved) && $user->isAdminApproved == 0)
-                                            <a href="{{ route('admin.users.toggleRole', $user->id) }}" class="btn btn-success btn-sm rounded-pill px-3 py-1 fw-bold text-white">
+                                            <form action="{{ route('admin.users.toggleRole', $user->id) }}" method="POST" class="d-inline">@csrf <button type="submit" class="btn btn-success btn-sm rounded-pill px-3 py-1 fw-bold text-white">
                                                 <i class="bi bi-check-circle me-1"></i> Approve
-                                            </a>
+                                            </button></form>
                                         @else
-                                            <a href="{{ route('admin.users.toggleRole', $user->id) }}" class="btn btn-outline-primary btn-sm rounded-pill px-3 py-1">
+                                            <form action="{{ route('admin.users.toggleRole', $user->id) }}" method="POST" class="d-inline">@csrf <button type="submit" class="btn btn-outline-primary btn-sm rounded-pill px-3 py-1">
                                                 <i class="bi bi-person-down me-1"></i> Demote
-                                            </a>
+                                            </button></form>
                                         @endif
 
                                         {{-- 💡 অন্য যেকোনো এডমিনকে মুছে ফেলার ডিলিট বাটন --}}
-                                        <a href="{{ route('admin.users.delete', $user->id) }}" onclick="return confirm('Are you sure you want to delete this administrator permanently?')" class="btn btn-danger btn-sm rounded-pill px-3 py-1 text-white">
+                                        <form action="{{ route('admin.users.delete', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this administrator permanently?')">@csrf @method('DELETE') <button type="submit" class="btn btn-danger btn-sm rounded-pill px-3 py-1 text-white">
                                             <i class="bi bi-trash-fill me-1"></i> Delete
-                                        </a>
+                                        </button></form>
                                     @else
                                         <span class="text-muted small fw-bold py-1 d-inline-block">
                                             Logged In <i class="bi bi-check-circle-fill text-success ms-1"></i>

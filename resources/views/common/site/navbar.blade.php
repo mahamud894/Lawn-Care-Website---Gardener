@@ -35,7 +35,10 @@
             </a>
 
             @auth
-                <a href="/logout" class="btn btn-danger py-3 px-lg-4 rounded-0">Logout</a>
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-danger py-3 px-lg-4 rounded-0">Logout</button>
+                </form>
             @else
                 <a href="/login" class="btn btn-primary py-3 px-lg-4 rounded-0">Login</a>
             @endauth

@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Gardener</title>
+    <title>Contact Us — Gardener</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="lawn care, gardening, landscaping, lawn mowing, garden maintenance" name="keywords">
+    <meta content="Questions about lawn care or a booking? Send the Gardener team a message." name="description">
 
     <!-- Favicon -->
     <link href="site/img/favicon.ico" rel="icon">
@@ -98,30 +98,46 @@
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                     <p class="fs-5 fw-bold text-primary">Contact Us</p>
                     <h1 class="display-5 mb-5">If You Have Any Query, Please Contact Us</h1>
-                    <p class="mb-4">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
-                    <form>
+                    <p class="mb-4">Have a question about our services, pricing or an existing booking? Send us a message and we will reply as soon as possible.</p>
+
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
+                    <form action="{{ route('contact.store') }}" method="POST">
+                        @csrf
+                        {{-- Spam trap: hidden from people, bots fill it in --}}
+                        <div style="position: absolute; left: -9999px;" aria-hidden="true">
+                            <input type="text" name="website" tabindex="-1" autocomplete="off">
+                        </div>
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="name" placeholder="Your Name">
+                                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name', Auth::user()->name ?? '') }}" placeholder="Your Name" required>
                                     <label for="name">Your Name</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="email" class="form-control" id="email" placeholder="Your Email">
+                                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email', Auth::user()->email ?? '') }}" placeholder="Your Email" required>
                                     <label for="email">Your Email</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                    <input type="text" class="form-control" id="subject" name="subject" value="{{ old('subject') }}" placeholder="Subject">
                                     <label for="subject">Subject</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 100px"></textarea>
+                                    <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" style="height: 140px" required>{{ old('message') }}</textarea>
                                     <label for="message">Message</label>
                                 </div>
                             </div>
@@ -134,7 +150,8 @@
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s" style="min-height: 450px;">
                     <div class="position-relative rounded overflow-hidden h-100">
                         <iframe class="position-relative w-100 h-100"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd"
+                        src="https://maps.google.com/maps?q=Kalia%2C%20Narail%2C%20Bangladesh&z=13&output=embed"
+                        loading="lazy" title="Our location"
                         frameborder="0" style="min-height: 450px; border:0;" allowfullscreen="" aria-hidden="false"
                         tabindex="0"></iframe>
                     </div>
@@ -168,6 +185,7 @@
 
     <!-- Template Javascript -->
     <script src="site/js/main.js"></script>
+    @include('sweetalert::alert')
 </body>
 
 </html>

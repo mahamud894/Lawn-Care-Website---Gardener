@@ -44,7 +44,7 @@
                         </td>
                         <td>
                             <a href="{{route('viewTeamEditForm', $teamMember->id)}}" class="btn btn-info btn-sm text-white">Edit</a>
-                            <a href="{{route('deleteTeam', $teamMember->id)}}" class="btn btn-danger btn-sm">Delete</a>
+                            <form action="{{ route('deleteTeam', $teamMember->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this?')">@csrf @method('DELETE') <button type="submit" class="btn btn-danger btn-sm">Delete</button></form>
                         </td>
                     </tr>
                     @endforeach

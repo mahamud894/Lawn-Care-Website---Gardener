@@ -33,13 +33,33 @@
                     class="bi bi-person-lines-fill me-2"></i></i>Team Members</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link {{ Route::is('admin.projects.*') ? 'active' : '' }}" href="{{ route('admin.projects.list') }}">
+                <i class="bi bi-images me-2"></i>Projects
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ Route::is('admin.messages.*') ? 'active' : '' }}" href="{{ route('admin.messages.list') }}">
+                <i class="bi bi-envelope-fill me-2"></i>Messages
+                @php($unread = \App\Models\ContactMessage::where('isRead', false)->count())
+                @if($unread)<span class="badge bg-danger ms-1">{{ $unread }}</span>@endif
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ Route::is('admin.reviews.*') ? 'active' : '' }}" href="{{ route('admin.reviews.list') }}">
+                <i class="bi bi-star-fill me-2"></i>Reviews
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link {{ Route::is('admin.users.list') ? 'active' : '' }}"
                 href="{{ route('admin.users.list') }}">
                 <i class="bi bi-people-fill me-2"></i>Users
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/logout"><i class="bi bi-gear me-2"></i>Logout</a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="nav-link btn btn-link text-start w-100"><i class="bi bi-box-arrow-right me-2"></i>Logout</button>
+            </form>
         </li>
     </ul>
 
@@ -57,7 +77,7 @@
                 <i class="bi bi-person-fill"></i>
             </div>
             <div>
-                <div class="fw-semibold">Admin User</div>
+                <div class="fw-semibold">{{ Auth::user()->name ?? 'Admin User' }}</div>
                 <small class="text-muted">Active</small>
             </div>
         </div>

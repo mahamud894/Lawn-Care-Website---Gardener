@@ -5,73 +5,102 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use RealRashid\SweetAlert\Facades\Alert;
-
 
 class AuthController extends Controller
 {
-    public function viewSignup () {
+    public function viewLogin()
+    {
+        return view('pages.login');
+    }
+
+    public function viewSignup()
+    {
         return view('pages.signup');
     }
 
-    public function signup(Request $request){
-    $data['name'] = $request->name;
-    $data['email'] = $request->email;
-    $data['phone'] = $request->phone;
-    $data['password'] = bcrypt($request->password); // password sequer in hash
+    public function signup(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'phone' => ['required', 'string', 'max:20', 'unique:users,phone'],
+            'password' => ['required', 'confirmed', Password::min(8)],
+            // 0 = customer, 1 = admin assistant (needs main admin approval)
+            'role' => ['nullable', 'in:0,1'],
+        ]);
 
-    // from drop collecting role(0 or 1)
-    $data['isAdmin'] = $request->role;
+        $wantsAdmin = (int) ($data['role'] ?? 0) === 1;
 
-    // for normal user direct (1) or if admin pending (0)
-    $data['isAdminApproved'] = $request->role == 1 ? 0 : 1;
+        User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'password' => Hash::make($data['password']),
+            'isAdmin' => $wantsAdmin ? 1 : 0,
+            // An admin request stays locked until the main admin approves it
+            'isAdminApproved' => $wantsAdmin ? 0 : 1,
+        ]);
 
-    User::create($data);
+        if ($wantsAdmin) {
+            Alert::info('Requested', 'Admin account created! Wait for Main Admin approval.');
+        } else {
+            Alert::success('Success', 'Signup successful! Please login.');
+        }
 
-    if($request->role == 1) {
-        Alert::info('Requested', 'Admin account created! Wait for Main Admin approval.');
-    } else {
-        Alert::success('Success', 'Signup successful! Please login.');
+        return redirect()->route('login');
     }
 
-    return redirect()->route('login');
-}
+    public function loginCheck(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
+        ]);
 
-public function loginCheck(Request $request){
-    // first checking user data with email
-    $user = User::where('email', $request->email)->first();
+        // Check the password first, so we never reveal whether an e-mail
+        // is registered / blocked / pending to someone who doesn't know it.
+        if (! Auth::validate($credentials)) {
+            Alert::error('Error', 'Invalid Credentials!');
 
-    // block chacking logic (if admin block user)
-    if($user && $user->isBlocked == 1) {
-        Alert::error('Account Blocked', 'Your account has been suspended by Admin.');
-        return redirect()->back();
-    }
+            return redirect()->back()->withInput($request->only('email'));
+        }
 
-    if($user) {
-        // if user sign up with admin role and if main admin not approve that (0)
-        if($user->isAdmin == 1 && $user->isAdminApproved == 0) {
-            Alert::error('Access Denied', 'Your Admin account is pending approval from Main Admin.');
+        $user = User::where('email', $credentials['email'])->first();
+
+        if ($user->isBlocked) {
+            Alert::error('Account Blocked', 'Your account has been suspended by Admin.');
+
             return redirect()->back();
         }
-    }
 
-    // if every thing ok try normal login process
-    if(Auth::attempt(["email"=>$request->email, "password"=>$request->password])){
-        if(Auth::user()->isAdmin == 0){
-            Alert::success('Success', 'User Login Successful');
-            return redirect()->route('home');
-        }else{
-            Alert::success('Success', 'Admin Login Successful');
-            return redirect()->route('viewAdminPanel');
+        if ($user->isAdmin && ! $user->isAdminApproved) {
+            Alert::error('Access Denied', 'Your Admin account is pending approval from Main Admin.');
+
+            return redirect()->back();
         }
-    }else{
-        Alert::error('Error', 'Invalid Credentials!');
-        return redirect()->back();
-    }
-}
 
-    public function logout(){
+        Auth::login($user, $request->boolean('remember'));
+        $request->session()->regenerate();
+
+        if (! $user->isAdmin) {
+            Alert::success('Success', 'User Login Successful');
+
+            return redirect()->intended(route('home'));
+        }
+
+        Alert::success('Success', 'Admin Login Successful');
+
+        return redirect()->intended(route('viewAdminPanel'));
+    }
+
+    public function logout(Request $request)
+    {
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         Alert::success('Success', 'Logout Successfull');
 

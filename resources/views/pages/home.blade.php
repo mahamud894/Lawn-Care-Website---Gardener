@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Gardener</title>
+    <title>Gardener — Lawn Care & Gardening Services</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="lawn care, gardening, landscaping, lawn mowing, garden maintenance" name="keywords">
+    <meta content="Professional lawn mowing, landscaping, pruning and garden maintenance. Book a trusted gardener online in minutes." name="description">
 
     <!-- Favicon -->
     <link href="{{ asset('site/img/favicon.ico') }}" rel="icon">
@@ -379,7 +379,7 @@
                         </div>
                         @endif
 
-                        <form action="/admin-panel/create-booking" method="post">
+                        <form action="{{ route('createBooking') }}" method="post">
                             @csrf
                             <div class="row g-3">
 
@@ -413,7 +413,7 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <input type="text" name="address" class="form-control border-0 bg-light px-4" placeholder="Your Address" style="height: 55px;" required>
+                                    <input type="text" name="address" value="{{ old('address') }}" class="form-control border-0 bg-light px-4" placeholder="Your Address" style="height: 55px;" required>
                                 </div>
 
                                 {{-- Service Selection Dropdown with Price --}}
@@ -430,7 +430,7 @@
 
                                 {{-- Date Input --}}
                                 <div class="col-12">
-                                    <input name="preferred_date" id="booking_date" type="date" class="form-control bg-light border-0" style="height: 55px;" required>
+                                    <input name="preferred_date" id="booking_date" type="date" min="{{ now()->addDay()->toDateString() }}" class="form-control bg-light border-0" style="height: 55px;" required>
                                 </div>
 
                                 {{-- Time Slot Selection Dropdown --}}
@@ -470,53 +470,7 @@
                 <p class="fs-5 fw-bold text-primary">Our Projects</p>
                 <h1 class="display-5 mb-5">Some Of Our Wonderful Projects</h1>
             </div>
-            <div class="row wow fadeInUp" data-wow-delay="0.3s">
-                <div class="col-12 text-center">
-                    <ul class="list-inline rounded mb-5" id="portfolio-flters">
-                        <li class="mx-2 active" data-filter="*">All</li>
-                        <li class="mx-2" data-filter=".first">Complete Projects</li>
-                        <li class="mx-2" data-filter=".second">Ongoing Projects</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row g-4 portfolio-container">
-                <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="{{ asset('site/img/service-1.jpg') }}" alt="">
-                        <div class="portfolio-text">
-                            <h4 class="text-white mb-4">Landscaping</h4>
-                            <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="{{ asset('site/img/service-1.jpg') }}" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item second wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="{{ asset('site/img/service-2.jpg') }}" alt="">
-                        <div class="portfolio-text">
-                            <h4 class="text-white mb-4">Pruning plants</h4>
-                            <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="{{ asset('site/img/service-2.jpg') }}" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="portfolio-inner rounded">
-                        <img class="img-fluid" src="{{ asset('site/img/service-3.jpg') }}" alt="">
-                        <div class="portfolio-text">
-                            <h4 class="text-white mb-4">Irrigation & Drainage</h4>
-                            <div class="d-flex">
-                                <a class="btn btn-lg-square rounded-circle mx-2" href="{{ asset('site/img/service-3.jpg') }}" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-lg-square rounded-circle mx-2" href=""><i class="fa fa-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @include('common.site.projects-grid', ['limit' => 3])
         </div>
     </div>
     <!-- Projects End -->
@@ -566,23 +520,10 @@
                     <p class="fs-5 fw-bold text-primary">Testimonial</p>
                     <h1 class="display-5 mb-5">What Our Clients Say About Us!</h1>
                     <p class="mb-4">Real stories from real homeowners. Discover how our passion for landscaping and premium garden care has helped hundreds of clients create their dream outdoor sanctuaries.</p>
-                    <a class="btn btn-primary py-3 px-4" href="">See More</a>
+                    <a class="btn btn-primary py-3 px-4" href="{{ route('quote') }}">Book A Service</a>
                 </div>
                 <div class="col-lg-7 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="owl-carousel testimonial-carousel">
-                        <div class="testimonial-item">
-                            <img class="img-fluid rounded mb-3" src="{{ asset('site/img/testimonial-1.jpg') }}" alt="">
-                            <p class="fs-5">"Excellent service from start to finish. They fixed our broken lawn drainage system and designed a stunning modern garden layout. Highly recommended!"</p>
-                            <h4>Sarah Jenkins</h4>
-                            <span>Villa Owner</span>
-                        </div>
-                        <div class="testimonial-item">
-                            <img class="img-fluid rounded mb-3" src="{{ asset('site/img/testimonial-2.jpg') }}" alt="">
-                            <p class="fs-5">"Gardener completely transformed our boring backyard into a lush green paradise! Their team was fast, incredibly professional, and very transparent about prices. Our family absolutely loves our new space!"</p>
-                            <h4>John Doe</h4>
-                            <span>Homeowner</span>
-                        </div>
-                    </div>
+                    @include('common.site.testimonials')
                 </div>
             </div>
         </div>
@@ -642,23 +583,18 @@
                     $('#time_slot').html('<option value="">Loading slots...</option>').prop('disabled', true).css('color', '#6c757d');
 
                     $.ajax({
-                        url: '/check-available-slots',
+                        url: "{{ route('checkSlots') }}",
                         type: 'GET',
-                        data: { date: date }, // 💡 এখানে ডেটা পাস করা হলো
+                        data: { date: date },
                         dataType: 'json',
                         success: function(bookedSlots) {
-                            var allSlots = [
-                                "09:00 AM - 11:00 AM",
-                                "11:00 AM - 01:00 PM",
-                                "02:00 PM - 04:00 PM",
-                                "04:00 PM - 06:00 PM"
-                            ];
-
-                            var html = '<option value="">Select a Time Slot</option>';
-                            allSlots.forEach(function(slot) {
-                                if (!bookedSlots.includes(slot)) {
-                                    html += '<option value="' + slot + '">' + slot + '</option>';
-                                }
+                            var allSlots = @json(\App\Models\Booking::TIME_SLOTS);
+                            var freeSlots = allSlots.filter(function(slot) { return !bookedSlots.includes(slot); });
+                            var html = freeSlots.length
+                                ? '<option value="">Select a Time Slot</option>'
+                                : '<option value="">No free slots on this day — pick another date</option>';
+                            freeSlots.forEach(function(slot) {
+                                html += '<option value="' + slot + '">' + slot + '</option>';
                             });
 
                             $('#time_slot').html(html).prop('disabled', false).css('color', '#212529');

@@ -22,3 +22,10 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Images uploaded through the admin panel (keep the folders, not the files)
+/public/uploads/*/*
+!/public/uploads/*/.gitkeep
+/public/uploads/services/icons/*
+!/public/uploads/services/icons/.gitkeep
+/database/database.sqlite
